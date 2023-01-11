@@ -59,3 +59,5 @@ class Person {
         this.#picture = picture;
     }
 }
+
+export default Person;
