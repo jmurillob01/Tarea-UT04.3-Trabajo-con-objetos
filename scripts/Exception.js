@@ -28,7 +28,7 @@ class InvalidNameException extends BaseException{
     }
 }
 
-// Excepción personalizada para indicar nombre incorrecto
+// Excepción personalizada para indicar apellido incorrecto
 class InvalidLastNameException extends BaseException{
     constructor(param, fileName, lineNumber) {
         super("Error: The lastname " + param + " can't be empty or numerical.", fileName, lineNumber);
@@ -37,7 +37,7 @@ class InvalidLastNameException extends BaseException{
     }
 }
 
-// Excepción personalizada para indicar nombre incorrecto
+// Excepción personalizada para indicar la fecha de nacimiento incorrecta
 class InvalidBirthException extends BaseException{
     constructor(param, fileName, lineNumber) {
         super("Error: The birth " + param + " is invalid.", fileName, lineNumber);
@@ -46,10 +46,19 @@ class InvalidBirthException extends BaseException{
     }
 }
 
-// Excepción personalizada para indicar nombre incorrecto
+// Excepción personalizada para indicar nombre de foto incorrecto
 class InvalidPictureException extends BaseException{
     constructor(param, fileName, lineNumber) {
         super("Error: The picture " + param + " is invalid.", fileName, lineNumber);
+        this.param = param;
+        this.name = "EmptyValueException";
+    }
+}
+
+// Excepción personalizada para indicar descripción incorrecta
+class InvalidDescriptionException extends BaseException{
+    constructor(param, fileName, lineNumber) {
+        super("Error: The description " + param + " is invalid.", fileName, lineNumber);
         this.param = param;
         this.name = "EmptyValueException";
     }
@@ -64,4 +73,4 @@ class EmptyValueException extends BaseException {
     }
 }
 
-export {BaseException, InvalidNameException,InvalidLastNameException,InvalidBirthException, InvalidPictureException}
+export {BaseException, InvalidNameException,InvalidLastNameException,InvalidBirthException, InvalidPictureException, InvalidDescriptionException}

@@ -97,6 +97,7 @@ class Person {
         this.#picture = picture;
     }
 
+    // toString method
     toString(){
         return `Name: ${this.name}, First Lastname: ${this.lastname1}, Second Lastname: ${this.lastname2}, Birth: ${this.#toStringDate()}`;
     }
