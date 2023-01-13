@@ -64,6 +64,23 @@ class InvalidDescriptionException extends BaseException{
     }
 }
 
+// Excepción personalizada para indicar duración incorrecta
+class InvalidDurationException extends BaseException{
+    constructor(param, fileName, lineNumber) {
+        super("Error: The duration " + param + " is invalid.", fileName, lineNumber);
+        this.param = param;
+        this.name = "EmptyValueException";
+    }
+}
+
+// Excepción personalizada para indicar link incorrecto
+class InvalidLinkException extends BaseException{
+    constructor(param, fileName, lineNumber) {
+        super("Error: The link " + param + " is invalid.", fileName, lineNumber);
+        this.param = param;
+        this.name = "EmptyValueException";
+    }
+}
 //Excepción personalizada para indicar valores vacios.
 class EmptyValueException extends BaseException {
     constructor(param, fileName, lineNumber) {
@@ -73,4 +90,6 @@ class EmptyValueException extends BaseException {
     }
 }
 
-export {BaseException, InvalidNameException,InvalidLastNameException,InvalidBirthException, InvalidPictureException, InvalidDescriptionException}
+export {BaseException, InvalidNameException,InvalidLastNameException,InvalidBirthException, InvalidPictureException, InvalidDescriptionException,
+    InvalidDurationException,InvalidLinkException
+}
