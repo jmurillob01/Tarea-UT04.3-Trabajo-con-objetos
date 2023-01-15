@@ -1,6 +1,7 @@
 import Category from "./Category.js";
 import Person from "./Person.js";
 import Resource from "./Resource.js";
+import Production from "./Production.js";
 
 // Complete test about person
 try {
@@ -39,6 +40,13 @@ try {
 
     // Invalid resource
     var resource2 = new Resource(0, "");
+} catch (error) {
+    console.log(error.message);
+}
+
+// Complete test about Production
+try {
+    let product1 = new Production("Titulo", "");
 } catch (error) {
     console.log(error.message);
 }
