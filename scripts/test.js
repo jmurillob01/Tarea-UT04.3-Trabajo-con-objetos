@@ -6,7 +6,7 @@ import Production from "./Production.js";
 // Complete test about person
 try {
     // Creating the object
-    var person1 = new Person("Javier", "Murillo","","12-12-2002","");
+    var person1 = new Person("Javier", "Murillo","","28/02/2002","");
     console.log(person1.toString());
 
     // Error with Second Lastname
@@ -46,7 +46,7 @@ try {
 
 // Complete test about Production
 try {
-    let product1 = new Production("Titulo", "");
+    var product1 = new Production("Titulo", "","28/02/2002","","");
 } catch (error) {
     console.log(error.message);
 }
