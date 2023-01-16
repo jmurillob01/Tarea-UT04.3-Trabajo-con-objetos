@@ -47,7 +47,7 @@ class Production{
 
     constructor(title, nationality = "", publication, synopsis = "", image = ""){
         // abstract class
-        // if (new.target === Production) throw new AbstractClassException("Production");  
+        if (new.target === Production) throw new AbstractClassException("Production");
     
         if (!isNaN(title) || title.trim() === "") throw new InvalidProductionException("title"); // title check
 
