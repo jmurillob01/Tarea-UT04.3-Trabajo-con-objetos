@@ -98,6 +98,14 @@ class InvalidProductionException extends BaseException {
         this.name = "InvalidProductionException";
     }
 }
+
+class InvalidObjectInstance extends BaseException {
+    constructor(param, fileName, lineNumber) {
+        super("Error: The " + param + " has not a valid instance.", fileName, lineNumber);
+        this.param = param;
+        this.name = "InvalidObjectInstance";
+    }
+}
 // //Excepción personalizada para indicar valores vacios.
 // class EmptyValueException extends BaseException {
 //     constructor(param, fileName, lineNumber) {
@@ -109,5 +117,5 @@ class InvalidProductionException extends BaseException {
 
 export {
     BaseException, InvalidNameException, InvalidLastNameException, InvalidBirthException, InvalidPictureException, InvalidDescriptionException,
-    InvalidDurationException, InvalidLinkException, AbstractClassException,InvalidProductionException
+    InvalidDurationException, InvalidLinkException, AbstractClassException,InvalidProductionException,InvalidObjectInstance
 }

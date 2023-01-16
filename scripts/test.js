@@ -1,7 +1,10 @@
+"use strict";
+
 import Category from "./Category.js";
 import Person from "./Person.js";
 import Resource from "./Resource.js";
 import Production from "./Production.js";
+import Movie from "./Movie.js";
 
 // Complete test about person
 try {
@@ -47,6 +50,14 @@ try {
 // Complete test about Production
 try {
     var product1 = new Production("Titulo", "","28/02/2002","","");
+} catch (error) {
+    console.log(error.message);
+}
+
+// Test about Movie
+try {
+    var movie1 = new Movie("Pirulo", "","28/02/2002","","",resource1,"locations");
+    console.log(movie1);
 } catch (error) {
     console.log(error.message);
 }
