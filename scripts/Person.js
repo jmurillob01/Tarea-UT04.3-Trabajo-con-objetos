@@ -5,7 +5,7 @@ import{
 } from "./Exception.js";
 
 const REGEX_NAME_LASTNAME = /^[ a-zA-Záéíóú]+/; // Pattern for name
-const REGEX_BORN = /^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])(\/|-)(\d{4})$/;// Pattern for born
+const REGEX_BORN = /^([0-2][0-9]|3[0-1])(\/)(0[1-9]|1[0-2])(\/)(\d{4})$/;// Pattern for born
 const REGEX_IMG = /.*(png|jpg|jpeg|gif)$/;
 
 // Object to identify the data of a person
@@ -20,24 +20,28 @@ class Person {
     }
 
     // Function to create a date string
-    #toStringDate() {
-        let month = this.#born.getMonth() + 1; // We take the indicated month (one is added because to create the date we have subtracted one, since January is not 01 but 00)
+    #toStringDate(date = ""){
+
+        if (date == ""){ // If we don't get the date, it means you worked with the object property
+            date = this.#born;
+        }
+
+        let month = date.getMonth() + 1; // We take the indicated month (one is added because to create the date we have subtracted one, since January is not 01 but 00)
         let str = "";
 
-        (this.#born.getDate() < 10) ? (str += '0' + this.#born.getDate() + " - ") : (str += this.#born.getDate() + " - ");// If the day is less than 10, we add 0
+        (date.getDate() < 10) ? (str += '0' + date.getDate() + "/") : (str += date.getDate() + "/");// If the day is less than 10, we add 0
 
         // Add the month
         if (month < 10) {
-            str += '0' + month + " - "
+            str += '0' + month + "/"
         } else {
-            str += month + " - ";
+            str += month + "/";
         }
 
-        str += this.#born.getFullYear();// Add the year
+        str += date.getFullYear();// Add the year
 
         return str;
     }
-
 
     // Properties
     #name;
@@ -56,8 +60,10 @@ class Person {
         if (!REGEX_NAME_LASTNAME.test(lastname2) && lastname2 != "") throw new InvalidLastNameException(lastname2);
         // born es obligatorio
         if (!REGEX_BORN.test(born)) throw new InvalidBirthException(born);
+        // We check that the date is not modified when it is created with incorrect data
+        if (born != this.#toStringDate(this.#createDate(born))) throw new InvalidBirthException(born);
         // picture es opcional
-        if (!REGEX_IMG.test(picture) && picture != "") throw new InvalidPictureException(picture);
+        if (!REGEX_IMG.test(picture) && picture.trim() != "") throw new InvalidPictureException(picture);
 
         // Set the property values
         this.#name = name;
