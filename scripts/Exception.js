@@ -20,76 +20,94 @@ class InvalidAccessConstructorException extends BaseException {
 }
 
 // Excepción personalizada para indicar nombre incorrecto
-class InvalidNameException extends BaseException{
+class InvalidNameException extends BaseException {
     constructor(param, fileName, lineNumber) {
         super("Error: The name " + param + " can't be empty or numerical.", fileName, lineNumber);
         this.param = param;
-        this.name = "EmptyValueException";
+        this.name = "InvalidNameException";
     }
 }
 
 // Excepción personalizada para indicar apellido incorrecto
-class InvalidLastNameException extends BaseException{
+class InvalidLastNameException extends BaseException {
     constructor(param, fileName, lineNumber) {
         super("Error: The lastname " + param + " can't be empty or numerical.", fileName, lineNumber);
         this.param = param;
-        this.name = "EmptyValueException";
+        this.name = "InvalidLastNameException";
     }
 }
 
 // Excepción personalizada para indicar la fecha de nacimiento incorrecta
-class InvalidBirthException extends BaseException{
+class InvalidBirthException extends BaseException {
     constructor(param, fileName, lineNumber) {
         super("Error: The birth " + param + " is invalid.", fileName, lineNumber);
         this.param = param;
-        this.name = "EmptyValueException";
+        this.name = "InvalidBirthException";
     }
 }
 
 // Excepción personalizada para indicar nombre de foto incorrecto
-class InvalidPictureException extends BaseException{
+class InvalidPictureException extends BaseException {
     constructor(param, fileName, lineNumber) {
         super("Error: The picture " + param + " is invalid.", fileName, lineNumber);
         this.param = param;
-        this.name = "EmptyValueException";
+        this.name = "InvalidPictureException";
     }
 }
 
 // Excepción personalizada para indicar descripción incorrecta
-class InvalidDescriptionException extends BaseException{
+class InvalidDescriptionException extends BaseException {
     constructor(param, fileName, lineNumber) {
         super("Error: The description " + param + " is invalid.", fileName, lineNumber);
         this.param = param;
-        this.name = "EmptyValueException";
+        this.name = "InvalidDescriptionException";
     }
 }
 
 // Excepción personalizada para indicar duración incorrecta
-class InvalidDurationException extends BaseException{
+class InvalidDurationException extends BaseException {
     constructor(param, fileName, lineNumber) {
         super("Error: The duration " + param + " is invalid.", fileName, lineNumber);
         this.param = param;
-        this.name = "EmptyValueException";
+        this.name = "InvalidDurationException";
     }
 }
 
 // Excepción personalizada para indicar link incorrecto
-class InvalidLinkException extends BaseException{
+class InvalidLinkException extends BaseException {
     constructor(param, fileName, lineNumber) {
         super("Error: The link " + param + " is invalid.", fileName, lineNumber);
         this.param = param;
-        this.name = "EmptyValueException";
-    }
-}
-//Excepción personalizada para indicar valores vacios.
-class EmptyValueException extends BaseException {
-    constructor(param, fileName, lineNumber) {
-        super("Error: The parameter " + param + " can't be empty.", fileName, lineNumber);
-        this.param = param;
-        this.name = "EmptyValueException";
+        this.name = "InvalidLinkException";
     }
 }
 
-export {BaseException, InvalidNameException,InvalidLastNameException,InvalidBirthException, InvalidPictureException, InvalidDescriptionException,
-    InvalidDurationException,InvalidLinkException
+// Excepción personalizada para indicar link incorrecto
+class AbstractClassException extends BaseException {
+    constructor(param, fileName, lineNumber) {
+        super("Error: The class " + param + " is abstract.", fileName, lineNumber);
+        this.param = param;
+        this.name = "AbstractClassException";
+    }
+}
+
+class InvalidProductionException extends BaseException {
+    constructor(param, fileName, lineNumber) {
+        super("Error: The property " + param + " is invalid.", fileName, lineNumber);
+        this.param = param;
+        this.name = "InvalidProductionException";
+    }
+}
+// //Excepción personalizada para indicar valores vacios.
+// class EmptyValueException extends BaseException {
+//     constructor(param, fileName, lineNumber) {
+//         super("Error: The parameter " + param + " can't be empty.", fileName, lineNumber);
+//         this.param = param;
+//         this.name = "EmptyValueException";
+//     }
+// }
+
+export {
+    BaseException, InvalidNameException, InvalidLastNameException, InvalidBirthException, InvalidPictureException, InvalidDescriptionException,
+    InvalidDurationException, InvalidLinkException, AbstractClassException,InvalidProductionException
 }
