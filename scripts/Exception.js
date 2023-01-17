@@ -1,6 +1,6 @@
 "use strict";
 
-//Excepción base para ir creando el resto de excepciones.
+// Base exception to create all other exceptions.
 class BaseException extends Error {
     constructor(message = "", fileName, lineNumber) {
         super(message, fileName, lineNumber);
@@ -11,7 +11,7 @@ class BaseException extends Error {
     }
 }
 
-//Excepción acceso inválido a constructor
+// Invalid constructor access exception
 class InvalidAccessConstructorException extends BaseException {
     constructor(fileName, lineNumber) {
         super("Constructor can’t be called as a function.", fileName, lineNumber);
@@ -19,70 +19,34 @@ class InvalidAccessConstructorException extends BaseException {
     }
 }
 
-// Excepción personalizada para indicar nombre incorrecto
-class InvalidNameException extends BaseException {
+// Custom exception to indicate wrong category
+class InvalidCategoryException extends BaseException {
     constructor(param, fileName, lineNumber) {
-        super("Error: The name " + param + " can't be empty or numerical.", fileName, lineNumber);
+        super("Error: The param " + param + " from Category is invalid.", fileName, lineNumber);
         this.param = param;
-        this.name = "InvalidNameException";
+        this.name = "InvalidCategoryException";
     }
 }
 
-// Excepción personalizada para indicar apellido incorrecto
-class InvalidLastNameException extends BaseException {
+// Custom exception to indicate wrong Person
+class InvalidPersonException extends BaseException {
     constructor(param, fileName, lineNumber) {
-        super("Error: The lastname " + param + " can't be empty or numerical.", fileName, lineNumber);
+        super("Error: The param " + param + " from Person is invalid.", fileName, lineNumber);
         this.param = param;
-        this.name = "InvalidLastNameException";
+        this.name = "InvalidPersonException";
     }
 }
 
-// Excepción personalizada para indicar la fecha de nacimiento incorrecta
-class InvalidBirthException extends BaseException {
+// Custom exception to indicate wrong Resource
+class InvalidResourceException extends BaseException {
     constructor(param, fileName, lineNumber) {
-        super("Error: The birth " + param + " is invalid.", fileName, lineNumber);
+        super("Error: The " + param + " from resource is invalid.", fileName, lineNumber);
         this.param = param;
-        this.name = "InvalidBirthException";
+        this.name = "InvalidResourceException";
     }
 }
 
-// Excepción personalizada para indicar nombre de foto incorrecto
-class InvalidPictureException extends BaseException {
-    constructor(param, fileName, lineNumber) {
-        super("Error: The picture " + param + " is invalid.", fileName, lineNumber);
-        this.param = param;
-        this.name = "InvalidPictureException";
-    }
-}
-
-// Excepción personalizada para indicar descripción incorrecta
-class InvalidDescriptionException extends BaseException {
-    constructor(param, fileName, lineNumber) {
-        super("Error: The description " + param + " is invalid.", fileName, lineNumber);
-        this.param = param;
-        this.name = "InvalidDescriptionException";
-    }
-}
-
-// Excepción personalizada para indicar duración incorrecta
-class InvalidDurationException extends BaseException {
-    constructor(param, fileName, lineNumber) {
-        super("Error: The duration " + param + " is invalid.", fileName, lineNumber);
-        this.param = param;
-        this.name = "InvalidDurationException";
-    }
-}
-
-// Excepción personalizada para indicar link incorrecto
-class InvalidLinkException extends BaseException {
-    constructor(param, fileName, lineNumber) {
-        super("Error: The link " + param + " is invalid.", fileName, lineNumber);
-        this.param = param;
-        this.name = "InvalidLinkException";
-    }
-}
-
-// Excepción personalizada para indicar link incorrecto
+// Custom exception for abstract class
 class AbstractClassException extends BaseException {
     constructor(param, fileName, lineNumber) {
         super("Error: The class " + param + " is abstract.", fileName, lineNumber);
@@ -91,23 +55,52 @@ class AbstractClassException extends BaseException {
     }
 }
 
+// Custom exception to indicate wrong Production
 class InvalidProductionException extends BaseException {
     constructor(param, fileName, lineNumber) {
-        super("Error: The property " + param + " is invalid.", fileName, lineNumber);
+        super("Error: The property " + param + " is invalid in the son who inherits.", fileName, lineNumber);
         this.param = param;
         this.name = "InvalidProductionException";
     }
 }
-// //Excepción personalizada para indicar valores vacios.
-// class EmptyValueException extends BaseException {
-//     constructor(param, fileName, lineNumber) {
-//         super("Error: The parameter " + param + " can't be empty.", fileName, lineNumber);
-//         this.param = param;
-//         this.name = "EmptyValueException";
-//     }
-// }
+// Custom exception to indicate wrong Movie
+class InvalidMovieException extends BaseException {
+    constructor(param, fileName, lineNumber) {
+        super("Error: The " + param + " from class Serie is invalid.", fileName, lineNumber);
+        this.param = param;
+        this.name = "InvalidMovieException";
+    }
+}
+
+// Custom exception to indicate wrong Serie
+class InvalidSerieException extends BaseException {
+    constructor(param, fileName, lineNumber) {
+        super("Error: The " + param + " from class Serie is invalid.", fileName, lineNumber);
+        this.param = param;
+        this.name = "InvalidSerieException";
+    }
+}
+
+// Custom exception to indicate wrong User
+class InvalidUserInstanceException extends BaseException {
+    constructor(param, fileName, lineNumber) {
+        super("Error: The " + param + " from class User is invalid.", fileName, lineNumber);
+        this.param = param;
+        this.name = "InvalidUserInstanceException";
+    }
+}
+
+// Custom exception to indicate wrong Coordinate
+class InvalidCoordinateException extends BaseException {
+    constructor(param, fileName, lineNumber) {
+        super("Error: The " + param + " from class Coordinate is invalid.", fileName, lineNumber);
+        this.param = param;
+        this.name = "InvalidCoordinateException";
+    }
+}
 
 export {
-    BaseException, InvalidNameException, InvalidLastNameException, InvalidBirthException, InvalidPictureException, InvalidDescriptionException,
-    InvalidDurationException, InvalidLinkException, AbstractClassException,InvalidProductionException
+    BaseException, InvalidCategoryException, InvalidPersonException,InvalidResourceException,
+    AbstractClassException,InvalidProductionException,InvalidMovieException,InvalidSerieException,
+    InvalidUserInstanceException,InvalidCoordinateException
 }

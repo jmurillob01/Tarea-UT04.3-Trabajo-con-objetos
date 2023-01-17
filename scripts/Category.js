@@ -1,19 +1,19 @@
 "use strict";
 
-import { InvalidNameException,InvalidDescriptionException } from "./Exception.js";
+import { InvalidCategoryException } from "./Exception.js";
 
-const REGEX_NAME = /^[ a-zA-Záéíóú]+/; // Pattern for name
+const REGEX_NAME = /^[ a-zA-Záéíóú]+/;
 
-// Object to identify categories
 class Category{
-    // Properties
     #name;
     #description;
 
-    // Constructor
     constructor(name, description = "") {
         
-        if (!REGEX_NAME.test(name) || name.trim() == "") throw new InvalidNameException(name);
+        // Name check
+        if (!REGEX_NAME.test(name) || name.trim() == "") throw new InvalidCategoryException("name");
+        // Description check
+        if (typeof description != "string") throw new InvalidCategoryException("description");
 
         this.#name = name;
         this.#description = description;
@@ -28,7 +28,7 @@ class Category{
     }
 
     set description(description){ // Setter description
-        if (!isNaN(description) || description.trim() == "") throw new InvalidDescriptionException(description);
+        if (!isNaN(description) || description.trim() == "" || typeof description != "string") throw new InvalidCategoryException("description");
         this.#description = description;
     }
 }

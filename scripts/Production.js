@@ -1,3 +1,5 @@
+"use strict";
+
 import { AbstractClassException,InvalidProductionException} from "./Exception.js";
 
 
