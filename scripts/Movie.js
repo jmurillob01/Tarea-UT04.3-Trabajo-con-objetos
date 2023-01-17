@@ -1,15 +1,16 @@
 "use strict";
 import Production from "./Production.js";
 import Resource from "./Resource.js";
+import Coordinate from "./Coordinate.js";
 import { InvalidMovieException } from "./Exception.js";
+
 
 class Movie extends Production {
 
     #resource;
     #locations = new Array();
 
-    // TODO: Crear localización por defecto una vez creada la clase
-    constructor(title, nationality, publication, synopsis, image, resource = new Resource(0, "www.noLink.com"), locations) {
+    constructor(title, nationality, publication, synopsis, image, resource = new Resource(0, "www.noLink.com"), locations = new Coordinate(0,0)) {
 
         super(title, nationality, publication, synopsis, image);
 
