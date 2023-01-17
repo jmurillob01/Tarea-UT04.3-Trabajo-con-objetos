@@ -98,12 +98,31 @@ class InvalidProductionException extends BaseException {
         this.name = "InvalidProductionException";
     }
 }
-
-class InvalidObjectInstance extends BaseException {
-    constructor(param, fileName, lineNumber) {
-        super("Error: The " + param + " has not a valid instance.", fileName, lineNumber);
+// TODO: Crear una excepción para movie y otra para serie, que sean diferentes y explique bien el mensaje
+// Excepción para instancia inválida
+class InvalidProductionInstanceException extends BaseException {
+    constructor(param, type, fileName, lineNumber) {
+        super("Error: The " + param + " from class " + type + " is invalid.", fileName, lineNumber);
         this.param = param;
-        this.name = "InvalidObjectInstance";
+        this.name = "InvalidProductionInstanceException";
+    }
+}
+
+// Excepción para instancia inválida de usuario
+class InvalidUserInstanceException extends BaseException {
+    constructor(param, fileName, lineNumber) {
+        super("Error: The " + param + " from class User is invalid.", fileName, lineNumber);
+        this.param = param;
+        this.name = "InvalidUserInstanceException";
+    }
+}
+
+// Excepción para instancia inválida de coordenada
+class InvalidCoordinateException extends BaseException {
+    constructor(param, fileName, lineNumber) {
+        super("Error: The " + param + " from class Coordinate is invalid.", fileName, lineNumber);
+        this.param = param;
+        this.name = "InvalidCoordinateException";
     }
 }
 // //Excepción personalizada para indicar valores vacios.
@@ -117,5 +136,6 @@ class InvalidObjectInstance extends BaseException {
 
 export {
     BaseException, InvalidNameException, InvalidLastNameException, InvalidBirthException, InvalidPictureException, InvalidDescriptionException,
-    InvalidDurationException, InvalidLinkException, AbstractClassException,InvalidProductionException,InvalidObjectInstance
+    InvalidDurationException, InvalidLinkException, AbstractClassException,InvalidProductionException,InvalidProductionInstanceException,
+    InvalidUserInstanceException,InvalidCoordinateException
 }
