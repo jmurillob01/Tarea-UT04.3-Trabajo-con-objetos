@@ -1,18 +1,18 @@
 "use strict";
 
-import { InvalidDurationException, InvalidLinkException } from "./Exception.js";
+import { InvalidResourceException } from "./Exception.js";
 
 class Resource{
-    // properties
     #duration;
     #link;
 
     // Constructor
     constructor(duration, link){
 
-        // Control
-        if (isNaN(duration) || duration <= 0) throw new InvalidDurationException(duration);
-        if (!isNaN(link) || link.trim() == "") throw new InvalidLinkException(link);
+        // Duration check
+        if (isNaN(duration) || duration <= 0) throw new InvalidResourceException("duration");
+        // Link check
+        if (!isNaN(link) || link.trim() == "") throw new InvalidResourceException("link");
 
         this.#duration = duration;
         this.#link = link;
