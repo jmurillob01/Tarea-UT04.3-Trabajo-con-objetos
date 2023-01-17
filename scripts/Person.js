@@ -1,14 +1,13 @@
 "use strict";
 
 import{
-    BaseException, InvalidNameException, InvalidLastNameException, InvalidBirthException, InvalidPictureException
+    BaseException, InvalidPersonException
 } from "./Exception.js";
 
 const REGEX_NAME_LASTNAME = /^[ a-zA-Záéíóú]+/; // Pattern for name
 const REGEX_BORN = /^([0-2][0-9]|3[0-1])(\/)(0[1-9]|1[0-2])(\/)(\d{4})$/;// Pattern for born
 const REGEX_IMG = /.*(png|jpg|jpeg|gif)$/;
 
-// Object to identify the data of a person
 class Person {
 
     // Function to create a date
@@ -52,20 +51,19 @@ class Person {
 
     constructor(name, lastname1, lastname2="", born, picture="") {
 
-        // Control con excepciones
-        if (!REGEX_NAME_LASTNAME.test(name) || name.trim() == "") throw new InvalidNameException(name);
-        // lastname1 es obligatorio
-        if (!REGEX_NAME_LASTNAME.test(lastname1) || lastname1.trim() == "") throw new InvalidLastNameException(lastname1);
-        // lastname2 es opcional
-        if (!REGEX_NAME_LASTNAME.test(lastname2) && lastname2 != "") throw new InvalidLastNameException(lastname2);
-        // born es obligatorio
+        // Name check
+        if (!REGEX_NAME_LASTNAME.test(name) || name.trim() == "") throw new InvalidPersonException("name");
+        // Lastname1 check
+        if (!REGEX_NAME_LASTNAME.test(lastname1) || lastname1.trim() == "") throw new InvalidPersonException("lastname1");
+        // Lastname2 check
+        if (!REGEX_NAME_LASTNAME.test(lastname2) && lastname2 != "") throw new InvalidPersonException("lastname2");
+        // Born check
         if (!REGEX_BORN.test(born)) throw new InvalidBirthException(born);
         // We check that the date is not modified when it is created with incorrect data
-        if (born != this.#toStringDate(this.#createDate(born))) throw new InvalidBirthException(born);
-        // picture es opcional
-        if (!REGEX_IMG.test(picture) && picture.trim() != "") throw new InvalidPictureException(picture);
+        if (born != this.#toStringDate(this.#createDate(born))) throw new InvalidPersonException("born");
+        // Picture check
+        if (!REGEX_IMG.test(picture) && typeof picture != "string" || picture.trim() != "") throw new InvalidPersonException("picture");
 
-        // Set the property values
         this.#name = name;
         this.#lastname1 = lastname1;
         this.#lastname2 = lastname2;
@@ -86,7 +84,7 @@ class Person {
     }
 
     set lastname2(lastname2){ // Setter lastName2
-        if (!REGEX_NAME_LASTNAME.test(lastname2) || lastname2.trim() == "") throw new InvalidLastNameException(lastname2);
+        if (!REGEX_NAME_LASTNAME.test(lastname2) || lastname2.trim() == "") throw new InvalidPersonException("lastname2");
         this.#lastname2 = lastname2;
     }
 
@@ -99,7 +97,7 @@ class Person {
     }
 
     set picture(picture){ // Setter picture
-        if (!REGEX_IMG.test(picture) || picture != "") throw new InvalidPictureException(picture);
+        if (!REGEX_IMG.test(picture) || typeof picture != "string" || picture.trim() != "") throw new InvalidPersonException("picture");
         this.#picture = picture;
     }
 
