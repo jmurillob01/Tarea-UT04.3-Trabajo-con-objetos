@@ -100,11 +100,11 @@ class InvalidProductionException extends BaseException {
 }
 // TODO: Crear una excepción para movie y otra para serie, que sean diferentes y explique bien el mensaje
 // Excepción para instancia inválida
-class InvalidProductionInstanceException extends BaseException {
-    constructor(param, type, fileName, lineNumber) {
-        super("Error: The " + param + " from class " + type + " is invalid.", fileName, lineNumber);
+class InvalidMovieException extends BaseException {
+    constructor(param, fileName, lineNumber) {
+        super("Error: The " + param + " from class movie is invalid.", fileName, lineNumber);
         this.param = param;
-        this.name = "InvalidProductionInstanceException";
+        this.name = "InvalidMovieException";
     }
 }
 
@@ -136,6 +136,6 @@ class InvalidCoordinateException extends BaseException {
 
 export {
     BaseException, InvalidNameException, InvalidLastNameException, InvalidBirthException, InvalidPictureException, InvalidDescriptionException,
-    InvalidDurationException, InvalidLinkException, AbstractClassException,InvalidProductionException,InvalidProductionInstanceException,
+    InvalidDurationException, InvalidLinkException, AbstractClassException,InvalidProductionException,InvalidMovieException,
     InvalidUserInstanceException,InvalidCoordinateException
 }

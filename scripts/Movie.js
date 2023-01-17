@@ -1,7 +1,7 @@
 "use strict";
 import Production from "./Production.js";
 import Resource from "./Resource.js";
-import { InvalidProductionInstanceException } from "./Exception.js";
+import { InvalidMovieException } from "./Exception.js";
 
 class Movie extends Production {
 
@@ -14,9 +14,9 @@ class Movie extends Production {
         super(title, nationality, publication, synopsis, image);
 
         // Resource check
-        if (!(resource instanceof Resource)) throw new InvalidProductionInstanceException("resource", "Movie");
+        if (!(resource instanceof Resource)) throw new InvalidMovieException("resource");
         // Coordinate check
-        if (!(locations instanceof Coordinate)) throw new InvalidProductionInstanceException("coordinate", "Movie");
+        if (!(locations instanceof Coordinate)) throw new InvalidMovieException("coordinate");
 
         this.#resource = resource;
         this.#locations.push(locations);
@@ -24,13 +24,13 @@ class Movie extends Production {
 
     set resource(resource) {
         // Resource check
-        if (!(resource instanceof Resource)) throw new InvalidProductionInstanceException("resource", "Movie");
+        if (!(resource instanceof Resource)) throw new InvalidMovieException("resource");
         this.#resource = resource;
     }
 
     set locations(locations){
         // Coordinate check
-        if (!(locations instanceof Coordinate)) throw new InvalidProductionInstanceException("coordinate", "Movie");
+        if (!(locations instanceof Coordinate)) throw new InvalidMovieException("coordinate");
         this.#locations.push(locations);
     }
 }
