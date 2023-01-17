@@ -9,7 +9,7 @@ import Movie from "./Movie.js";
 // Complete test about person
 try {
     // Creating the object
-    var person1 = new Person("Javier", "Murillo","","28/02/2002","");
+    var person1 = new Person("Javier", "Murillo","","28/02/2002", "");
     console.log(person1.toString());
 
     // Error with Second Lastname
@@ -27,7 +27,7 @@ try {
 
 // Complete test about Category
 try {
-    var category1 = new Category("Fantasy", "Lorem ipsum dolor sit amet");
+    var category1 = new Category("Fantasy", "person");
     console.log(category1);
 
     // Error with description
@@ -56,7 +56,7 @@ try {
 
 // Test about Movie
 try {
-    var movie1 = new Movie("Pirulo", "","28/02/2002","","",resource1,"locations");
+    var movie1 = new Movie("Pirulo", "","28/02/2002","","",resource1);
     console.log(movie1);
 } catch (error) {
     console.log(error.message);
