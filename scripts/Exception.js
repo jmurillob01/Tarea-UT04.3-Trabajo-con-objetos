@@ -99,8 +99,33 @@ class InvalidCoordinateException extends BaseException {
     }
 }
 
+// Custom exception to indicate wrong VideoSystem
+class InvalidVideoSystemException extends BaseException {
+    constructor(param, fileName, lineNumber) {
+        super("Error: The " + param + " from class VideoSystem is invalid.", fileName, lineNumber);
+        this.param = param;
+        this.name = "InvalidVideoSystemException";
+    }
+}
+
+class CategoryVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The method needs a Category parameter.", fileName, lineNumber);
+		this.name = "CategoryVideoSystemException";
+	}
+}
+
+class CategoryExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The category exists in the video system.", fileName, lineNumber);
+		this.name = "CategoryExistsVideoSystemException";
+	}
+}
+
+
 export {
     BaseException, InvalidCategoryException, InvalidPersonException,InvalidResourceException,
     AbstractClassException,InvalidProductionException,InvalidMovieException,InvalidSerieException,
-    InvalidUserInstanceException,InvalidCoordinateException
+    InvalidUserInstanceException,InvalidCoordinateException,InvalidVideoSystemException,CategoryVideoSystemException,
+    CategoryExistsVideoSystemException
 }
