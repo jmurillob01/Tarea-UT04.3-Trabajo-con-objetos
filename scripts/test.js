@@ -74,11 +74,78 @@ videosystem.addCategory(cat1);
 videosystem.addCategory(cat2);
 videosystem.addCategory(cat3);
 
-showCategories();
+try {
+    videosystem.removeCategory(cat1);
+} catch (error) {
+    console.log(error.message);
+}
 
-function showCategories(){
+let user1 = videosystem.getUser("Javier", "javiermb@gmail.com", "Abcd1234");
+let user2 = videosystem.getUser("Carlos", "carlosmb@gmail.com", "Abcd1234");
+let user3 = videosystem.getUser("David", "davidlm@gmail.com", "Abcd1234");
+
+
+videosystem.addUser(user1);
+videosystem.addUser(user2);
+videosystem.addUser(user3);
+
+
+try {
+    videosystem.removeUser(user1);   
+} catch (error) {
+    console.log(error.message);
+}
+
+var movie1 = videosystem.getMovie("Pirulo", "","28/02/2002","","");
+var serie1 = videosystem.getSerie("Pirulo La Serie", "","28/02/2002","","");
+
+videosystem.addProduction(movie1);
+videosystem.addProduction(serie1);
+
+
+try {
+    videosystem.removeProduction(movie1);   
+} catch (error) {
+    console.log(error.message);
+}
+
+showCategories();
+showUsers();
+showProductions();
+showActors();
+
+function showCategories() {
     console.log("Recorremos las categorías");
+    console.log("--------------------------------");
     for (let categories of videosystem.categories) {
         console.log("Categories: " + categories.name);
     }
+    console.log("");
+}
+
+function showUsers() {
+    console.log("Recorremos los usuarios");
+    console.log("--------------------------------");
+    for (let users of videosystem.users) {
+        console.log("Usuarios: " + users.username);
+    }
+    console.log("");
+}
+
+function showProductions() {
+    console.log("Recorremos las producciones");
+    console.log("--------------------------------");
+    for (let production of videosystem.productions) {
+        console.log("Producción: " + production.title);
+    }
+    console.log("");
+}
+
+function showActors() {
+    console.log("Recorremos los actores");
+    console.log("--------------------------------");
+    for (let actors of videosystem.actors) {
+        console.log("Actor: " + actors.actor);
+    }
+    console.log("");
 }
