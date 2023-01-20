@@ -109,10 +109,37 @@ try {
     console.log(error.message);
 }
 
+var actor1 = videosystem.getActor("Fernando", "Tejero","","12345678A","24/02/1967");
+var actor2 = videosystem.getActor("Fermin", "Trujillo","","12345679A","26/02/1967");
+
+videosystem.addActor(actor1);
+videosystem.addActor(actor2);
+
+try {
+    videosystem.removeActor(actor2);  
+} catch (error) {
+    console.log(error.message);
+}
+
+var director1 = videosystem.getDirector("Fernando", "Tejero","","12345678A","24/02/1967");
+var director2 = videosystem.getDirector("Fermin", "Trujillo","","12345679A","26/02/1967");
+
+videosystem.addDirector(director1);
+videosystem.addDirector(director2);
+
+// ! Se puede añadir un director como actor y al revés
+
+try {
+    videosystem.removeDirector(director2);  
+} catch (error) {
+    console.log(error.message);
+}
+
 showCategories();
 showUsers();
 showProductions();
 showActors();
+showDirectors();
 
 function showCategories() {
     console.log("Recorremos las categorías");
@@ -144,8 +171,17 @@ function showProductions() {
 function showActors() {
     console.log("Recorremos los actores");
     console.log("--------------------------------");
-    for (let actors of videosystem.actors) {
-        console.log("Actor: " + actors.actor);
+    for (let actor of videosystem.actors) {
+        console.log("Actor: " + actor.name);
+    }
+    console.log("");
+}
+
+function showDirectors() {
+    console.log("Recorremos los directores");
+    console.log("--------------------------------");
+    for (let director of videosystem.directors) {
+        console.log("Director: " + director.name);
     }
     console.log("");
 }

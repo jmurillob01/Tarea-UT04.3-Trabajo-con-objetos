@@ -4,13 +4,15 @@ import {
     InvalidVideoSystemException, CategoryVideoSystemException, CategoryExistsVideoSystemException,
     CategoryNonExistsVideoSystemException, DefaultCategoryVideoSystemException, UserVideoSystemException,
     UserExistsVideoSystemException, UserNonExistsVideoSystemException, ProductionVideoSystemException,
-    ProductionExistsVideoSystemException,ProductionNonExistsVideoSystemException
+    ProductionExistsVideoSystemException, ProductionNonExistsVideoSystemException, PersonVideoSystemException,
+    PersonExistsVideoSystemException,PersonNonExistsVideoSystemException
 } from "./Exception.js";
 import Category from "./Category.js";
 import User from "./User.js";
 import Production from "./Production.js";
 import Movie from "./Movie.js";
 import Serie from "./Serie.js";
+import Person from "./Person.js";
 // import Resource from "./Resource.js";
 // import Coordinate from "./Coordinate.js";
 
@@ -26,12 +28,12 @@ let VideoSystem = (function () {
             #productions = []; // Productions from the system
             #categories = []; // Categories from the system
             #actors = []; // Actors from the system
-            #director = []; // Directors from the system
+            #directors = []; // Directors from the system
 
             /**
                 Structure to store objects
                
-                #director[
+                #directors[
                     {
                         director: person,
                         productions: [productions] // Array containing productions reference
@@ -90,6 +92,22 @@ let VideoSystem = (function () {
                 }
 
                 return this.#productions.findIndex(compareElements);
+            }
+
+            #getActorPosition(person) {
+                function compareActorDni(element) {
+                    return (element.actor.dni === person.dni)
+                }
+
+                return this.#actors.findIndex(compareActorDni);
+            }
+
+            #getDirectorPosition(person) {
+                function compareDirectorDni(element) {
+                    return (element.director.dni === person.dni)
+                }
+
+                return this.#directors.findIndex(compareDirectorDni);
             }
 
             constructor(name = "") {
@@ -161,6 +179,18 @@ let VideoSystem = (function () {
                 }
             }
 
+            // Iterator from directors
+            get directors() {
+                let array = this.#directors;
+                return {
+                    *[Symbol.iterator]() {
+                        // We go through all the directors
+                        for (let i = 0; i < array.length; i++) {
+                            yield array[i].director;
+                        }
+                    }
+                }
+            }
             // Factory for categories
             getCategory(title = "Anon") {
                 // We obtain the position of the category in the array
@@ -222,7 +252,7 @@ let VideoSystem = (function () {
             }
 
             // Factory for users
-            getUser(username = "", email = "", password = "") {
+            getUser(username = "", email = "", password) {
                 // We obtain the position of the user in the array
                 let position_username = this.#users.findIndex((systemUser) => systemUser.username === username);
                 let position_email = this.#users.findIndex((systemUser) => systemUser.email === email);
@@ -230,7 +260,12 @@ let VideoSystem = (function () {
                 if (position_username === -1 && position_email === -1) { // The user is not registered yet
                     user = new User(username, email, password); // We create user object because it doesn't exist yet.
                 } else { // The user is registered
-                    user = this.#users[position]; // We recover the user of the array
+                   if (position_username === -1) {
+                        user = this.#users[position_username]; // We recover the user of the array with the same username
+                    } else {
+                        user = this.#users[position_email]; // We recover the user of the array with the same email
+                    }
+
                 }
                 return user;
             }
@@ -308,7 +343,7 @@ let VideoSystem = (function () {
                 return this.#productions.length;
             }
 
-            // Remove a production from the systme
+            // Remove a production from the system
             removeProduction(production) {
                 if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
 
@@ -318,13 +353,112 @@ let VideoSystem = (function () {
                 if (position != -1) {
                     // Remove the production
                     this.#productions.splice(position, 1);
-                }else {
+                } else {
                     throw new ProductionNonExistsVideoSystemException();
                 }
                 return this.#productions.length;
             }
 
-            // TODO: Addactor para adelante
+            // Factory for Actor
+            getActor(name, lastname1, lastname2, dni, born, picture) {                
+                // We obtain the position of the actor in the array
+                let position_dni = this.#actors.findIndex((actor) => actor.dni === dni);
+                let person;
+                if (position_dni === -1) { // The person is not registered yet
+                    person = new Person(name, lastname1, lastname2, dni, born, picture); // We create person object because it doesn't exist yet.
+                } else { // The person is registered
+                    person = this.#actors[position_dni]; // We recover the person of the array
+                }
+                return person;
+            }
+
+            // Add new Actor to the system
+            addActor(person) {
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                // We obtain the position of the Actor in the array
+                let position = this.#getActorPosition(person);
+                if (position === -1) {
+                    // Add object literal with a property for the Actor and an array for the productions within the Actor
+                    this.#actors.push(
+                        {
+                            actor: person,
+                            productions: []
+                        }
+                    );
+                } else {
+                    throw new PersonExistsVideoSystemException();
+                }
+
+                return this.#actors.length;
+            }
+
+            // Remove an actor from the system
+            removeActor(person) {
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                // We obtain the position of the person in the array
+                let position = this.#getActorPosition(person);
+
+                if (position != -1) {
+                    // Remove the production
+                    this.#actors.splice(position, 1);
+                } else {
+                    throw new PersonNonExistsVideoSystemException();
+                }
+                return this.#actors.length;
+            }
+
+            // Factory for Director
+            getDirector(name, lastname1, lastname2, dni, born, picture) {                
+                // We obtain the position of the director in the array
+                let position_dni = this.#directors.findIndex((director) => director.dni === dni);
+                let person;
+                if (position_dni === -1) { // The person is not registered yet
+                    person = new Person(name, lastname1, lastname2, dni, born, picture); // We create person object because it doesn't exist yet.
+                } else { // The person is registered
+                    person = this.#directors[position_dni]; // We recover the person of the array
+                }
+                return person;
+            }
+
+            // Add new Director to the system
+            addDirector(person) {
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                // We obtain the position of the director in the array
+                let position = this.#getDirectorPosition(person);
+                if (position === -1) {
+                    // Add object literal with a property for the director and an array for the productions within the director
+                    this.#directors.push(
+                        {
+                            director: person,
+                            productions: []
+                        }
+                    );
+                } else {
+                    throw new PersonExistsVideoSystemException();
+                }
+
+                return this.#directors.length;
+            }
+
+            // Remove an actor from the system
+            removeDirector(person) {
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                // We obtain the position of the person in the array
+                let position = this.#getDirectorPosition(person);
+
+                if (position != -1) {
+                    // Remove the production
+                    this.#directors.splice(position, 1);
+                } else {
+                    throw new PersonNonExistsVideoSystemException();
+                }
+                return this.#directors.length;
+            }
+
         }
 
         let instance = new VideoSystem(name); // We return the VideoSystem object to be a single instance.

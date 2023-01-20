@@ -37,6 +37,14 @@ class InvalidPersonException extends BaseException {
     }
 }
 
+class InvalidPersonDNIException extends BaseException {
+    constructor(fileName, lineNumber) {
+        super("Error: It is not allowed to change a person's identification");
+        this.param = param;
+        this.name = "InvalidPersonDNIException";
+    }
+}
+
 // Custom exception to indicate wrong Resource
 class InvalidResourceException extends BaseException {
     constructor(param, fileName, lineNumber) {
@@ -179,12 +187,35 @@ class ProductionNonExistsVideoSystemException extends BaseException {
 	}
 }
 
+class PersonVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The method needs a Person parameter.", fileName, lineNumber);
+		this.name = "PersonVideoSystemException";
+	}
+}
+
+class PersonExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The person exists in the video system.", fileName, lineNumber);
+		this.name = "PersonExistsVideoSystemException";
+	}
+}
+
+class PersonNonExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The person doesn't exists in the video system.", fileName, lineNumber);
+		this.name = "PersonNonExistsVideoSystemException";
+	}
+}
+
+
 export {
-    BaseException, InvalidCategoryException, InvalidPersonException,InvalidResourceException,
+    BaseException, InvalidCategoryException, InvalidPersonException,InvalidPersonDNIException,InvalidResourceException,
     AbstractClassException,InvalidProductionException,InvalidMovieException,InvalidSerieException,
     InvalidUserInstanceException,InvalidCoordinateException,InvalidVideoSystemException,CategoryVideoSystemException,
     CategoryExistsVideoSystemException,CategoryNonExistsVideoSystemException, DefaultCategoryVideoSystemException,
     UserVideoSystemException,UserExistsVideoSystemException,UserNonExistsVideoSystemException,
-    ProductionVideoSystemException,ProductionExistsVideoSystemException,ProductionNonExistsVideoSystemException
+    ProductionVideoSystemException,ProductionExistsVideoSystemException,ProductionNonExistsVideoSystemException,
+    PersonVideoSystemException,PersonExistsVideoSystemException,PersonNonExistsVideoSystemException
 
 }
