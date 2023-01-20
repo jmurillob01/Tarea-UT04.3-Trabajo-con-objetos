@@ -135,6 +135,7 @@ try {
     console.log(error.message);
 }
 
+// Funciones
 showCategories();
 showUsers();
 showProductions();
