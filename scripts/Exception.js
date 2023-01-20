@@ -37,6 +37,14 @@ class InvalidPersonException extends BaseException {
     }
 }
 
+class InvalidPersonDNIException extends BaseException {
+    constructor(fileName, lineNumber) {
+        super("Error: It is not allowed to change a person's identification");
+        this.param = param;
+        this.name = "InvalidPersonDNIException";
+    }
+}
+
 // Custom exception to indicate wrong Resource
 class InvalidResourceException extends BaseException {
     constructor(param, fileName, lineNumber) {
@@ -99,8 +107,115 @@ class InvalidCoordinateException extends BaseException {
     }
 }
 
+// Custom exception to indicate wrong VideoSystem
+class InvalidVideoSystemException extends BaseException {
+    constructor(param, fileName, lineNumber) {
+        super("Error: The " + param + " from class VideoSystem is invalid.", fileName, lineNumber);
+        this.param = param;
+        this.name = "InvalidVideoSystemException";
+    }
+}
+
+class CategoryVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The method needs a Category parameter.", fileName, lineNumber);
+		this.name = "CategoryVideoSystemException";
+	}
+}
+
+class CategoryExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The category exists in the video system.", fileName, lineNumber);
+		this.name = "CategoryExistsVideoSystemException";
+	}
+}
+
+class CategoryNonExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The category doesn't exists in the video system.", fileName, lineNumber);
+		this.name = "CategoryNonExistsVideoSystemException";
+	}
+}
+
+
+class DefaultCategoryVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The deafult category can't be removed.", fileName, lineNumber);
+		this.name = "DefaultCategoryVideoSystemException";
+	}
+}
+
+class UserVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The method needs a User parameter.", fileName, lineNumber);
+		this.name = "UserVideoSystemException";
+	}
+}
+
+class UserExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The user exists in the video system.", fileName, lineNumber);
+		this.name = "UserExistsVideoSystemException";
+	}
+}
+
+class UserNonExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The user doesn't exists in the video system.", fileName, lineNumber);
+		this.name = "UserExistsVideoSystemException";
+	}
+}
+
+class ProductionVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The method needs a production parameter.", fileName, lineNumber);
+		this.name = "ProductionVideoSystemException";
+	}
+}
+
+class ProductionExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The production exists in the video system.", fileName, lineNumber);
+		this.name = "ProductionExistsVideoSystemException";
+	}
+}
+
+class ProductionNonExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The production doesn't exists in the video system.", fileName, lineNumber);
+		this.name = "ProductionNonExistsVideoSystemException";
+	}
+}
+
+class PersonVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The method needs a Person parameter.", fileName, lineNumber);
+		this.name = "PersonVideoSystemException";
+	}
+}
+
+class PersonExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The person exists in the video system.", fileName, lineNumber);
+		this.name = "PersonExistsVideoSystemException";
+	}
+}
+
+class PersonNonExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The person doesn't exists in the video system.", fileName, lineNumber);
+		this.name = "PersonNonExistsVideoSystemException";
+	}
+}
+
+
 export {
-    BaseException, InvalidCategoryException, InvalidPersonException,InvalidResourceException,
+    BaseException, InvalidCategoryException, InvalidPersonException,InvalidPersonDNIException,InvalidResourceException,
     AbstractClassException,InvalidProductionException,InvalidMovieException,InvalidSerieException,
-    InvalidUserInstanceException,InvalidCoordinateException
+    InvalidUserInstanceException,InvalidCoordinateException,InvalidVideoSystemException,CategoryVideoSystemException,
+    CategoryExistsVideoSystemException,CategoryNonExistsVideoSystemException, DefaultCategoryVideoSystemException,
+    UserVideoSystemException,UserExistsVideoSystemException,UserNonExistsVideoSystemException,
+    ProductionVideoSystemException,ProductionExistsVideoSystemException,ProductionNonExistsVideoSystemException,
+    PersonVideoSystemException,PersonExistsVideoSystemException,PersonNonExistsVideoSystemException
+
 }

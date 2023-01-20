@@ -10,7 +10,7 @@ class Movie extends Production {
     #resource;
     #locations = new Array();
 
-    constructor(title, nationality, publication, synopsis, image, resource = new Resource(0, "www.noLink.com"), locations = new Coordinate(0,0)) {
+    constructor(title, nationality, publication, synopsis, image, resource = new Resource(1, "www.noLink.com"), locations = new Coordinate(0,0)) {
 
         super(title, nationality, publication, synopsis, image);
 
