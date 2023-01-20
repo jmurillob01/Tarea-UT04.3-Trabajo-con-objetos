@@ -75,6 +75,10 @@ class Production{
         this.#synopsis = synopsis;
         this.#image = image;
     }
+
+    get title(){
+        return this.#title;
+    }
 }
 
 export default Production;

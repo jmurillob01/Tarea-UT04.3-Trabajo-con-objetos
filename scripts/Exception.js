@@ -122,10 +122,69 @@ class CategoryExistsVideoSystemException extends BaseException {
 	}
 }
 
+class CategoryNonExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The category doesn't exists in the video system.", fileName, lineNumber);
+		this.name = "CategoryNonExistsVideoSystemException";
+	}
+}
+
+
+class DefaultCategoryVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The deafult category can't be removed.", fileName, lineNumber);
+		this.name = "DefaultCategoryVideoSystemException";
+	}
+}
+
+class UserVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The method needs a User parameter.", fileName, lineNumber);
+		this.name = "UserVideoSystemException";
+	}
+}
+
+class UserExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The user exists in the video system.", fileName, lineNumber);
+		this.name = "UserExistsVideoSystemException";
+	}
+}
+
+class UserNonExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The user doesn't exists in the video system.", fileName, lineNumber);
+		this.name = "UserExistsVideoSystemException";
+	}
+}
+
+class ProductionVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The method needs a production parameter.", fileName, lineNumber);
+		this.name = "ProductionVideoSystemException";
+	}
+}
+
+class ProductionExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The production exists in the video system.", fileName, lineNumber);
+		this.name = "ProductionExistsVideoSystemException";
+	}
+}
+
+class ProductionNonExistsVideoSystemException extends BaseException {
+	constructor(fileName, lineNumber) {
+		super("Error: The production doesn't exists in the video system.", fileName, lineNumber);
+		this.name = "ProductionNonExistsVideoSystemException";
+	}
+}
 
 export {
     BaseException, InvalidCategoryException, InvalidPersonException,InvalidResourceException,
     AbstractClassException,InvalidProductionException,InvalidMovieException,InvalidSerieException,
     InvalidUserInstanceException,InvalidCoordinateException,InvalidVideoSystemException,CategoryVideoSystemException,
-    CategoryExistsVideoSystemException
+    CategoryExistsVideoSystemException,CategoryNonExistsVideoSystemException, DefaultCategoryVideoSystemException,
+    UserVideoSystemException,UserExistsVideoSystemException,UserNonExistsVideoSystemException,
+    ProductionVideoSystemException,ProductionExistsVideoSystemException,ProductionNonExistsVideoSystemException
+
 }

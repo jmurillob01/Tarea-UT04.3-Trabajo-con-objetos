@@ -24,6 +24,14 @@ class User {
         this.#password = password;
     }
 
+    get username(){
+        return this.#username;
+    }
+
+    get email(){
+        return this.#email;
+    }
+
     // * Since they are required values, we don't need set
 }
 
