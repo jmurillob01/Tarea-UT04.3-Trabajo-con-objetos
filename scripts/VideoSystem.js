@@ -460,6 +460,9 @@ let VideoSystem = (function () {
             }
 
             assignCategory(category, ...productions) {
+
+                if (!(category instanceof Category) || category == null) throw new CategoryVideoSystemException();
+
                 let position = this.#getCategoryPosition(category);
 
                 if (position === -1) {
@@ -478,7 +481,7 @@ let VideoSystem = (function () {
                         }
 
                         let title = this.#productions[positionProd].title;
-                        if(this.#categories[position].productions.indexOf(title) !== -1){ // Si la producción ya está asignada a la categoría se elimina
+                        if(this.#categories[position].productions.indexOf(title) !== -1){ // Si la producción ya está asignada a la categoría se lanza excepción
                             throw new ProductionAssignExistsVideoSystemException(title);
                         }
 
@@ -513,7 +516,65 @@ let VideoSystem = (function () {
                     }
                 }
                 return this.#categories[position].productions.length;
+            }
 
+            assignDirector(person, ...productions) {
+
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let position = this.#getDirectorPosition(person);
+
+                if (position === -1) {
+                    this.addDirector(person); // Añadimos el director si no existe
+                    position = this.#directors.length - 1;
+                }
+
+                for (let production of productions) {
+                    try { // Evitamos las producciones incorrectas y se agregan las correctas
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+                        let positionProd = this.#getProductionPosition(production);
+
+                        if (positionProd === -1) { // Si la producción no existe se agrega
+                            this.addProduction(production);
+                            positionProd = this.#productions.length - 1;
+                        }
+
+                        let title = this.#productions[positionProd].title;
+                        if(this.#directors[position].productions.indexOf(title) !== -1){ // Si la producción ya está asignada al director se lanza excepción
+                            throw new ProductionAssignExistsVideoSystemException(title);
+                        }
+
+                        this.#directors[position].productions.push(title); // Asignamos la producción
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                }
+                return this.#directors[position].productions.length;
+            }
+
+            deassignDirector(person, ...productions) {
+
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let position = this.#getDirectorPosition(person);
+
+                if (position === -1) throw new PersonNonExistsVideoSystemException();
+
+                for (let production of productions) {
+                    try { // Evitamos las producciones incorrectas y se eliminan las correctas
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+                        let positionProd = this.#getProductionPosition(production);
+
+                        if (positionProd === -1) throw new ProductionNonExistsVideoSystemException();
+
+                        let title = this.#productions[positionProd].title;
+
+                        this.#directors[position].productions.splice(title, 1); // Eliminamos la producción
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                }
+                return this.#directors[position].productions.length;
             }
 
 

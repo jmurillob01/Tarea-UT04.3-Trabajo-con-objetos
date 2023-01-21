@@ -138,6 +138,11 @@ try {
 let cat4 = videosystem.getCategory("Suspense");
 videosystem.assignCategory(cat4,movie1,serie1);
 videosystem.deassignCategory(cat4, movie1);
+
+
+videosystem.assignDirector(director1, movie1, serie1);
+videosystem.deassignDirector(director1, movie1);
+
 console.log(videosystem);
 
 
