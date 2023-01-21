@@ -2,9 +2,7 @@
 
 import Category from "./Category.js";
 import Person from "./Person.js";
-import Resource from "./Resource.js";
 import Production from "./Production.js";
-import Movie from "./Movie.js";
 import VideoSystem from "./VideoSystem.js";
 
 // // Complete test about person
@@ -84,10 +82,17 @@ let user1 = videosystem.getUser("Javier", "javiermb@gmail.com", "Abcd1234");
 let user2 = videosystem.getUser("Carlos", "carlosmb@gmail.com", "Abcd1234");
 let user3 = videosystem.getUser("David", "davidlm@gmail.com", "Abcd1234");
 
+console.log("------------------------------------------------------------");
+
+
 
 videosystem.addUser(user1);
 videosystem.addUser(user2);
 videosystem.addUser(user3);
+
+let user5 = videosystem.getUser("David", "davidlm@gmail.com", "Abcd1234");
+console.log(user5);
+
 
 
 try {
@@ -215,11 +220,10 @@ function showCast(production) {
     if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
     console.log("Actores de la producción: " + production.title);
     console.log("--------------------------------");
-    let cast = videosystem.getCast(serie1);
 
-    cast.forEach(element => {
+    for (let element of videosystem.getCast(production)) {
         console.log(`${element.actor.name} ${element.actor.lastname1}`);
-    });
+    }
 
     console.log("");
 }
@@ -230,11 +234,10 @@ function showDirectorsProduction(person) {
 
     console.log("Producciones del director: " + person.name + ' ' + person.lastname1);
     console.log("--------------------------------");
-    let productions = videosystem.getProductionsDirector(person);
 
-    productions.forEach(element => {
+    for (let element of videosystem.getProductionsDirector(person)) {
         console.log(element);
-    });
+    }
 
     console.log("");
 }
@@ -244,11 +247,10 @@ function showActorsProduction(person) {
 
     console.log("Producciones del actor: " + person.name + ' ' + person.lastname1);
     console.log("--------------------------------");
-    let productions = videosystem.getProductionsActor(person);
-
-    productions.forEach(element => {
+    for (let element of videosystem.getProductionsActor(person)) {
         console.log(element);
-    });
+    }
+
 
     console.log("");
 }
@@ -258,11 +260,10 @@ function showCategoriesProduction(category) {
 
     console.log("Producciones de la categoría: " + category.name);
     console.log("--------------------------------");
-    let productions = videosystem.getProductionsCategory(category);
-
-    productions.forEach(element => {
+    
+    for (let element of videosystem.getProductionsCategory(category)) {
         console.log(element);
-    });
+    }
 
     console.log("");
 }
