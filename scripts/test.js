@@ -1,8 +1,10 @@
 "use strict";
 
 import Category from "./Category.js";
+import Coordinate from "./Coordinate.js";
 import Person from "./Person.js";
 import Production from "./Production.js";
+import Resource from "./Resource.js";
 import VideoSystem from "./VideoSystem.js";
 
 console.log("*****Test completo del funcionamiento de nuestra apliación*****");
@@ -121,6 +123,17 @@ try {
 
 console.log("");
 showUsers();
+
+console.log("------------------------------------------------------------");
+console.log("");
+
+console.log("Creamos un resource: ");
+let resource1 = new Resource(10, "www.google.com");
+console.log(resource1);
+
+console.log("Creamos una coordenada: ");
+let cord1 = new Coordinate(10,10);
+console.log(cord1);
 
 console.log("------------------------------------------------------------");
 console.log("");
