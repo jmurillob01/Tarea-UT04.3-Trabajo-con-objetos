@@ -5,7 +5,7 @@ import {
     CategoryNonExistsVideoSystemException, DefaultCategoryVideoSystemException, UserVideoSystemException,
     UserExistsVideoSystemException, UserNonExistsVideoSystemException, ProductionVideoSystemException,
     ProductionExistsVideoSystemException, ProductionNonExistsVideoSystemException, PersonVideoSystemException,
-    PersonExistsVideoSystemException, PersonNonExistsVideoSystemException,ProductionAssignExistsVideoSystemException
+    PersonExistsVideoSystemException, PersonNonExistsVideoSystemException, ProductionAssignExistsVideoSystemException
 } from "./Exception.js";
 import Category from "./Category.js";
 import User from "./User.js";
@@ -481,7 +481,7 @@ let VideoSystem = (function () {
                         }
 
                         let title = this.#productions[positionProd].title;
-                        if(this.#categories[position].productions.indexOf(title) !== -1){ // Si la producción ya está asignada a la categoría se lanza excepción
+                        if (this.#categories[position].productions.indexOf(title) !== -1) { // Si la producción ya está asignada a la categoría se lanza excepción
                             throw new ProductionAssignExistsVideoSystemException(title);
                         }
 
@@ -540,7 +540,7 @@ let VideoSystem = (function () {
                         }
 
                         let title = this.#productions[positionProd].title;
-                        if(this.#directors[position].productions.indexOf(title) !== -1){ // Si la producción ya está asignada al director se lanza excepción
+                        if (this.#directors[position].productions.indexOf(title) !== -1) { // Si la producción ya está asignada al director se lanza excepción
                             throw new ProductionAssignExistsVideoSystemException(title);
                         }
 
@@ -577,6 +577,64 @@ let VideoSystem = (function () {
                 return this.#directors[position].productions.length;
             }
 
+            assignActor(person, ...productions) {
+
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let position = this.#getActorPosition(person);
+
+                if (position === -1) {
+                    this.addActor(person); // Añadimos el actor si no existe
+                    position = this.#actors.length - 1;
+                }
+
+                for (let production of productions) {
+                    try { // Evitamos las producciones incorrectas y se agregan las correctas
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+                        let positionProd = this.#getProductionPosition(production);
+
+                        if (positionProd === -1) { // Si la producción no existe se agrega
+                            this.addProduction(production);
+                            positionProd = this.#productions.length - 1;
+                        }
+
+                        let title = this.#productions[positionProd].title;
+                        if (this.#actors[position].productions.indexOf(title) !== -1) { // Si la producción ya está asignada al director se lanza excepción
+                            throw new ProductionAssignExistsVideoSystemException(title);
+                        }
+
+                        this.#actors[position].productions.push(title); // Asignamos la producción
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                }
+                return this.#actors[position].productions.length;
+            }
+
+            deassignActor(person, ...productions) {
+
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let position = this.#getActorPosition(person);
+
+                if (position === -1) throw new PersonNonExistsVideoSystemException();
+
+                for (let production of productions) {
+                    try { // Evitamos las producciones incorrectas y se eliminan las correctas
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+                        let positionProd = this.#getProductionPosition(production);
+
+                        if (positionProd === -1) throw new ProductionNonExistsVideoSystemException();
+
+                        let title = this.#productions[positionProd].title;
+
+                        this.#actors[position].productions.splice(title, 1); // Eliminamos la producción
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                }
+                return this.#actors[position].productions.length;
+            }
 
         }
 

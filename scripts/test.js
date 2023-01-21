@@ -143,6 +143,10 @@ videosystem.deassignCategory(cat4, movie1);
 videosystem.assignDirector(director1, movie1, serie1);
 videosystem.deassignDirector(director1, movie1);
 
+videosystem.assignActor(actor1, movie1, serie1);
+videosystem.deassignActor(actor1, movie1);
+
+
 console.log(videosystem);
 
 
