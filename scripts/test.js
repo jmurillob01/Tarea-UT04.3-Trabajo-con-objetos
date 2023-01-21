@@ -162,6 +162,7 @@ showProductions();
 showActors();
 showDirectors();
 showCast(serie1);
+showDirectorsProduction(director1);
 
 function showCategories() {
     console.log("Recorremos las categorías");
@@ -209,6 +210,7 @@ function showDirectors() {
 }
 
 function showCast(production) {
+    if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
     console.log("Actores de la producción: " + production.title);
     console.log("--------------------------------");
     let cast = videosystem.getCast(serie1);
@@ -218,5 +220,19 @@ function showCast(production) {
     });
 
     console.log("");
+}
 
+
+function showDirectorsProduction(person) {
+    if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+    console.log("Producciones del director: " + person.name + ' ' + person.lastname1);
+    console.log("--------------------------------");
+    let productions = videosystem.getProductionsDirector(person);
+
+    productions.forEach(element => {
+        console.log(element);
+    });
+
+    console.log("");
 }

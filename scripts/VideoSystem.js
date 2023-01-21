@@ -110,19 +110,6 @@ let VideoSystem = (function () {
                 return this.#directors.findIndex(compareDirectorDni);
             }
 
-            // Iterator from actors/production
-            #getactors() {
-                let array = this.#actors;
-                return {
-                    *[Symbol.iterator]() {
-                        // We go through all the actors
-                        for (let i = 0; i < array.length; i++) {
-                            yield array[i];
-                        }
-                    }
-                }
-            }
-
             constructor(name = "") {
                 if (!isNaN(name) && name.trim() != "") throw new InvalidVideoSystemException("Name");
 
@@ -653,10 +640,13 @@ let VideoSystem = (function () {
 
             // Production is an object iterator
             getCast(production) {
+                if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+
+                let actorsArray = this.#actors;
                 let actorsCast = new Array(); // Array para añadir los actores de la producción
 
                 // production es un array con las producciones
-                for (let actor of this.#getactors()) {
+                for (let actor of actorsArray) {
                     // Recorremos las producciones de cada actor
                     for (let productionActor of actor.productions) {
                         // Si la producción coincide con la retirada, la añadimos al array
@@ -667,6 +657,20 @@ let VideoSystem = (function () {
                 }
 
                 return actorsCast;
+            }
+
+            getProductionsDirector(person) {
+
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let directorsProduction = new Array(); // Array para las producciones de un director
+
+                for (let director of this.#directors) {
+                    for (let production of director.productions) {
+                        directorsProduction.push(production);
+                    }
+                }
+                return directorsProduction;
             }
         }
 
