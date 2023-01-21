@@ -19,19 +19,6 @@ class Coordinate {
         this.#longitude = longitude;
     }
 
-    set latitude(latitude) {
-        // Latitude check
-        if (!REGEX_LATITUDE.test(latitude)) throw new InvalidCoordinateException("latitude");
-
-        this.#latitude = latitude;
-    }
-
-    set longitude(longitude) {
-        // Longitude check
-        if (!REGEX_LONGITUDE.test(longitude)) throw new InvalidCoordinateException("latitude");
-
-        this.#longitude = longitude;
-    }
 }
 
 export default Coordinate;
