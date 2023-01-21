@@ -5,7 +5,7 @@ import {
     CategoryNonExistsVideoSystemException, DefaultCategoryVideoSystemException, UserVideoSystemException,
     UserExistsVideoSystemException, UserNonExistsVideoSystemException, ProductionVideoSystemException,
     ProductionExistsVideoSystemException, ProductionNonExistsVideoSystemException, PersonVideoSystemException,
-    PersonExistsVideoSystemException,PersonNonExistsVideoSystemException
+    PersonExistsVideoSystemException, PersonNonExistsVideoSystemException, ProductionAssignExistsVideoSystemException
 } from "./Exception.js";
 import Category from "./Category.js";
 import User from "./User.js";
@@ -179,6 +179,8 @@ let VideoSystem = (function () {
                 }
             }
 
+
+
             // Iterator from directors
             get directors() {
                 let array = this.#directors;
@@ -260,7 +262,7 @@ let VideoSystem = (function () {
                 if (position_username === -1 && position_email === -1) { // The user is not registered yet
                     user = new User(username, email, password); // We create user object because it doesn't exist yet.
                 } else { // The user is registered
-                   if (position_username === -1) {
+                    if (position_username === -1) {
                         user = this.#users[position_username]; // We recover the user of the array with the same username
                     } else {
                         user = this.#users[position_email]; // We recover the user of the array with the same email
@@ -360,7 +362,7 @@ let VideoSystem = (function () {
             }
 
             // Factory for Actor
-            getActor(name, lastname1, lastname2, dni, born, picture) {                
+            getActor(name, lastname1, lastname2, dni, born, picture) {
                 // We obtain the position of the actor in the array
                 let position_dni = this.#actors.findIndex((actor) => actor.dni === dni);
                 let person;
@@ -410,7 +412,7 @@ let VideoSystem = (function () {
             }
 
             // Factory for Director
-            getDirector(name, lastname1, lastname2, dni, born, picture) {                
+            getDirector(name, lastname1, lastname2, dni, born, picture) {
                 // We obtain the position of the director in the array
                 let position_dni = this.#directors.findIndex((director) => director.dni === dni);
                 let person;
@@ -459,6 +461,252 @@ let VideoSystem = (function () {
                 return this.#directors.length;
             }
 
+            assignCategory(category, ...productions) {
+
+                if (!(category instanceof Category) || category == null) throw new CategoryVideoSystemException();
+
+                let position = this.#getCategoryPosition(category);
+
+                if (position === -1) {
+                    this.addCategory(category); // Añadimos la categoría si no existe
+                    position = this.#categories.length - 1;
+                }
+
+                for (let production of productions) {
+                    try { // Evitamos las producciones incorrectas y se agregan las correctas
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+                        let positionProd = this.#getProductionPosition(production);
+
+                        if (positionProd === -1) { // Si la producción no existe se agrega
+                            this.addProduction(production);
+                            positionProd = this.#productions.length - 1;
+                        }
+
+                        let title = this.#productions[positionProd].title;
+                        if (this.#categories[position].productions.indexOf(title) !== -1) { // Si la producción ya está asignada a la categoría se lanza excepción
+                            throw new ProductionAssignExistsVideoSystemException(title);
+                        }
+
+                        this.#categories[position].productions.push(title); // Asignamos la producción
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                }
+                return this.#categories[position].productions.length;
+            }
+
+            deassignCategory(category, ...productions) {
+
+                if (!(category instanceof Category) || category == null) throw new CategoryVideoSystemException();
+
+                let position = this.#getCategoryPosition(category);
+
+                if (position === -1) throw new CategoryNonExistsVideoSystemException();
+
+                for (let production of productions) {
+                    try { // Evitamos las producciones incorrectas y se eliminan las correctas
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+                        let positionProd = this.#getProductionPosition(production);
+
+                        if (positionProd === -1) throw new ProductionNonExistsVideoSystemException();
+
+                        let title = this.#productions[positionProd].title;
+
+                        this.#categories[position].productions.splice(title, 1); // Eliminamos la producción
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                }
+                return this.#categories[position].productions.length;
+            }
+
+            assignDirector(person, ...productions) {
+
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let position = this.#getDirectorPosition(person);
+
+                if (position === -1) {
+                    this.addDirector(person); // Añadimos el director si no existe
+                    position = this.#directors.length - 1;
+                }
+
+                for (let production of productions) {
+                    try { // Evitamos las producciones incorrectas y se agregan las correctas
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+                        let positionProd = this.#getProductionPosition(production);
+
+                        if (positionProd === -1) { // Si la producción no existe se agrega
+                            this.addProduction(production);
+                            positionProd = this.#productions.length - 1;
+                        }
+
+                        let title = this.#productions[positionProd].title;
+                        if (this.#directors[position].productions.indexOf(title) !== -1) { // Si la producción ya está asignada al director se lanza excepción
+                            throw new ProductionAssignExistsVideoSystemException(title);
+                        }
+
+                        this.#directors[position].productions.push(title); // Asignamos la producción
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                }
+                return this.#directors[position].productions.length;
+            }
+
+            deassignDirector(person, ...productions) {
+
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let position = this.#getDirectorPosition(person);
+
+                if (position === -1) throw new PersonNonExistsVideoSystemException();
+
+                for (let production of productions) {
+                    try { // Evitamos las producciones incorrectas y se eliminan las correctas
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+                        let positionProd = this.#getProductionPosition(production);
+
+                        if (positionProd === -1) throw new ProductionNonExistsVideoSystemException();
+
+                        let title = this.#productions[positionProd].title;
+
+                        this.#directors[position].productions.splice(title, 1); // Eliminamos la producción
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                }
+                return this.#directors[position].productions.length;
+            }
+
+            assignActor(person, ...productions) {
+
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let position = this.#getActorPosition(person);
+
+                if (position === -1) {
+                    this.addActor(person); // Añadimos el actor si no existe
+                    position = this.#actors.length - 1;
+                }
+
+                for (let production of productions) {
+                    try { // Evitamos las producciones incorrectas y se agregan las correctas
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+                        let positionProd = this.#getProductionPosition(production);
+
+                        if (positionProd === -1) { // Si la producción no existe se agrega
+                            this.addProduction(production);
+                            positionProd = this.#productions.length - 1;
+                        }
+
+                        let title = this.#productions[positionProd].title;
+                        if (this.#actors[position].productions.indexOf(title) !== -1) { // Si la producción ya está asignada al director se lanza excepción
+                            throw new ProductionAssignExistsVideoSystemException(title);
+                        }
+
+                        this.#actors[position].productions.push(title); // Asignamos la producción
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                }
+                return this.#actors[position].productions.length;
+            }
+
+            deassignActor(person, ...productions) {
+
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let position = this.#getActorPosition(person);
+
+                if (position === -1) throw new PersonNonExistsVideoSystemException();
+
+                for (let production of productions) {
+                    try { // Evitamos las producciones incorrectas y se eliminan las correctas
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+                        let positionProd = this.#getProductionPosition(production);
+
+                        if (positionProd === -1) throw new ProductionNonExistsVideoSystemException();
+
+                        let title = this.#productions[positionProd].title;
+
+                        this.#actors[position].productions.splice(title, 1); // Eliminamos la producción
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                }
+                return this.#actors[position].productions.length;
+            }
+
+            // Production is an object iterator
+            getCast(production) {
+                if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+
+                let actorsArray = this.#actors;
+                let actorsCast = new Array(); // Array para añadir los actores de la producción
+
+                // production es un array con las producciones
+                for (let actor of actorsArray) {
+                    // Recorremos las producciones de cada actor
+                    for (let productionActor of actor.productions) {
+                        // Si la producción coincide con la retirada, la añadimos al array
+                        if (productionActor === production.title) {
+                            actorsCast.push(actor);
+                        }
+                    }
+                }
+
+                return actorsCast;
+            }
+
+            getProductionsDirector(person) {
+
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let directorsProduction = new Array(); // Array para las producciones de un director
+
+                for (let director of this.#directors) {
+                    if (director.director.name === person.name) {
+                        for (let production of director.productions) {
+                            directorsProduction.push(production);
+                        }
+                    }
+                }
+                return directorsProduction;
+            }
+
+            getProductionsActor(person) {
+
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let actorsProduction = new Array(); // Array para las producciones de un actor
+
+                for (let actor of this.#actors) {
+                    if (actor.actor.name === person.name) {
+                        for (let production of actor.productions) {
+                            actorsProduction.push(production);
+                        }
+                    }
+                }
+                return actorsProduction;
+            }
+
+            getProductionsCategory(category){
+                if (!(category instanceof Category) || category == null) throw new CategoryVideoSystemException();
+
+                let categoryProduction = new Array(); // Array para las producciones de una categoría
+
+                for (let categoryObject of this.#categories) {
+                    if (categoryObject.category.name === category.name) {
+                        for (let production of categoryObject.productions) {
+                            categoryProduction.push(production);
+                        }
+                    }
+                }
+                return categoryProduction;
+            }
+
+            // TODO: Optimizar y hacer que devuelvan iteradores
         }
 
         let instance = new VideoSystem(name); // We return the VideoSystem object to be a single instance.
