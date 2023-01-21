@@ -2,169 +2,326 @@
 
 import Category from "./Category.js";
 import Person from "./Person.js";
-import Resource from "./Resource.js";
 import Production from "./Production.js";
-import Movie from "./Movie.js";
 import VideoSystem from "./VideoSystem.js";
 
-// // Complete test about person
-// try {
-//     // Creating the object
-//     var person1 = new Person("Javier", "Murillo","","28/02/2002", "");
-//     console.log(person1.toString());
+console.log("*****Test completo del funcionamiento de nuestra apliación*****");
+console.log("------------------------------------------------------------");
 
-//     // Error with Second Lastname
-//     person1.lastname2 = "123";
-// } catch (error) {
-//     console.log(error.message); 
-// }
-
-// try {
-//     // Error with Picture
-//     person1.picture = "123";
-// } catch (error) {
-//     console.log(error.message); 
-// }
-
-// // Complete test about Category
-// try {
-//     var category1 = new Category("Fantasy", "person");
-//     console.log(category1);
-
-//     // Error with description
-//     category1.description = "";
-// } catch (error) {
-//     console.log(error.message)
-// }
-
-// // Complete test about Resource
-// try {
-//     var resource1 = new Resource(10, "https://www.google.com");
-//     console.log(resource1);
-
-//     // Invalid resource
-//     var resource2 = new Resource(0, "");
-// } catch (error) {
-//     console.log(error.message);
-// }
-
-// // Complete test about Production
-// try {
-//     var product1 = new Production("Titulo", "","28/02/2002","","");
-// } catch (error) {
-//     console.log(error.message);
-// }
-
-// // Test about Movie
-// try {
-//     var movie1 = new Movie("Pirulo", "","28/02/2002","","",resource1);
-//     console.log(movie1);
-// } catch (error) {
-//     console.log(error.message);
-// }
-
-// Inicio de testeo de VideoSystem
+// VideoSystem
+console.log("Obtenemos la instancia de VideoSystem");
 let videosystem = VideoSystem.getInstance("Netflix");
+console.log(videosystem.name);
 
+console.log("");
+
+console.log("Obtenemos una segunda instancia de VideoSystem diferente");
+let videosystem2 = VideoSystem.getInstance("Amazon")
+console.log(videosystem2.name);
+
+console.log("");
+
+console.log("Cambiamos el nombre a la primera instancia");
+videosystem.name="Amazon";
+console.log("Primera instancia " + videosystem.name);
+console.log("Segunda instancia " + videosystem2.name);
+
+console.log("");
+console.log("------------------------------------------------------------");
+console.log("");
+
+// Categories
+console.log("***Factory de categoría***");
 let cat1 = videosystem.getCategory("Fantasy");
 let cat2 = videosystem.getCategory("Comedy");
 let cat3 = videosystem.getCategory("Horror");
-
-videosystem.addCategory(cat1);
-videosystem.addCategory(cat2);
-videosystem.addCategory(cat3);
+console.log("Añadimos las categorías: ");
+console.log(videosystem.addCategory(cat1));
+console.log(videosystem.addCategory(cat2));
+console.log(videosystem.addCategory(cat3));
 
 try {
-    videosystem.removeCategory(cat1);
+    console.log("");
+    console.log("Añadimos una categoría existente");
+    videosystem.addCategory(cat1);
 } catch (error) {
     console.log(error.message);
 }
 
-let user1 = videosystem.getUser("Javier", "javiermb@gmail.com", "Abcd1234");
-let user2 = videosystem.getUser("Carlos", "carlosmb@gmail.com", "Abcd1234");
-let user3 = videosystem.getUser("David", "davidlm@gmail.com", "Abcd1234");
-
-
-videosystem.addUser(user1);
-videosystem.addUser(user2);
-videosystem.addUser(user3);
-
-
 try {
-    videosystem.removeUser(user1);
+    console.log("");
+    console.log("Añadimos una algo que no es una categoría");
+    videosystem.addCategory("cat1");
+} catch (error) {
+    console.log(error.message);
+}
+try {
+    console.log("");
+    console.log("Eliminamos una categoría existente");
+    console.log(videosystem.removeCategory(cat1));
 } catch (error) {
     console.log(error.message);
 }
 
+try {
+    console.log("");
+    console.log("Eliminamos una categoría que no existe");
+    console.log(videosystem.removeCategory(cat1));
+} catch (error) {
+    console.log(error.message);
+}
+
+console.log("");
+showCategories();
+
+console.log("------------------------------------------------------------");
+console.log("");
+
+// Users
+console.log("***Factory de usuarios***");
+let user3 = videosystem.getUser("Javier", "javiermb@gmail.com", "Abcd1234");
+let user2 = videosystem.getUser("Fernando", "fernandomb@gmail.com", "Abcd1234");
+let user1 = videosystem.getUser("David", "davidlm@gmail.com", "Abcd1234");
+
+console.log("Añadimos los usuarios: ");
+console.log(videosystem.addUser(user1));
+console.log(videosystem.addUser(user2));
+console.log(videosystem.addUser(user3));
+
+try {
+    console.log("");
+    console.log("Añadimos un usuario existente");
+    videosystem.addUser(user1)
+} catch (error) {
+    console.log(error.message);
+}
+
+try {
+    console.log("");
+    console.log("Añadimos una algo que no es un usuario");
+    videosystem.addUser("cat1");
+} catch (error) {
+    console.log(error.message);
+}
+try {
+    console.log("");
+    console.log("Eliminamos un usuario existente");
+    console.log(videosystem.removeUser(user1));
+} catch (error) {
+    console.log(error.message);
+}
+
+try {
+    console.log("");
+    console.log("Eliminamos un usuario que no existe");
+    console.log(videosystem.removeUser(user1));
+} catch (error) {
+    console.log(error.message);
+}
+
+console.log("");
+showUsers();
+
+console.log("------------------------------------------------------------");
+console.log("");
+console.log("***Factory de producciones Movie y Serie***");
+
+// Productions
 var movie1 = videosystem.getMovie("Pirulo", "", "28/02/2002", "", "");
 var serie1 = videosystem.getSerie("Pirulo La Serie", "", "28/02/2002", "", "");
+var movie2 = videosystem.getMovie("Pirulo 2 la fiesta continua", "", "28/02/2002", "", "");
 
-videosystem.addProduction(movie1);
-videosystem.addProduction(serie1);
-
+console.log("Añadimos las producciones: ");
+console.log(videosystem.addProduction(movie1));
+console.log(videosystem.addProduction(serie1));
+console.log(videosystem.addProduction(movie2));
 
 try {
-    videosystem.removeProduction(movie1);
+    console.log("Intentamos crear un objeto producción");
+    let production = new Production();
 } catch (error) {
     console.log(error.message);
 }
 
+try {
+    console.log("");
+    console.log("Añadimos una producción existente");
+    videosystem.addProduction(movie1)
+} catch (error) {
+    console.log(error.message);
+}
+
+try {
+    console.log("");
+    console.log("Añadimos algo que no es una producción");
+    videosystem.addProduction("cat1");
+} catch (error) {
+    console.log(error.message);
+}
+
+try {
+    console.log("");
+    console.log("Eliminamos una producción existente");
+    console.log(videosystem.removeProduction(movie2));
+} catch (error) {
+    console.log(error.message);
+}
+
+try {
+    console.log("");
+    console.log("Eliminamos una producción que no existe");
+    console.log(videosystem.removeProduction(movie2));
+} catch (error) {
+    console.log(error.message);
+}
+
+console.log("");
+showProductions();
+
+console.log("------------------------------------------------------------");
+console.log("");
+
+// Actors
+console.log("***Factory de Actores***");
 var actor1 = videosystem.getActor("Fernando", "Tejero", "", "12345678A", "24/02/1967");
 var actor2 = videosystem.getActor("Fermin", "Trujillo", "", "12345679A", "26/02/1967");
+var actor3 = videosystem.getActor("Anónimo", "Trujillo", "", "12345629A", "26/02/1967");
 
-videosystem.addActor(actor1);
-videosystem.addActor(actor2);
+
+console.log("Añadimos los actores: ");
+console.log(videosystem.addActor(actor1));
+console.log(videosystem.addActor(actor2));
+console.log(videosystem.addActor(actor3));
 
 try {
-    videosystem.removeActor(actor2);
+    console.log("");
+    console.log("Añadimos un actor existente");
+    videosystem.addActor(actor1)
 } catch (error) {
     console.log(error.message);
 }
 
-var director1 = videosystem.getDirector("Fernando", "Tejero", "", "12345678A", "24/02/1967");
-var director2 = videosystem.getDirector("Fermin", "Trujillo", "", "12345679A", "26/02/1967");
-
-videosystem.addDirector(director1);
-videosystem.addDirector(director2);
-
-// ! Se puede añadir un director como actor y al revés
-
 try {
-    videosystem.removeDirector(director2);
+    console.log("");
+    console.log("Añadimos algo que no es un actor");
+    videosystem.addActor("actor1")
 } catch (error) {
     console.log(error.message);
 }
 
-let cat4 = videosystem.getCategory("Suspense");
-videosystem.assignCategory(cat4, movie1, serie1);
-videosystem.deassignCategory(cat4, movie1);
+try {
+    console.log("");
+    console.log("Eliminamos un actor existente");
+    console.log(videosystem.removeActor(actor3));
+} catch (error) {
+    console.log(error.message);
+}
 
+try {
+    console.log("");
+    console.log("Eliminamos un actor que no existe");
+    console.log(videosystem.removeActor(actor3));
+} catch (error) {
+    console.log(error.message);
+}
 
-videosystem.assignDirector(director1, movie1, serie1);
-videosystem.deassignDirector(director1, movie1);
-
-videosystem.assignActor(actor1, movie1, serie1);
-videosystem.assignActor(actor2, movie1, serie1);
-
-videosystem.deassignActor(actor1, movie1);
-
-
-console.log(videosystem);
-
-
-
-
-
-// Funciones
-showCategories();
-showUsers();
-showProductions();
+console.log("");
 showActors();
+
+console.log("------------------------------------------------------------");
+console.log("");
+
+// Directors
+console.log("***Factory de Directores***");
+var director1 = videosystem.getDirector("Sergio", "Dalma", "", "12345678A", "24/02/1967");
+var director2 = videosystem.getDirector("Ramón", "Melendi", "", "12345679A", "26/02/1967");
+var director3 = videosystem.getDirector("Fermin", "trujillo", "", "12341679A", "26/02/1967");
+
+console.log("Añadimos los directores: ");
+console.log(videosystem.addDirector(director1));
+console.log(videosystem.addDirector(director2));
+console.log(videosystem.addDirector(director3));
+
+try {
+    console.log("");
+    console.log("Añadimos un director existente");
+    videosystem.addDirector(director1)
+} catch (error) {
+    console.log(error.message);
+}
+
+try {
+    console.log("");
+    console.log("Añadimos algo que no es un director");
+    videosystem.addDirector("actor1")
+} catch (error) {
+    console.log(error.message);
+}
+
+try {
+    console.log("");
+    console.log("Eliminamos un director existente");
+    console.log(videosystem.removeDirector(director3));
+} catch (error) {
+    console.log(error.message);
+}
+
+try {
+    console.log("");
+    console.log("Eliminamos un director que no existe");
+    console.log(videosystem.removeDirector(director3));
+} catch (error) {
+    console.log(error.message);
+}
+
+console.log("");
 showDirectors();
-showCast(serie1);
+
+console.log("------------------------------------------------------------");
+console.log("");
+
+// Assignments
+console.log("Asignamos a la categoría 1 las producciones anteriores, si no existe se crean");
+console.log(videosystem.assignCategory(cat1, movie1, serie1, movie2));
+console.log("Desasignamos a la categoría 1 una producción");
+console.log(videosystem.deassignCategory(cat1, movie2));
+
+console.log("------------------------------------------------------------");
+console.log("");
+console.log("Asignamos al director 1 las producciones anteriores, si no existe se crean");
+console.log(videosystem.assignDirector(director1, movie1, serie1, movie2));
+console.log("Asignamos al director 2 las producciones anteriores");
+console.log(videosystem.assignDirector(director2, movie1, serie1));
+console.log("Desasignamos al director 1 una producción");
+console.log(videosystem.deassignDirector(director1, movie2));
+
+console.log("------------------------------------------------------------");
+console.log("");
+
+console.log("Asignamos al actor 1 las producciones anteriores, si no existe se crean");
+console.log(videosystem.assignActor(actor1, movie1, serie1, movie2));
+console.log("Asignamos al actor 2 las producciones anteriores");
+console.log(videosystem.assignActor(actor2, movie1, serie1));
+console.log("Desasignamos al actor 1 una producción");
+console.log(videosystem.deassignActor(actor1, movie2));
+
+console.log("------------------------------------------------------------");
+console.log("");
+
+
+console.log("Obtenemos el cast de una película");
+showCast(movie1);
+
+console.log("Obtenemos las producciones de un director");
 showDirectorsProduction(director1);
+
+console.log("Obtenemos las producciones de un actor");
 showActorsProduction(actor1);
-showCategoriesProduction(cat4);
+
+console.log("Obtenemos las producciones de una categoría");
+showCategoriesProduction(cat1);
+
+// Functions
 
 function showCategories() {
     console.log("Recorremos las categorías");
@@ -197,7 +354,7 @@ function showActors() {
     console.log("Recorremos los actores");
     console.log("--------------------------------");
     for (let actor of videosystem.actors) {
-        console.log("Actor: " + actor.name);
+        console.log("Actor: " + actor.name + ' ' + actor.lastname1);
     }
     console.log("");
 }
@@ -206,7 +363,7 @@ function showDirectors() {
     console.log("Recorremos los directores");
     console.log("--------------------------------");
     for (let director of videosystem.directors) {
-        console.log("Director: " + director.name);
+        console.log("Director: " + director.name + ' ' + director.lastname1);
     }
     console.log("");
 }
@@ -215,11 +372,10 @@ function showCast(production) {
     if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
     console.log("Actores de la producción: " + production.title);
     console.log("--------------------------------");
-    let cast = videosystem.getCast(serie1);
 
-    cast.forEach(element => {
+    for (let element of videosystem.getCast(production)) {
         console.log(`${element.actor.name} ${element.actor.lastname1}`);
-    });
+    }
 
     console.log("");
 }
@@ -230,11 +386,10 @@ function showDirectorsProduction(person) {
 
     console.log("Producciones del director: " + person.name + ' ' + person.lastname1);
     console.log("--------------------------------");
-    let productions = videosystem.getProductionsDirector(person);
 
-    productions.forEach(element => {
+    for (let element of videosystem.getProductionsDirector(person)) {
         console.log(element);
-    });
+    }
 
     console.log("");
 }
@@ -244,11 +399,10 @@ function showActorsProduction(person) {
 
     console.log("Producciones del actor: " + person.name + ' ' + person.lastname1);
     console.log("--------------------------------");
-    let productions = videosystem.getProductionsActor(person);
-
-    productions.forEach(element => {
+    for (let element of videosystem.getProductionsActor(person)) {
         console.log(element);
-    });
+    }
+
 
     console.log("");
 }
@@ -258,11 +412,10 @@ function showCategoriesProduction(category) {
 
     console.log("Producciones de la categoría: " + category.name);
     console.log("--------------------------------");
-    let productions = videosystem.getProductionsCategory(category);
-
-    productions.forEach(element => {
+    
+    for (let element of videosystem.getProductionsCategory(category)) {
         console.log(element);
-    });
+    }
 
     console.log("");
 }
