@@ -205,7 +205,7 @@ let VideoSystem = (function () {
                 } else {
                     throw new CategoryExistsVideoSystemException();
                 }
-                return this.#categories.length;
+                return this.#categories.length - 1; // We don't count the first
             }
 
             removeCategory(category) {
@@ -228,7 +228,7 @@ let VideoSystem = (function () {
                 } else {
                     throw new CategoryNonExistsVideoSystemException();
                 }
-                return this.#categories.length;
+                return this.#categories.length - 1; // We don't count the first
             }
 
             // Factory for users
@@ -473,13 +473,14 @@ let VideoSystem = (function () {
                 for (let production of productions) {
                     try { // We avoid incorrect productions and eliminate the correct ones
                         if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
-                        let positionProd = this.#getProductionPosition(production);
+                        let positionProd = this.#categories[position].productions.indexOf(production.title);
+                        // let positionProd = this.#getProductionPosition(production);
 
                         if (positionProd === -1) throw new ProductionNonExistsVideoSystemException();
 
-                        let title = this.#productions[positionProd].title;
+                        // let title = this.#productions[positionProd].title;
 
-                        this.#categories[position].productions.splice(title, 1); // Eliminate production
+                        this.#categories[position].productions.splice(positionProd, 1); // Eliminate production
                     } catch (error) {
                         console.log(error.message);
                     }
@@ -534,13 +535,14 @@ let VideoSystem = (function () {
                 for (let production of productions) {
                     try { // We avoid incorrect productions and eliminate the correct ones
                         if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
-                        let positionProd = this.#getProductionPosition(production);
+                        let positionProd = this.#directors[position].productions.indexOf(production.title);
+                        // let positionProd = this.#getProductionPosition(production);
 
                         if (positionProd === -1) throw new ProductionNonExistsVideoSystemException();
 
-                        let title = this.#productions[positionProd].title;
+                        // let title = this.#productions[positionProd].title;
 
-                        this.#directors[position].productions.splice(title, 1); // Eliminate production
+                        this.#directors[position].productions.splice(positionProd, 1); // Eliminate production
                     } catch (error) {
                         console.log(error.message);
                     }
@@ -595,13 +597,16 @@ let VideoSystem = (function () {
                 for (let production of productions) {
                     try { // We avoid incorrect productions and eliminate the correct ones
                         if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
-                        let positionProd = this.#getProductionPosition(production);
+                        // ! Estoy pillando la posición del array de producciones general, no del actor
+                        let positionProd = this.#actors[position].productions.indexOf(production.title);
+                        // let positionProd = this.#getProductionPosition(production);
 
                         if (positionProd === -1) throw new ProductionNonExistsVideoSystemException();
 
-                        let title = this.#productions[positionProd].title;
+                        // let title = this.#productions[positionProd].title;
 
-                        this.#actors[position].productions.splice(title, 1);
+                        this.#actors[position].productions.splice(positionProd, 1);
+                        // this.#actors[position].productions.splice(title, 1);
                     } catch (error) {
                         console.log(error.message);
                     }
