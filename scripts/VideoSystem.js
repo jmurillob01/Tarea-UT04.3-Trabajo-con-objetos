@@ -679,7 +679,7 @@ let VideoSystem = (function () {
 
                 if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
 
-                let actorsProduction = new Array(); // Array para las producciones de un director
+                let actorsProduction = new Array(); // Array para las producciones de un actor
 
                 for (let actor of this.#actors) {
                     if (actor.actor.name === person.name) {
@@ -690,6 +690,23 @@ let VideoSystem = (function () {
                 }
                 return actorsProduction;
             }
+
+            getProductionsCategory(category){
+                if (!(category instanceof Category) || category == null) throw new CategoryVideoSystemException();
+
+                let categoryProduction = new Array(); // Array para las producciones de una categoría
+
+                for (let categoryObject of this.#categories) {
+                    if (categoryObject.category.name === category.name) {
+                        for (let production of categoryObject.productions) {
+                            categoryProduction.push(production);
+                        }
+                    }
+                }
+                return categoryProduction;
+            }
+
+            // TODO: Optimizar y hacer que devuelvan iteradores
         }
 
         let instance = new VideoSystem(name); // We return the VideoSystem object to be a single instance.

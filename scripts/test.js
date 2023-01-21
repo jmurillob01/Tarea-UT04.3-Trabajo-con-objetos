@@ -164,6 +164,7 @@ showDirectors();
 showCast(serie1);
 showDirectorsProduction(director1);
 showActorsProduction(actor1);
+showCategoriesProduction(cat4);
 
 function showCategories() {
     console.log("Recorremos las categorías");
@@ -244,6 +245,20 @@ function showActorsProduction(person) {
     console.log("Producciones del actor: " + person.name + ' ' + person.lastname1);
     console.log("--------------------------------");
     let productions = videosystem.getProductionsActor(person);
+
+    productions.forEach(element => {
+        console.log(element);
+    });
+
+    console.log("");
+}
+
+function showCategoriesProduction(category) {
+    if (!(category instanceof Category) || category == null) throw new CategoryVideoSystemException();
+
+    console.log("Producciones de la categoría: " + category.name);
+    console.log("--------------------------------");
+    let productions = videosystem.getProductionsCategory(category);
 
     productions.forEach(element => {
         console.log(element);
