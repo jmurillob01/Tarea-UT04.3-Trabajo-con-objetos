@@ -110,6 +110,19 @@ let VideoSystem = (function () {
                 return this.#directors.findIndex(compareDirectorDni);
             }
 
+            // Iterator from actors/production
+            #getactors() {
+                let array = this.#actors;
+                return {
+                    *[Symbol.iterator]() {
+                        // We go through all the actors
+                        for (let i = 0; i < array.length; i++) {
+                            yield array[i];
+                        }
+                    }
+                }
+            }
+
             constructor(name = "") {
                 if (!isNaN(name) && name.trim() != "") throw new InvalidVideoSystemException("Name");
 
@@ -178,6 +191,8 @@ let VideoSystem = (function () {
                     }
                 }
             }
+
+
 
             // Iterator from directors
             get directors() {
@@ -636,6 +651,23 @@ let VideoSystem = (function () {
                 return this.#actors[position].productions.length;
             }
 
+            // Production is an object iterator
+            getCast(production) {
+                let actorsCast = new Array(); // Array para añadir los actores de la producción
+
+                // production es un array con las producciones
+                for (let actor of this.#getactors()) {
+                    // Recorremos las producciones de cada actor
+                    for (let productionActor of actor.productions) {
+                        // Si la producción coincide con la retirada, la añadimos al array
+                        if (productionActor === production.title) {
+                            actorsCast.push(actor);
+                        }
+                    }
+                }
+
+                return actorsCast;
+            }
         }
 
         let instance = new VideoSystem(name); // We return the VideoSystem object to be a single instance.
