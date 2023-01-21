@@ -135,6 +135,12 @@ try {
     console.log(error.message);
 }
 
+let cat4 = videosystem.getCategory("Suspense");
+videosystem.assignCategory(cat4,movie1,serie1);
+videosystem.deassignCategory(cat4, movie1);
+console.log(videosystem);
+
+
 // Funciones
 showCategories();
 showUsers();

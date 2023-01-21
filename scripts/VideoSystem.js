@@ -5,7 +5,7 @@ import {
     CategoryNonExistsVideoSystemException, DefaultCategoryVideoSystemException, UserVideoSystemException,
     UserExistsVideoSystemException, UserNonExistsVideoSystemException, ProductionVideoSystemException,
     ProductionExistsVideoSystemException, ProductionNonExistsVideoSystemException, PersonVideoSystemException,
-    PersonExistsVideoSystemException,PersonNonExistsVideoSystemException
+    PersonExistsVideoSystemException, PersonNonExistsVideoSystemException,ProductionAssignExistsVideoSystemException
 } from "./Exception.js";
 import Category from "./Category.js";
 import User from "./User.js";
@@ -260,7 +260,7 @@ let VideoSystem = (function () {
                 if (position_username === -1 && position_email === -1) { // The user is not registered yet
                     user = new User(username, email, password); // We create user object because it doesn't exist yet.
                 } else { // The user is registered
-                   if (position_username === -1) {
+                    if (position_username === -1) {
                         user = this.#users[position_username]; // We recover the user of the array with the same username
                     } else {
                         user = this.#users[position_email]; // We recover the user of the array with the same email
@@ -360,7 +360,7 @@ let VideoSystem = (function () {
             }
 
             // Factory for Actor
-            getActor(name, lastname1, lastname2, dni, born, picture) {                
+            getActor(name, lastname1, lastname2, dni, born, picture) {
                 // We obtain the position of the actor in the array
                 let position_dni = this.#actors.findIndex((actor) => actor.dni === dni);
                 let person;
@@ -410,7 +410,7 @@ let VideoSystem = (function () {
             }
 
             // Factory for Director
-            getDirector(name, lastname1, lastname2, dni, born, picture) {                
+            getDirector(name, lastname1, lastname2, dni, born, picture) {
                 // We obtain the position of the director in the array
                 let position_dni = this.#directors.findIndex((director) => director.dni === dni);
                 let person;
@@ -458,6 +458,64 @@ let VideoSystem = (function () {
                 }
                 return this.#directors.length;
             }
+
+            assignCategory(category, ...productions) {
+                let position = this.#getCategoryPosition(category);
+
+                if (position === -1) {
+                    this.addCategory(category); // Añadimos la categoría si no existe
+                    position = this.#categories.length - 1;
+                }
+
+                for (let production of productions) {
+                    try { // Evitamos las producciones incorrectas y se agregan las correctas
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+                        let positionProd = this.#getProductionPosition(production);
+
+                        if (positionProd === -1) { // Si la producción no existe se agrega
+                            this.addProduction(production);
+                            positionProd = this.#productions.length - 1;
+                        }
+
+                        let title = this.#productions[positionProd].title;
+                        if(this.#categories[position].productions.indexOf(title) !== -1){ // Si la producción ya está asignada a la categoría se elimina
+                            throw new ProductionAssignExistsVideoSystemException(title);
+                        }
+
+                        this.#categories[position].productions.push(title); // Asignamos la producción
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                }
+                return this.#categories[position].productions.length;
+            }
+
+            deassignCategory(category, ...productions) {
+
+                if (!(category instanceof Category) || category == null) throw new CategoryVideoSystemException();
+
+                let position = this.#getCategoryPosition(category);
+
+                if (position === -1) throw new CategoryNonExistsVideoSystemException();
+
+                for (let production of productions) {
+                    try { // Evitamos las producciones incorrectas y se eliminan las correctas
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+                        let positionProd = this.#getProductionPosition(production);
+
+                        if (positionProd === -1) throw new ProductionNonExistsVideoSystemException();
+
+                        let title = this.#productions[positionProd].title;
+
+                        this.#categories[position].productions.splice(title, 1); // Eliminamos la producción
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                }
+                return this.#categories[position].productions.length;
+
+            }
+
 
         }
 
