@@ -666,11 +666,29 @@ let VideoSystem = (function () {
                 let directorsProduction = new Array(); // Array para las producciones de un director
 
                 for (let director of this.#directors) {
-                    for (let production of director.productions) {
-                        directorsProduction.push(production);
+                    if (director.director.name === person.name) {
+                        for (let production of director.productions) {
+                            directorsProduction.push(production);
+                        }
                     }
                 }
                 return directorsProduction;
+            }
+
+            getProductionsActor(person) {
+
+                if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let actorsProduction = new Array(); // Array para las producciones de un director
+
+                for (let actor of this.#actors) {
+                    if (actor.actor.name === person.name) {
+                        for (let production of actor.productions) {
+                            actorsProduction.push(production);
+                        }
+                    }
+                }
+                return actorsProduction;
             }
         }
 
