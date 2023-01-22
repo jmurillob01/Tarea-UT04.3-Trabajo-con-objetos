@@ -326,6 +326,36 @@ let VideoSystem = (function () {
 
                 if (position != -1) {
                     this.#productions.splice(position, 1); // Remove the production
+
+                    // delete production from categories
+                    this.#categories.forEach(category => {
+                        category.productions.forEach(productionC => {
+                            if (productionC === production.title) {
+                                let positionP = category.productions.indexOf(production.title)
+                                category.productions.splice(positionP,1);
+                            }
+                        });
+                    });
+
+                    // delete production from actors
+                    this.#actors.forEach(actor => {
+                        actor.productions.forEach(productionA => {
+                            if (productionA === production.title) {
+                                let positionP = actor.productions.indexOf(production.title)
+                                actor.productions.splice(positionP,1);
+                            }
+                        });
+                    });
+
+                    // delete production from directors
+                    this.#directors.forEach(director => {
+                        director.productions.forEach(productionD => {
+                            if (productionD === production.title) {
+                                let positionP = director.productions.indexOf(production.title)
+                                director.productions.splice(positionP,1);
+                            }
+                        });
+                    });
                 } else {
                     throw new ProductionNonExistsVideoSystemException();
                 }

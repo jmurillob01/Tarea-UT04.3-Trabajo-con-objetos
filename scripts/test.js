@@ -316,12 +316,16 @@ console.log(videosystem.assignActor(actor1, movie1, serie1, movie2));
 console.log("Asignamos al actor 2 las producciones anteriores");
 console.log(videosystem.assignActor(actor2, movie1, serie1));
 console.log("Desasignamos al actor 1 una producción");
-console.log(videosystem.deassignActor(actor1, movie2));
+console.log(videosystem.deassignActor(actor1, movie1));
 
 console.log("------------------------------------------------------------");
 console.log("");
 
+console.log("Si borramos una producción, se elimina de actor, director y categoría");
+videosystem.removeProduction(movie2);
 
+console.log("------------------------------------------------------------");
+console.log(""); 
 console.log("Obtenemos el cast de una película");
 showCast(movie1);
 
