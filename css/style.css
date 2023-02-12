@@ -9,6 +9,7 @@ body {
 }
 
 /* Nav */
+/* TODO: al estar en un enlace activo que el color se mantenga, hacer con JS */
 .navbar, .dropdown-menu {
     background-color: var(--bg-grey-100) !important;
 }
