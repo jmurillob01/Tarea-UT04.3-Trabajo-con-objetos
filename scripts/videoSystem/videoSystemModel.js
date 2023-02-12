@@ -6,13 +6,13 @@ import {
     UserExistsVideoSystemException, UserNonExistsVideoSystemException, ProductionVideoSystemException,
     ProductionExistsVideoSystemException, ProductionNonExistsVideoSystemException, PersonVideoSystemException,
     PersonExistsVideoSystemException, PersonNonExistsVideoSystemException, ProductionAssignExistsVideoSystemException
-} from "./Exception.js";
-import Category from "./Category.js";
-import User from "./User.js";
-import Production from "./Production.js";
-import Movie from "./Movie.js";
-import Serie from "./Serie.js";
-import Person from "./Person.js";
+} from "../Exception.js";
+import Category from "../Category.js";
+import User from "../User.js";
+import Production from "../Production.js";
+import Movie from "../Movie.js";
+import Serie from "../Serie.js";
+import Person from "../Person.js";
 
 
 
@@ -298,23 +298,42 @@ let VideoSystem = (function () {
 
                 if (position === -1) { // The production is not registered yet
                     serie = new Serie(title, nationality, publication, synopsis, image, resource, locations, seasons);
-                }else{ // The production is registered
+                } else { // The production is registered
                     serie = this.#productions[position];
                 }
                 return serie;
             }
 
             // Add new Production to the system
-            addProduction(production) {
-                if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+            // addProduction(production) {
+            //     if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
 
-                let position = this.#getProductionPosition(production);
+            //     let position = this.#getProductionPosition(production);
 
-                if (position === -1) { // The production is not registered yet
-                    this.#productions.push(production);
-                } else { // The production is registered
-                    throw new ProductionExistsVideoSystemException();
+            //     if (position === -1) { // The production is not registered yet
+            //         this.#productions.push(production);
+            //     } else { // The production is registered
+            //         throw new ProductionExistsVideoSystemException();
+            //     }
+            //     return this.#productions.length;
+            // }
+            addProduction(...productions) {
+                for (let production of productions) {
+                    try { // We avoid incorrect productions and add the correct ones
+                        if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+
+                        let position = this.#getProductionPosition(production);
+
+                        if (position === -1) { // The production is not registered yet
+                            this.#productions.push(production);
+                        } else { // The production is registered
+                            throw new ProductionExistsVideoSystemException();
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }
+
                 return this.#productions.length;
             }
 
@@ -332,7 +351,7 @@ let VideoSystem = (function () {
                         category.productions.forEach(productionC => {
                             if (productionC === production.title) {
                                 let positionP = category.productions.indexOf(production.title)
-                                category.productions.splice(positionP,1);
+                                category.productions.splice(positionP, 1);
                             }
                         });
                     });
@@ -342,7 +361,7 @@ let VideoSystem = (function () {
                         actor.productions.forEach(productionA => {
                             if (productionA === production.title) {
                                 let positionP = actor.productions.indexOf(production.title)
-                                actor.productions.splice(positionP,1);
+                                actor.productions.splice(positionP, 1);
                             }
                         });
                     });
@@ -352,7 +371,7 @@ let VideoSystem = (function () {
                         director.productions.forEach(productionD => {
                             if (productionD === production.title) {
                                 let positionP = director.productions.indexOf(production.title)
-                                director.productions.splice(positionP,1);
+                                director.productions.splice(positionP, 1);
                             }
                         });
                     });
