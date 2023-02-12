@@ -1,0 +1,38 @@
+:root{
+    --bg-grey-100: #5b5b5b;
+    --bg-grey-200: #717171;
+    --bg-white-100: #ffffff;
+}
+
+body {
+    height: 100vh;
+}
+
+/* Nav */
+.navbar, .dropdown-menu {
+    background-color: var(--bg-grey-100) !important;
+}
+
+.navbar-brand, .nav-link{
+    color: var(--bg-white-100);
+}
+
+.dropdown-item:hover{
+    background-color: var(--bg-grey-200) !important;
+}
+
+/* footer */
+
+footer {
+    margin-top: 40vh;
+}
+
+.footer-container{
+    background-color: var(--bg-grey-100);
+    color: var(--bg-white-100)
+    
+}
+
+.copyright{
+    border-top: 1px solid black;
+} 
