@@ -1,6 +1,6 @@
 "use strict";
 
-import VideoSystem from "./videoSystemModel.js";
+import VideoSystem from "./VideoSystemModel.js";
 
 class VideoSystemController {
     #videoSystem;
@@ -8,8 +8,8 @@ class VideoSystemController {
 
     #loadVideoSystemObjects() {
         // Categories
-        let cat1 = this.#videoSystem.getCategory("Fantasy");
-        let cat2 = this.#videoSystem.getCategory("Comedy");
+        let cat1 = this.#videoSystem.getCategory("Fantasía");
+        let cat2 = this.#videoSystem.getCategory("Comedia");
         let cat3 = this.#videoSystem.getCategory("Horror");
         this.#videoSystem.addCategory(cat1);
         this.#videoSystem.addCategory(cat2);
@@ -51,7 +51,7 @@ class VideoSystemController {
         this.#videoSystem.assignActor(actor3, movie2, movie3);
         // Actor Temporal para seguir con el funcionamiento de nuestra app, una vez terminada se estableceran los actores y direcores correctamente
         this.#videoSystem.assignActor(actorTemporal, movie4, movie5, movie6, serie1, serie2, serie3, serie4, serie5, serie6);
-        this.#videoSystem.assignDirector(director1, movie2, movie3 ,movie4, movie5, movie6, serie1, serie2, serie3, serie4, serie5, serie6);
+        this.#videoSystem.assignDirector(director1, movie2, movie3, movie4, movie5, movie6, serie1, serie2, serie3, serie4, serie5, serie6);
 
         // User
         let adminUser = this.#videoSystem.getUser("Javier", "javiermb@gmail.com", "Abcd1234");
@@ -64,11 +64,28 @@ class VideoSystemController {
         this.#videoSystemView = view;
 
         this.onLoad();
+        this.onInit();
+
+        // Enlazamos handlers con la vista
+        this.#videoSystemView.bindInit(this.handleInit);
     }
 
     onLoad = () => {
         this.#loadVideoSystemObjects();
+        this.onListCategories();
     }
+
+    onInit = () => {
+        this.#videoSystemView.showCategories(this.#videoSystem.categories);
+    }
+
+    onListCategories = () =>{
+        this.#videoSystemView.showCategoriesInMenu(this.#videoSystem.categories);
+    } 
+
+    handleInit = () => {
+		this.onInit();
+	}
 }
 
 export default VideoSystemController;

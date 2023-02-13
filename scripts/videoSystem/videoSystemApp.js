@@ -1,8 +1,8 @@
 "use strict";
 
-import VideoSystem from "./videoSystemModel.js";
-import VideoSystemView from "./videoSystemView.js";
-import VideoSystemController from "./videoSystemController.js";
+import VideoSystem from "./VideoSystemModel.js";
+import VideoSystemView from "./VideoSystemView.js";
+import VideoSystemController from "./VideoSystemController.js";
 
 let VideoSystemApp;
 
