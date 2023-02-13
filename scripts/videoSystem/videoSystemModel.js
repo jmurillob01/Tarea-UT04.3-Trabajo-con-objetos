@@ -153,6 +153,17 @@ let VideoSystem = (function () {
                 }
             }
 
+            getProductionNumber() { // Method to obtain the number of productions
+                let productions = this.productions;
+                let count = 0;
+
+                for (const production of productions) {
+                    count++;
+                }
+                return count;
+
+            }
+
             get actors() { // Iterator from actors
                 let array = this.#actors;
                 return {

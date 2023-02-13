@@ -9,10 +9,11 @@ class VideoSystemView {
     }
 
     showCategories(categories) {
+        let main = document.getElementById("main");
         let categoriesFather = document.getElementById("categories");
 
         let childCategories = document.getElementById("category-list");
-        if(childCategories != null){ // Exist child
+        if (childCategories != null) { // Exist child
             categoriesFather.removeChild(childCategories);
         }
 
@@ -64,6 +65,48 @@ class VideoSystemView {
         }
         li.appendChild(ulCategories);
         ul.appendChild(li);
+    }
+
+    showProductions(randomNumbers, productions) {
+        let main = document.getElementById("main");
+        let productionsFather = document.getElementById("productions");
+
+        let childProductions = document.getElementById("productions-list");
+        if (childProductions != null) { // Exist child
+            productionsFather.removeChild(childProductions);
+        }
+
+
+        let container = document.createElement("div");
+        container.id = "productions-list";
+        container.className = "row d-flex";
+
+        let count = 0;
+        for (let production of productions) {
+            if (randomNumbers.includes(count)) {
+                let productionDiv = document.createElement("div");
+                productionDiv.style.display = "flex";
+                productionDiv.style.justifyContent = "center";
+
+                productionDiv.className = "col-lg-4 col-md-5 mt-5";
+
+                productionDiv.innerHTML = `
+				<div class="card" style="width: 18rem;">
+                    <img src="../img/${production.image}" class="card-img-top" alt="${production.image}">
+                    <div class="card-body">
+                        <h5 class="">${production.title}</h5>
+                        <p class="card-text">${production.synopsys}</p>
+                        <a href="#" class="btn btn-primary">Más información</a>
+                    </div>
+                </div>
+                `;
+
+                container.appendChild(productionDiv);
+            }
+
+            count++;
+        }
+        productionsFather.appendChild(container);
     }
 
     bindInit(handler) {

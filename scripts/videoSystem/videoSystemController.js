@@ -16,18 +16,18 @@ class VideoSystemController {
         this.#videoSystem.addCategory(cat3);
 
         // Productions
-        var movie1 = this.#videoSystem.getMovie("Black Adams", "Canada", "30/10/2022", "", "");
-        var movie2 = this.#videoSystem.getMovie("Free Guy", "United States", "13/08/2021", "", "");
-        var movie3 = this.#videoSystem.getMovie("Deadpool", "Canada", "12/02/2016", "", "");
-        var movie4 = this.#videoSystem.getMovie("The Invitation", "United States", "26/08/2022", "", "");
-        var movie5 = this.#videoSystem.getMovie("Nop", "United States", "22/07/2022", "", "");
-        var movie6 = this.#videoSystem.getMovie("De uskyldige", "Norway", "27/08/2021", "", "");
-        var serie1 = this.#videoSystem.getSerie("The Flash", "United States", "07/10/2014", "", "");
-        var serie2 = this.#videoSystem.getSerie("Wednesday", "United States", "23/11/2022", "", "");
-        var serie3 = this.#videoSystem.getSerie("Big Bang Theory", "United States", "24/09/2007", "", "");
-        var serie4 = this.#videoSystem.getSerie("The Fresh Prince of Bel-Air", "United States", "10/11/1990", "", "");
-        var serie5 = this.#videoSystem.getSerie("Ted Lasso", "United States", "14/08/2020", "", "");
-        var serie6 = this.#videoSystem.getSerie("Paranormal", "Egypt", "05/11/2020", "", "");
+        var movie1 = this.#videoSystem.getMovie("Black Adams", "Canada", "30/10/2022", "Synopsis", "descarga.jpg");
+        var movie2 = this.#videoSystem.getMovie("Free Guy", "United States", "13/08/2021", "Synopsis", "descarga.jpg");
+        var movie3 = this.#videoSystem.getMovie("Deadpool", "Canada", "12/02/2016", "Synopsis", "descarga.jpg");
+        var movie4 = this.#videoSystem.getMovie("The Invitation", "United States", "26/08/2022", "Synopsis", "descarga.jpg");
+        var movie5 = this.#videoSystem.getMovie("Nop", "United States", "22/07/2022", "Synopsis", "descarga.jpg");
+        var movie6 = this.#videoSystem.getMovie("De uskyldige", "Norway", "27/08/2021", "Synopsis", "descarga.jpg");
+        var serie1 = this.#videoSystem.getSerie("The Flash", "United States", "07/10/2014", "Synopsis", "descarga.jpg");
+        var serie2 = this.#videoSystem.getSerie("Wednesday", "United States", "23/11/2022", "Synopsis", "descarga.jpg");
+        var serie3 = this.#videoSystem.getSerie("Big Bang Theory", "United States", "24/09/2007", "Synopsis", "descarga.jpg");
+        var serie4 = this.#videoSystem.getSerie("The Fresh Prince of Bel-Air", "United States", "10/11/1990", "Synopsis", "descarga.jpg");
+        var serie5 = this.#videoSystem.getSerie("Ted Lasso", "United States", "14/08/2020", "Synopsis", "descarga.jpg");
+        var serie6 = this.#videoSystem.getSerie("Paranormal", "Egypt", "05/11/2020", "Synopsis", "descarga.jpg");
         // Testear
         // this.#videoSystem.addProduction(movie1, movie2, movie3);
         this.#videoSystem.assignCategory(cat1, movie1, serie1, serie2, serie3);
@@ -73,15 +73,34 @@ class VideoSystemController {
     onLoad = () => {
         this.#loadVideoSystemObjects();
         this.onListCategories();
+
+        // this.onListRandomProductions();
     }
 
     onInit = () => {
         this.#videoSystemView.showCategories(this.#videoSystem.categories);
+        this.onListRandomProductions();
     }
 
     onListCategories = () =>{
         this.#videoSystemView.showCategoriesInMenu(this.#videoSystem.categories);
-    } 
+    }
+
+    onListRandomProductions = () => {
+        let productionNumber = this.#videoSystem.getProductionNumber();
+        let randomNumbers = []; 
+        let productionAmount = 3;
+
+        for (let i = 0; i < productionAmount; i++) {
+            let number = Math.round(Math.random() * (productionNumber - 1));
+            while (randomNumbers.includes(number)) {
+                number = Math.round(Math.random() * (productionNumber - 1));
+            }
+            randomNumbers.push(number);
+        }
+        
+        this.#videoSystemView.showProductions(randomNumbers, this.#videoSystem.productions);
+    }
 
     handleInit = () => {
 		this.onInit();
