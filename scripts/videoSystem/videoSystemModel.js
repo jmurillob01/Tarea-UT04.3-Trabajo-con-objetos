@@ -770,6 +770,7 @@ let VideoSystem = (function () {
                 };
             }
 
+            // we obtain an iterator with the objects productions
             getProductionsObjectCategory(category) {
                 if (!(category instanceof Category) || category == null) throw new CategoryVideoSystemException();
                 let categoryProduction = new Array();

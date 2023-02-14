@@ -12,10 +12,11 @@ class VideoSystemView {
         let main = document.getElementById("main");
         let categoriesFather = document.getElementById("categories");
 
-        let childCategories = document.getElementById("category-list");
-        if (childCategories != null) { // Exist child
-            categoriesFather.removeChild(childCategories);
-        }
+        // let childCategories = document.getElementById("category-list");
+        // if (childCategories != null) { // Exist child
+        //     categoriesFather.removeChild(childCategories);
+        // }
+        this.emptyMainElements();
 
         let container = document.createElement("div");
         container.id = "category-list";
@@ -26,7 +27,7 @@ class VideoSystemView {
             categoryDiv.className = "col-lg-4 col-md-5 mt-5";
 
             categoryDiv.innerHTML = `
-				<a datacategory="${category.name}" href="#product-list">
+				<a data-category="${category.name}" href="#product-list" class="a-categories">
 					<div class="cat-list-image">
                         <img class="img-fluid" alt="${category.name}" src="../img/fantasyCategory.jpg" />
 					</div>
@@ -37,7 +38,6 @@ class VideoSystemView {
 				</a>`;
 
             container.appendChild(categoryDiv);
-
         }
         this.categories.appendChild(container);
     }
@@ -54,7 +54,6 @@ class VideoSystemView {
 
         let ulCategories = document.createElement("ul");
         ulCategories.className = ("dropdown-menu");
-        //if (!category.done) shopping
         for (let category of categories) {
             let liCategories = document.createElement("li");
             liCategories.innerHTML = `
@@ -71,11 +70,12 @@ class VideoSystemView {
         let main = document.getElementById("main");
         let productionsFather = document.getElementById("productions");
 
-        let childProductions = document.getElementById("productions-list");
-        if (childProductions != null) { // Exist child
-            productionsFather.removeChild(childProductions);
-        }
+        // let childProductions = document.getElementById("productions-list");
+        // if (childProductions != null) { // Exist child
+        //     productionsFather.removeChild(childProductions);
+        // }
 
+        // this.emptyMainElements();
 
         let container = document.createElement("div");
         container.id = "productions-list";
@@ -109,15 +109,104 @@ class VideoSystemView {
         productionsFather.appendChild(container);
     }
 
+    listProductions(productions,category) {
+        this.emptyMainElements();
+        let container = document.createElement("div");
+        container.id = ("production-list");
+        container.className = ("container my3");
+
+        let header = document.createElement("h1");
+        header.innerHTML = (category);
+
+        let containerChild = document.createElement("div");
+        containerChild.id = ("row");
+
+        containerChild.appendChild(header);
+        for (let production of productions) {
+            let div = document.createElement("div");
+            div.innerHTML = (`
+            <div class="col-md-4">
+                <figure class="card card-product-grid card-lg">
+                    <a data-title="${production.title}" href="#single-product" class="imgwrap">
+                        <img class="${production.constructor.name}-style" src="../img/${production.image}">
+                    </a>
+                     <figcaption class="info-wrap">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <a data-title="${production.title}" href="#singleproduct" class="title">${production.title}</a>
+                            </div>
+                             <div class="col-md-4">
+                                <div class="rating text-right">
+                                    <i class="fa fastar"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                             </div>
+                         </div>
+                     </figcaption>
+                     <div class="bottom-wrap">
+                        <a href="#" data-title="${production.title}" class="btn btn-primary floatright"> Información </a>
+                     </div>
+                 </figure>
+             </div>`);
+
+            containerChild.appendChild(div);
+        }
+        container.appendChild(containerChild);
+        this.main.appendChild(container);
+    }
+
     bindInit(handler) {
         // $('#init').click((event) => {
         // 	handler();
         // });
 
-        // Faltaría borrar lo que hay puesto para que no se duplique
         document.getElementById("logo").addEventListener("click", function () {
             handler();
         });
+    }
+
+    // Mostrar las producciones
+    bindProductionsCategoryList(handler) {
+        let categoryList = document.getElementsByClassName('a-categories');
+
+        for (let category of categoryList) {
+            category.addEventListener("click", function () {
+                handler(this.dataset.category);
+            });
+        }
+    }
+
+    bindProductionsCategoryListInMenu(handler) {
+        let categoryListNav = document.getElementsByClassName('dropdown-item');
+
+        for (let category of categoryListNav) {
+            category.addEventListener("click", function () {
+                handler(this.dataset.category);
+            });
+        }
+    }
+
+    emptyMainElements() {
+        let main = document.getElementById("main");
+        let categories = document.getElementById('categories');
+        let productionsRandom = document.getElementById('productions');
+
+        // Hay más de elementos que no son los principales
+        if (main.childElementCount > 2) {
+            while(main.childElementCount > 2){
+                main.lastElementChild.remove();
+            }
+        }
+
+        while (categories.firstElementChild) {
+            categories.firstElementChild.remove();
+        }
+        while (productionsRandom.firstElementChild) {
+            productionsRandom.firstElementChild.remove();
+        }
+
+
     }
 }
 

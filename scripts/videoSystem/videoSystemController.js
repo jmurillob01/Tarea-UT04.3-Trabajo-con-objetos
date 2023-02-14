@@ -80,10 +80,17 @@ class VideoSystemController {
     onInit = () => {
         this.#videoSystemView.showCategories(this.#videoSystem.categories);
         this.onListRandomProductions();
+        // Mostrar producciones de una categoría
+        this.#videoSystemView.bindProductionsCategoryList(
+            this.handleProductionsCategoryList
+        );
     }
 
     onListCategories = () =>{
         this.#videoSystemView.showCategoriesInMenu(this.#videoSystem.categories);
+        this.#videoSystemView.bindProductionsCategoryListInMenu(
+            this.handleProductionsCategoryList
+        );
     }
 
     onListRandomProductions = () => {
@@ -105,6 +112,13 @@ class VideoSystemController {
     handleInit = () => {
 		this.onInit();
 	}
+
+    handleProductionsCategoryList = (title) => {
+        let category = this.#videoSystem.getCategory(title);
+        this.#videoSystemView.listProductions(this.#videoSystem.getProductionsObjectCategory(category), category.name);
+
+        // this.#managerView.bindShowProduct(this.handleShowProduct);
+    }
 }
 
 export default VideoSystemController;

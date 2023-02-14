@@ -87,6 +87,10 @@ class Production{
     get image(){
         return this.#image;
     }
+
+    get publication(){
+        return this.#publication;
+    }
 }
 
 export default Production;
