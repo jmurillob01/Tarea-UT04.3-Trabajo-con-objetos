@@ -770,6 +770,35 @@ let VideoSystem = (function () {
                 };
             }
 
+            getProductionsObjectCategory(category) {
+                if (!(category instanceof Category) || category == null) throw new CategoryVideoSystemException();
+                let categoryProduction = new Array();
+                let productionsTitle = new Array();
+
+                for (let categoryObject of this.#categories) {
+                    if (categoryObject.category.name === category.name) {
+                        for (let production of categoryObject.productions) {
+                            productionsTitle.push(production);
+                        }
+                    }
+                }
+
+                for (let production of this.#productions) {
+                    if (productionsTitle.includes(production.title) ) {
+                        categoryProduction.push(production);
+                    }
+                }
+                return {
+                    *[Symbol.iterator]() {
+                        // We go through all the productions.
+                        for (let i = 0; i < categoryProduction.length; i++) {
+                            yield categoryProduction[i];
+                        }
+                    }
+                };
+
+            }
+
         }
 
         let instance = new VideoSystem(name); // We return the VideoSystem object to be a single instance.
