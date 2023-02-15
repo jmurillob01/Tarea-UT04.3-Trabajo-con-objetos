@@ -39,8 +39,8 @@ class VideoSystemController {
         var directorTemporal = this.#videoSystem.getDirector("Temporal", "Temporal", "", "88888888A", "23/03/1974");
 
         // Actors
-        var actor1 = this.#videoSystem.getActor("Dwayne", "Johnson", "", "00001001A", "02/05/1972");
-        var actor2 = this.#videoSystem.getActor("Aldis", "Hodge", "", "00001002A", "20/09/1986");
+        var actor1 = this.#videoSystem.getActor("Dwayne", "Johnson", "", "00001001A", "02/05/1972", "Dwayne_Johnson.jpg");
+        var actor2 = this.#videoSystem.getActor("Aldis", "Hodge", "", "00001002A", "20/09/1986", "Aldis_Hodge.jpg");
         var actor3 = this.#videoSystem.getActor("Ryan", "Reynolds", "", "00001003A", "23/10/1976");
         var actorTemporal = this.#videoSystem.getActor("Temporal", "Temporal", "", "99999999A", "23/10/1976");
 
@@ -86,7 +86,7 @@ class VideoSystemController {
         );
     }
 
-    onListCategories = () =>{
+    onListCategories = () =>{ // Muestra las categorías en el nav
         this.#videoSystemView.showCategoriesInMenu(this.#videoSystem.categories);
         this.#videoSystemView.bindProductionsCategoryListInMenu(
             this.handleProductionsCategoryList
@@ -117,7 +117,18 @@ class VideoSystemController {
         let category = this.#videoSystem.getCategory(title);
         this.#videoSystemView.listProductions(this.#videoSystem.getProductionsObjectCategory(category), category.name);
 
+        // ES - Aquí hacer llamada para asignar el click de las producciones
+        this.#videoSystemView.bindProductionInformation(
+            this.handleProductionInformation
+        );
         // this.#managerView.bindShowProduct(this.handleShowProduct);
+    }
+
+    handleProductionInformation = (title) => {
+        let production = this.#videoSystem.getProductionObject(title);
+
+        this.#videoSystemView.listProductionInformation(production, this.#videoSystem.getCast(production));
+
     }
 }
 

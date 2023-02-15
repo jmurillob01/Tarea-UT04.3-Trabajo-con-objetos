@@ -109,7 +109,7 @@ class VideoSystemView {
         productionsFather.appendChild(container);
     }
 
-    listProductions(productions,category) {
+    listProductions(productions, category) {
         this.emptyMainElements();
         let container = document.createElement("div");
         container.id = ("production-list");
@@ -126,7 +126,7 @@ class VideoSystemView {
             let div = document.createElement("div");
             div.innerHTML = (`
             <div class="col-md-4">
-                <figure class="card card-product-grid card-lg">
+                <figure class="card card-lg card-production" data-title="${production.title}">
                     <a data-title="${production.title}" href="#single-product" class="imgwrap">
                         <img class="${production.constructor.name}-style" src="../img/${production.image}">
                     </a>
@@ -153,6 +153,60 @@ class VideoSystemView {
             containerChild.appendChild(div);
         }
         container.appendChild(containerChild);
+        this.main.appendChild(container);
+    }
+
+    listProductionInformation(production, casting) {
+        this.emptyMainElements();
+
+        let container = document.createElement("div");
+        container.id = ("production-info");
+        container.className = ("container my3");
+
+        // let containerChild = document.createElement("div");
+        // containerChild.id = ("row");
+
+        container.innerHTML = (`
+            <table class="table table-secondary mt-5">
+                <thead>
+                    <tr>
+                    <th class="table-secondary" scope="col">#</th>
+                    <th class="table-secondary" scope="col">Título</th>
+                    <th class="table-secondary" scope="col">Synopsis</th>
+                    <th class="table-secondary" scope="col">Publicación</th>
+                    <th class="table-secondary" scope="col">Origen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>${production.title}</td>
+                        <td>${production.synopsys}</td>
+                        <td>${production.publication}</td>
+                        <td>${production.nacionality}</td>
+                    </tr>
+                </tbody>
+                </table>
+            `);
+
+
+        for (let actor of casting) {
+            let containerChild = document.createElement("div");
+            containerChild.id = ("row");
+            containerChild.innerHTML = (`
+            <div class="card" style="width: 18rem;">
+                <img src="../img/${actor.actor.picture}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <p class="card-text">${actor.actor.name} ${actor.actor.lastname1}</p>
+                </div>
+            </div>
+            `);
+
+            container.appendChild(containerChild);
+        }
+
+
+        // container.appendChild(containerChild);
         this.main.appendChild(container);
     }
 
@@ -187,6 +241,16 @@ class VideoSystemView {
         }
     }
 
+    bindProductionInformation(handler) {
+        let productionList = document.getElementsByClassName("card-production");
+
+        for (let production of productionList) {
+            production.addEventListener("click", function () {
+                handler(this.dataset.title);
+            });
+        }
+    }
+
     emptyMainElements() {
         let main = document.getElementById("main");
         let categories = document.getElementById('categories');
@@ -194,7 +258,7 @@ class VideoSystemView {
 
         // Hay más de elementos que no son los principales
         if (main.childElementCount > 2) {
-            while(main.childElementCount > 2){
+            while (main.childElementCount > 2) {
                 main.lastElementChild.remove();
             }
         }

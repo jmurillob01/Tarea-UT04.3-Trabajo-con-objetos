@@ -87,6 +87,14 @@ let VideoSystem = (function () {
                 return this.#productions.findIndex(compareElements);
             }
 
+            #getProductionPositionByTitle(title) { // Es - Núevo método para obtener la posición de una producción buscada por título
+                function compareElements(element) {
+                    return (element.title === title)
+                }
+
+                return this.#productions.findIndex(compareElements);
+            }
+
             #getActorPosition(person) {
                 function compareActorDni(element) {
                     return (element.actor.dni === person.dni)
@@ -785,7 +793,7 @@ let VideoSystem = (function () {
                 }
 
                 for (let production of this.#productions) {
-                    if (productionsTitle.includes(production.title) ) {
+                    if (productionsTitle.includes(production.title)) {
                         categoryProduction.push(production);
                     }
                 }
@@ -798,6 +806,12 @@ let VideoSystem = (function () {
                     }
                 };
 
+            }
+
+            getProductionObject(title) {
+
+                let position = this.#getProductionPositionByTitle(title);
+                return this.#productions[position];
             }
 
         }
