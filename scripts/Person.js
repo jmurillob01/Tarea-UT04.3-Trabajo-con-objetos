@@ -64,7 +64,7 @@ class Person {
         // We check that the date is not modified when it is created with incorrect data
         if (born != this.#toStringDate(this.#createDate(born))) throw new InvalidPersonException("born");
         // Picture check
-        if (!REGEX_IMG.test(picture) && typeof picture != "string" || picture.trim() != "") throw new InvalidPersonException("picture");
+        if (!REGEX_IMG.test(picture) && picture.trim() != "") throw new InvalidPersonException("picture");
         //DNI check
         if (!REGEX_DNI.test(dni)) throw new InvalidPersonException("dni");
 
@@ -102,7 +102,7 @@ class Person {
     }
 
     set picture(picture) { // Setter picture
-        if (!REGEX_IMG.test(picture) || typeof picture != "string" || picture.trim() != "") throw new InvalidPersonException("picture");
+        if (!REGEX_IMG.test(picture) && picture.trim() != "") throw new InvalidPersonException("picture");
         this.#picture = picture;
     }
 

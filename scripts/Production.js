@@ -91,6 +91,10 @@ class Production {
     get publication() {
         return this.#toStringDate(this.#publication);
     }
+
+    get nacionality() {
+        return this.#nacionality;
+    }
 }
 
 Object.defineProperty(Production.prototype, 'title', {enumerable: true});
