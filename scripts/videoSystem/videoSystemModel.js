@@ -708,6 +708,32 @@ let VideoSystem = (function () {
                 };
             }
 
+            // Production is an object iterator
+            getDirectorsDepartment(production) {
+                if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
+
+                let directorsArray = this.#directors;
+                let directorDepartment = new Array(); // Array to add the directors of the production
+
+                for (let director of directorsArray) {
+                    // We go through the productions of each director
+                    for (let productionDirector of director.productions) {
+                        // If the production matches the one received, we add it to the array
+                        if (productionDirector === production.title) {
+                            directorDepartment.push(director);
+                        }
+                    }
+                }
+                return {
+                    *[Symbol.iterator]() {
+                        // We go through all the productions.
+                        for (let i = 0; i < directorDepartment.length; i++) {
+                            yield directorDepartment[i];
+                        }
+                    }
+                };
+            }
+
             // Gets an iterator with the productions of a director.
             getProductionsDirector(person) {
                 if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();

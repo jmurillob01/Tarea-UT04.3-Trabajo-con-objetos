@@ -127,7 +127,7 @@ class VideoSystemController {
     handleProductionInformation = (title) => {
         let production = this.#videoSystem.getProductionObject(title);
 
-        this.#videoSystemView.listProductionInformation(production, this.#videoSystem.getCast(production));
+        this.#videoSystemView.listProductionInformation(production, this.#videoSystem.getCast(production), this.#videoSystem.getDirectorsDepartment(production));
 
     }
 }
