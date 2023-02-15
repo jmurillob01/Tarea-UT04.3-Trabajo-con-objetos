@@ -107,6 +107,10 @@ class VideoSystemController {
         }
         
         this.#videoSystemView.showProductions(randomNumbers, this.#videoSystem.productions);
+        // ES - Aquí hacer llamada para asignar el click de las producciones
+        this.#videoSystemView.bindProductionInformation(
+            this.handleProductionInformation
+        );
     }
 
     handleInit = () => {

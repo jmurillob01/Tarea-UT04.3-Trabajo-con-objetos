@@ -12,10 +12,6 @@ class VideoSystemView {
         let main = document.getElementById("main");
         let categoriesFather = document.getElementById("categories");
 
-        // let childCategories = document.getElementById("category-list");
-        // if (childCategories != null) { // Exist child
-        //     categoriesFather.removeChild(childCategories);
-        // }
         this.emptyMainElements();
 
         let container = document.createElement("div");
@@ -83,16 +79,14 @@ class VideoSystemView {
                 productionDiv.className = "col-lg-4 col-md-5 mt-5";
 
                 productionDiv.innerHTML = `
-				<div class="card" style="width: 18rem;">
-                    <img src="../img/${production.image}" class="card-img-top" alt="${production.image}">
+				
+                <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
+                    <img src="../img/${production.image}" class="card-img-top person-img" alt="...">
                     <div class="card-body">
-                        <h5 class="">${production.title}</h5>
-                        <p class="card-text">${production.synopsys}</p>
-                        <a href="#" class="btn btn-primary">Más información</a>
+                        <p class="card-text">${production.title}</p>
                     </div>
-                </div>
+                 </div>
                 `;
-
                 container.appendChild(productionDiv);
             }
 
@@ -245,10 +239,9 @@ class VideoSystemView {
     bindProductionInformation(handler) {
         let productionList = document.getElementsByClassName("card-production");
 
-        
         for (let production of productionList) {
             production.addEventListener("click", function () {
-                console.log(this.dataset.title);
+                console.log("Producción");
                 handler(this.dataset.title);
             });
         }
