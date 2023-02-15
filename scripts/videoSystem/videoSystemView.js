@@ -67,15 +67,7 @@ class VideoSystemView {
     }
 
     showProductions(randomNumbers, productions) {
-        let main = document.getElementById("main");
         let productionsFather = document.getElementById("productions");
-
-        // let childProductions = document.getElementById("productions-list");
-        // if (childProductions != null) { // Exist child
-        //     productionsFather.removeChild(childProductions);
-        // }
-
-        // this.emptyMainElements();
 
         let container = document.createElement("div");
         container.id = "productions-list";
@@ -113,41 +105,26 @@ class VideoSystemView {
         this.emptyMainElements();
         let container = document.createElement("div");
         container.id = ("production-list");
-        container.className = ("container my3");
+        container.className = "container my3";
 
-        let header = document.createElement("h1");
+        let header = document.createElement("h2");
+        header.className = ("mt-5");
         header.innerHTML = (category);
 
         let containerChild = document.createElement("div");
-        containerChild.id = ("row");
+        containerChild.className = ("container-row");
 
-        containerChild.appendChild(header);
+        container.appendChild(header);
         for (let production of productions) {
             let div = document.createElement("div");
             div.innerHTML = (`
             <div class="col-md-4">
-                <figure class="card card-lg card-production" data-title="${production.title}">
-                    <a data-title="${production.title}" href="#single-product" class="imgwrap">
-                        <img class="${production.constructor.name}-style" src="../img/${production.image}">
-                    </a>
-                     <figcaption class="info-wrap">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <a data-title="${production.title}" href="#singleproduct" class="title">${production.title}</a>
-                            </div>
-                             <div class="col-md-4">
-                                <div class="rating text-right">
-                                    <i class="fa fastar"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                             </div>
-                         </div>
-                     </figcaption>
-                     <div class="bottom-wrap">
-                        <a href="#" data-title="${production.title}" class="btn btn-primary floatright"> Información </a>
-                     </div>
-                 </figure>
+                <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
+                    <img src="../img/${production.image}" class="card-img-top person-img" alt="...">
+                    <div class="card-body">
+                        <p class="card-text">${production.title}</p>
+                    </div>
+                </div>
              </div>`);
 
             containerChild.appendChild(div);
@@ -156,15 +133,12 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
-    listProductionInformation(production, casting) {
+    listProductionInformation(production, casting, directors) {
         this.emptyMainElements();
 
         let container = document.createElement("div");
         container.id = ("production-info");
         container.className = ("container my3");
-
-        // let containerChild = document.createElement("div");
-        // containerChild.id = ("row");
 
         container.innerHTML = (`
             <table class="table table-secondary mt-5">
@@ -181,7 +155,7 @@ class VideoSystemView {
                     <tr>
                         <th scope="row">1</th>
                         <td>${production.title}</td>
-                        <td>${production.synopsys}</td>
+                        <td>${production.synopsis}</td>
                         <td>${production.publication}</td>
                         <td>${production.nacionality}</td>
                     </tr>
@@ -189,24 +163,51 @@ class VideoSystemView {
                 </table>
             `);
 
+        // Actors
+        let containerChildActors = document.createElement("div");
+        containerChildActors.className = ("container-row");
+        let headerActor = document.createElement("h2");
+        headerActor.className = ("mt-5");
+        headerActor.innerHTML = ("Actores");
+        container.appendChild(headerActor);
 
         for (let actor of casting) {
-            let containerChild = document.createElement("div");
-            containerChild.id = ("row");
-            containerChild.innerHTML = (`
+            let containerActor = document.createElement("div");
+            containerActor.innerHTML = (`
             <div class="card" style="width: 18rem;">
-                <img src="../img/${actor.actor.picture}" class="card-img-top" alt="...">
+                <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="...">
                 <div class="card-body">
                     <p class="card-text">${actor.actor.name} ${actor.actor.lastname1}</p>
                 </div>
             </div>
             `);
-
-            container.appendChild(containerChild);
+            containerChildActors.appendChild(containerActor);
         }
+        container.appendChild(containerChildActors);
 
+        // Directors
+        let containerChildDirectors = document.createElement("div");
+        containerChildDirectors.className = ("container-row");
+        let headerDirector= document.createElement("h2");
+        headerDirector.className = ("mt-5");
+        headerDirector.innerHTML = ("Directores");
+        container.appendChild(headerDirector);
 
-        // container.appendChild(containerChild);
+        for (let director of directors) {
+            let containerDirector = document.createElement("div");
+            containerDirector.innerHTML = (`
+            <div class="card" style="width: 18rem;">
+                <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="...">
+                <div class="card-body">
+                    <p class="card-text">${director.director.name} ${director.director.lastname1}</p>
+                </div>
+            </div>
+            `);
+            containerChildDirectors.appendChild(containerDirector);
+        }
+        container.appendChild(containerChildDirectors);
+        
+        
         this.main.appendChild(container);
     }
 
@@ -244,8 +245,10 @@ class VideoSystemView {
     bindProductionInformation(handler) {
         let productionList = document.getElementsByClassName("card-production");
 
+        
         for (let production of productionList) {
             production.addEventListener("click", function () {
+                console.log(this.dataset.title);
                 handler(this.dataset.title);
             });
         }

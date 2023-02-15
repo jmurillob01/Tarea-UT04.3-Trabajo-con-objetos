@@ -16,7 +16,7 @@ class VideoSystemController {
         this.#videoSystem.addCategory(cat3);
 
         // Productions
-        var movie1 = this.#videoSystem.getMovie("Black Adams", "Canada", "30/10/2022", "Synopsis", "descarga.jpg");
+        var movie1 = this.#videoSystem.getMovie("Black Adam", "Canada", "30/10/2022", "Unos arqueólogos liberan de su tumba a Black Adam, quien llevaba 5000 años preso tras haber recibido los poderes de los dioses. De nuevo entre los humanos, Black Adam se dispone a imponer su justicia, muy diferente a la del mundo en el que despertó.", "/productions/Black_Adam.jpg");
         var movie2 = this.#videoSystem.getMovie("Free Guy", "United States", "13/08/2021", "Synopsis", "descarga.jpg");
         var movie3 = this.#videoSystem.getMovie("Deadpool", "Canada", "12/02/2016", "Synopsis", "descarga.jpg");
         var movie4 = this.#videoSystem.getMovie("The Invitation", "United States", "26/08/2022", "Synopsis", "descarga.jpg");
@@ -35,7 +35,7 @@ class VideoSystemController {
         this.#videoSystem.assignCategory(cat3, serie6, movie4, movie5, movie6);
 
         // Directors
-        var director1 = this.#videoSystem.getDirector("Jaume", "Collet", "Serra", "00000001A", "23/03/1974");
+        var director1 = this.#videoSystem.getDirector("Jaume", "Collet", "Serra", "00000001A", "23/03/1974", "Jaume_Collet.jpg");
         var directorTemporal = this.#videoSystem.getDirector("Temporal", "Temporal", "", "88888888A", "23/03/1974");
 
         // Actors
