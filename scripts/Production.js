@@ -89,7 +89,7 @@ class Production {
     }
 
     get publication() {
-        return this.#publication;
+        return this.#toStringDate(this.#publication);
     }
 }
 
