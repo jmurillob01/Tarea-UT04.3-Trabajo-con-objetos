@@ -168,7 +168,7 @@ class VideoSystemView {
         for (let actor of casting) {
             let containerActor = document.createElement("div");
             containerActor.innerHTML = (`
-            <div class="card" style="width: 18rem;">
+            <div class="card person-production" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}" style="width: 18rem;">
                 <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="...">
                 <div class="card-body">
                     <p class="card-text">${actor.actor.name} ${actor.actor.lastname1}</p>
@@ -182,26 +182,64 @@ class VideoSystemView {
         // Directors
         let containerChildDirectors = document.createElement("div");
         containerChildDirectors.className = ("container-row");
-        let headerDirector= document.createElement("h2");
+        let headerDirector = document.createElement("h2");
         headerDirector.className = ("mt-5");
         headerDirector.innerHTML = ("Directores");
         container.appendChild(headerDirector);
 
         for (let director of directors) {
-            let containerDirector = document.createElement("div");
-            containerDirector.innerHTML = (`
-            <div class="card" style="width: 18rem;">
+            try {
+                let containerDirector = document.createElement("div");
+                containerDirector.innerHTML = (`
+            <div class="card person-production" data-dni="${director.director.dni}" data-rol="${director.director.rol}" style="width: 18rem;">
                 <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="...">
                 <div class="card-body">
                     <p class="card-text">${director.director.name} ${director.director.lastname1}</p>
                 </div>
             </div>
             `);
-            containerChildDirectors.appendChild(containerDirector);
+                containerChildDirectors.appendChild(containerDirector);
+            } catch (error) {
+                console.error(error.message);
+            }
+
         }
         container.appendChild(containerChildDirectors);
-        
-        
+
+
+        this.main.appendChild(container);
+    }
+
+    listPersonProductions(productions, actor) {
+        this.emptyMainElements();
+        let container = document.createElement("div");
+        container.id = ("production-list");
+        container.className = "container my3";
+
+        let header = document.createElement("h2");
+        header.className = ("mt-5");
+        header.innerHTML = ("Where to find " + actor.name + " " + actor.lastname1 + ":");
+
+        let containerChild = document.createElement("div");
+        containerChild.className = ("container-row");
+
+        container.appendChild(header);
+        for (let production of productions) {
+            console.log(production);
+            let div = document.createElement("div");
+            div.innerHTML = (`
+            <div class="col-md-4">
+                <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
+                    <img src="../img/${production.image}" class="card-img-top person-img" alt="...">
+                    <div class="card-body">
+                        <p class="card-text">${production.title}</p>
+                    </div>
+                </div>
+             </div>`);
+
+            containerChild.appendChild(div);
+        }
+        container.appendChild(containerChild);
         this.main.appendChild(container);
     }
 
@@ -241,8 +279,17 @@ class VideoSystemView {
 
         for (let production of productionList) {
             production.addEventListener("click", function () {
-                console.log("Producción");
                 handler(this.dataset.title);
+            });
+        }
+    }
+
+    bindProductionPerson(handler) {
+        let personList = document.getElementsByClassName("person-production");
+
+        for (let person of personList) {
+            person.addEventListener("click", function () {
+                handler(this.dataset.dni, this.dataset.rol);
             });
         }
     }

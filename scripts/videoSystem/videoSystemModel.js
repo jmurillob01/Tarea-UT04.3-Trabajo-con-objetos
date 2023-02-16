@@ -103,9 +103,25 @@ let VideoSystem = (function () {
                 return this.#actors.findIndex(compareActorDni);
             }
 
+            #getActorPositionDNI(dni) {
+                function compareActorDni(element) {
+                    return (element.actor.dni === dni)
+                }
+
+                return this.#actors.findIndex(compareActorDni);
+            }
+
             #getDirectorPosition(person) {
                 function compareDirectorDni(element) {
                     return (element.director.dni === person.dni)
+                }
+
+                return this.#directors.findIndex(compareDirectorDni);
+            }
+
+            #getDirectorPositionDNI(dni) {
+                function compareDirectorDni(element) {
+                    return (element.director.dni === dni)
                 }
 
                 return this.#directors.findIndex(compareDirectorDni);
@@ -410,6 +426,22 @@ let VideoSystem = (function () {
                 } else { // The person is registered
                     person = this.#actors[position_dni];
                 }
+                return person;
+            }
+
+            getActorByDNI(dni) {
+                let position_dni = this.#getActorPositionDNI(dni);
+
+                let person = this.#actors[position_dni];
+
+                return person;
+            }
+
+            getDirectorByDNI(dni) {
+                let position_dni = this.#getDirectorPositionDNI(dni);
+
+                let person = this.#directors[position_dni];
+
                 return person;
             }
 

@@ -35,17 +35,16 @@ class VideoSystemController {
         this.#videoSystem.assignCategory(cat3, serie6, movie4, movie5, movie6);
 
         // Directors
-        var director1 = this.#videoSystem.getDirector("Jaume", "Collet", "Serra", "00000001A", "23/03/1974", "Jaume_Collet.jpg");
-        var directorTemporal = this.#videoSystem.getDirector("Temporal", "Temporal", "", "88888888A", "23/03/1974");
+        var director1 = this.#videoSystem.getDirector("Jaume", "Collet", "Serra", "00000001A", "23/03/1974", "/persons/Jaume_Collet.jpg", "director");
+        var directorTemporal = this.#videoSystem.getDirector("Temporal", "Temporal", "", "88888888A", "23/03/1974", "/persons/Jaume_Collet.jpg", "director");
 
         // Actors
-        var actor1 = this.#videoSystem.getActor("Dwayne", "Johnson", "", "00001001A", "02/05/1972", "Dwayne_Johnson.jpg");
-        var actor2 = this.#videoSystem.getActor("Aldis", "Hodge", "", "00001002A", "20/09/1986", "Aldis_Hodge.jpg");
-        var actor3 = this.#videoSystem.getActor("Ryan", "Reynolds", "", "00001003A", "23/10/1976");
-        var actorTemporal = this.#videoSystem.getActor("Temporal", "Temporal", "", "99999999A", "23/10/1976");
+        var actor1 = this.#videoSystem.getActor("Dwayne", "Johnson", "", "00001001A", "02/05/1972", "/persons/Dwayne_Johnson.jpg", "actor");
+        var actor2 = this.#videoSystem.getActor("Aldis", "Hodge", "", "00001002A", "20/09/1986", "/persons/Aldis_Hodge.jpg", "actor");
+        var actor3 = this.#videoSystem.getActor("Ryan", "Reynolds", "", "00001003A", "23/10/1976", "/persons/Aldis_Hodge.jpg", "actor");
+        var actorTemporal = this.#videoSystem.getActor("Temporal", "Temporal", "", "99999999A", "23/10/1976", "/persons/Jaume_Collet.jpg", "actor");
 
         this.#videoSystem.assignDirector(director1, movie1);
-
         this.#videoSystem.assignActor(actor1, movie1, movie2);
         this.#videoSystem.assignActor(actor2, movie1);
         this.#videoSystem.assignActor(actor3, movie2, movie3);
@@ -86,7 +85,7 @@ class VideoSystemController {
         );
     }
 
-    onListCategories = () =>{ // Muestra las categorías en el nav
+    onListCategories = () => { // Es-es Muestra las categorías en el nav
         this.#videoSystemView.showCategoriesInMenu(this.#videoSystem.categories);
         this.#videoSystemView.bindProductionsCategoryListInMenu(
             this.handleProductionsCategoryList
@@ -95,7 +94,7 @@ class VideoSystemController {
 
     onListRandomProductions = () => {
         let productionNumber = this.#videoSystem.getProductionNumber();
-        let randomNumbers = []; 
+        let randomNumbers = [];
         let productionAmount = 3;
 
         for (let i = 0; i < productionAmount; i++) {
@@ -105,7 +104,7 @@ class VideoSystemController {
             }
             randomNumbers.push(number);
         }
-        
+
         this.#videoSystemView.showProductions(randomNumbers, this.#videoSystem.productions);
         // ES - Aquí hacer llamada para asignar el click de las producciones
         this.#videoSystemView.bindProductionInformation(
@@ -114,8 +113,8 @@ class VideoSystemController {
     }
 
     handleInit = () => {
-		this.onInit();
-	}
+        this.onInit();
+    }
 
     handleProductionsCategoryList = (title) => {
         let category = this.#videoSystem.getCategory(title);
@@ -133,7 +132,45 @@ class VideoSystemController {
 
         this.#videoSystemView.listProductionInformation(production, this.#videoSystem.getCast(production), this.#videoSystem.getDirectorsDepartment(production));
 
+        this.#videoSystemView.bindProductionPerson(
+            this.handleProductionPerson
+        );
     }
+
+    handleProductionPerson = (dni, rol) => { // ES-es Actores de una producción
+        let productionPerson;
+        let person;
+        
+        if (rol == "director") { // Director
+            productionPerson = this.#videoSystem.getProductionsDirectorByDNI(dni);
+            person = this.#videoSystem.getDirectorByDNI(dni).director;
+        } else { // Actor
+            productionPerson = this.#videoSystem.getProductionsActorByDNI(dni);
+            person = this.#videoSystem.getActorByDNI(dni).actor;
+        }
+        this.#videoSystemView.listPersonProductions(productionPerson, person);
+
+        this.#videoSystemView.bindProductionInformation(
+            this.handleProductionInformation
+        );
+    }
+
+    // handleProductionPerson = (dni, rol) => { // ES-es Actores de una producción
+    //     let person;
+        
+    //     if (rol == "director") { // Director
+    //         person = this.#videoSystem.getProductionsDirectorByDNI(dni);
+    //     } else { // Actor
+    //         person = this.#videoSystem.getProductionsActorByDNI(dni);
+    //     }
+
+    //     // console.log(productionPerson);
+    //     this.#videoSystemView.listPersonProductions(person);
+
+    //     this.#videoSystemView.bindProductionInformation(
+    //         this.handleProductionInformation
+    //     );
+    // }
 }
 
 export default VideoSystemController;
