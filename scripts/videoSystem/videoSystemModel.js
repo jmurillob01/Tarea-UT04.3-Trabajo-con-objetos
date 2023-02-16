@@ -401,7 +401,7 @@ let VideoSystem = (function () {
             }
 
             // Factory for Actor
-            getActor(name, lastname1, lastname2, dni, born, picture,rol) {
+            getActor(name, lastname1, lastname2, dni, born, picture, rol) {
                 let position_dni = this.#actors.findIndex((actor) => actor.dni === dni);
                 let person;
 
@@ -736,6 +736,7 @@ let VideoSystem = (function () {
 
             // Gets an iterator with the productions of a director.
             getProductionsDirector(person) {
+                // ES-es Con la nueva implementación de roles, este error estaría evitado
                 if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
 
                 let directorsProduction = new Array();
@@ -757,14 +758,49 @@ let VideoSystem = (function () {
                 };
             }
 
+            // Gets an iterator with the productions of a director.
+            getProductionsDirectorByDNI(dni) {
+                // ES-es Con la nueva implementación de roles, este error estaría evitado
+                // if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let directorsProduction = new Array();
+
+                for (let directorObject of this.#directors) {
+                    if (directorObject.director.dni === dni) {
+                        for (let production of directorObject.productions) {
+                            try {
+                                let position = this.#getProductionPositionByTitle(production);
+                                directorsProduction.push(this.#productions[position]);
+                            } catch (error) {
+                                console.error(error.message);
+                            }
+                        }
+                        break;
+                    }
+                }
+                return {
+                    *[Symbol.iterator]() {
+                        // We go through all the productions.
+                        for (let i = 0; i < directorsProduction.length; i++) {
+                            yield directorsProduction[i];
+                        }
+                    }
+                };
+            }
+
             // Gets an iterator with the productions of an Actor.
             getProductionsActor(person) {
+                // ES-es Con la nueva implementación de roles, este error estaría evitado
                 if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
 
                 let actorsProduction = new Array();
 
+                let personObj = JSON.parse(person);
+
+                console.log(personObj.name);
+
                 for (let actorObject of this.#actors) {
-                    if (actorObject.actor.name === person.name) {
+                    if (actorObject.actor.name === person.Name) {
                         for (let production of actorObject.productions) {
                             actorsProduction.push(production);
                         }
@@ -778,27 +814,33 @@ let VideoSystem = (function () {
                         }
                     }
                 };
-
             }
 
-            // Gets an iterator with the productions of a Person
-            getProductionsPersonByDNI(dni) {
+            // Gets an iterator with the productions of an Actor.
+            getProductionsActorByDNI(dni) {
+                // ES-es Con la nueva implementación de roles, este error estaría evitado
                 // if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
 
-                let personProductions = new Array();
+                let actorsProduction = new Array();
 
                 for (let actorObject of this.#actors) {
-                    if (actorObject.actor.name === person.name) {
+                    if (actorObject.actor.dni === dni) {
                         for (let production of actorObject.productions) {
-                            personProductions.push(production);
+                            try {
+                                let position = this.#getProductionPositionByTitle(production);
+                                actorsProduction.push(this.#productions[position]);
+                            } catch (error) {
+                                console.error(error.message);
+                            }
                         }
+                        break;
                     }
                 }
                 return {
                     *[Symbol.iterator]() {
                         // We go through all the productions.
-                        for (let i = 0; i < personProductions.length; i++) {
-                            yield personProductions[i];
+                        for (let i = 0; i < actorsProduction.length; i++) {
+                            yield actorsProduction[i];
                         }
                     }
                 };

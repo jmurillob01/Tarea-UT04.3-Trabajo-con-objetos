@@ -70,7 +70,6 @@ class Person {
         //DNI check
         if (!REGEX_DNI.test(dni)) throw new InvalidPersonException("dni");
         // Rol check
-        console.log(REGEX_ROL.test(rol));
         if (!REGEX_ROL.test(rol)) throw new InvalidPersonException("rol");
 
         this.#name = name;
@@ -125,5 +124,14 @@ class Person {
         return `Name: ${this.name}, First Lastname: ${this.lastname1}, Second Lastname: ${this.lastname2}, Birth: ${this.#toStringDate()}`;
     }
 }
+Object.defineProperty(Person.prototype, 'name', {enumerable: true});
+Object.defineProperty(Person.prototype, 'lastname1', {enumerable: true});
+Object.defineProperty(Person.prototype, 'lastname2', {enumerable: true});
+Object.defineProperty(Person.prototype, 'born', {enumerable: true});
+Object.defineProperty(Person.prototype, 'picture', {enumerable: true});
+Object.defineProperty(Person.prototype, 'dni', {enumerable: true});
+Object.defineProperty(Person.prototype, 'rol', {enumerable: true});
+
+
 
 export default Person;
