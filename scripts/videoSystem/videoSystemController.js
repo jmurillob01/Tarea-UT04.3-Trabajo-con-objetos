@@ -72,6 +72,7 @@ class VideoSystemController {
     onLoad = () => {
         this.#loadVideoSystemObjects();
         this.onListCategories();
+        this.onListPersons();
 
         // this.onListRandomProductions();
     }
@@ -89,6 +90,12 @@ class VideoSystemController {
         this.#videoSystemView.showCategoriesInMenu(this.#videoSystem.categories);
         this.#videoSystemView.bindProductionsCategoryListInMenu(
             this.handleProductionsCategoryList
+        );
+    }
+
+    onListPersons = () => {
+        this.#videoSystemView.bindPersonsNav(
+            this.handlePersonsNav
         );
     }
 
@@ -155,22 +162,23 @@ class VideoSystemController {
         );
     }
 
-    // handleProductionPerson = (dni, rol) => { // ES-es Actores de una producción
-    //     let person;
-        
-    //     if (rol == "director") { // Director
-    //         person = this.#videoSystem.getProductionsDirectorByDNI(dni);
-    //     } else { // Actor
-    //         person = this.#videoSystem.getProductionsActorByDNI(dni);
-    //     }
+    handlePersonsNav = (rol) => {
+        let personsList;
 
-    //     // console.log(productionPerson);
-    //     this.#videoSystemView.listPersonProductions(person);
+        if (rol == "director") { // Director
+            personsList = this.#videoSystem.directors;
+        } else { // Actor
+            personsList = this.#videoSystem.actors;
+        }
 
-    //     this.#videoSystemView.bindProductionInformation(
-    //         this.handleProductionInformation
-    //     );
-    // }
+        console.log(personsList);
+
+        this.#videoSystemView.listPersons(personsList);
+
+        this.#videoSystemView.bindProductionPerson(
+            this.handleProductionPerson
+        );
+    }
 }
 
 export default VideoSystemController;

@@ -243,6 +243,37 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
+    listPersons(personList){
+        this.emptyMainElements();
+
+        let container = document.createElement("div");
+        container.id = ("production-list");
+        container.className = "container my3";
+
+        let containerChildPerson = document.createElement("div");
+        containerChildPerson.className = ("container-row");
+        let headerPerson = document.createElement("h2");
+        headerPerson.className = ("mt-5");
+        headerPerson.innerHTML = ("Actores");
+        container.appendChild(headerPerson);
+
+        for (let person of personList) {
+            console.log(person);
+            let containerPerson = document.createElement("div");
+            containerPerson.innerHTML = (`
+            <div class="card person-production" data-dni="${person.dni}" data-rol="${person.rol}" style="width: 18rem;">
+                <img src="../img/${person.picture}" class="card-img-top person-img" alt="...">
+                <div class="card-body">
+                    <p class="card-text">${person.name} ${person.lastname1}</p>
+                </div>
+            </div>
+            `);
+            containerChildPerson.appendChild(containerPerson);
+        }
+        container.appendChild(containerChildPerson);
+        this.main.appendChild(container);
+    }
+
     bindInit(handler) {
         // $('#init').click((event) => {
         // 	handler();
@@ -290,6 +321,16 @@ class VideoSystemView {
         for (let person of personList) {
             person.addEventListener("click", function () {
                 handler(this.dataset.dni, this.dataset.rol);
+            });
+        }
+    }
+
+    bindPersonsNav(handler){
+        let personMenus = document.getElementsByClassName("nav-person");
+
+        for (let option of personMenus) {
+            option.addEventListener("click", function () {
+                handler(this.dataset.rol);
             });
         }
     }
