@@ -829,8 +829,6 @@ let VideoSystem = (function () {
 
                 let personObj = JSON.parse(person);
 
-                console.log(personObj.name);
-
                 for (let actorObject of this.#actors) {
                     if (actorObject.actor.name === person.Name) {
                         for (let production of actorObject.productions) {

@@ -225,7 +225,6 @@ class VideoSystemView {
 
         container.appendChild(header);
         for (let production of productions) {
-            console.log(production);
             let div = document.createElement("div");
             div.innerHTML = (`
             <div class="col-md-4">
@@ -258,7 +257,6 @@ class VideoSystemView {
         container.appendChild(headerPerson);
 
         for (let person of personList) {
-            console.log(person);
             let containerPerson = document.createElement("div");
             containerPerson.innerHTML = (`
             <div class="card person-production" data-dni="${person.dni}" data-rol="${person.rol}" style="width: 18rem;">
