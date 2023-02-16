@@ -401,12 +401,12 @@ let VideoSystem = (function () {
             }
 
             // Factory for Actor
-            getActor(name, lastname1, lastname2, dni, born, picture) {
+            getActor(name, lastname1, lastname2, dni, born, picture,rol) {
                 let position_dni = this.#actors.findIndex((actor) => actor.dni === dni);
                 let person;
 
                 if (position_dni === -1) { // The person is not registered yet
-                    person = new Person(name, lastname1, lastname2, dni, born, picture);
+                    person = new Person(name, lastname1, lastname2, dni, born, picture, rol);
                 } else { // The person is registered
                     person = this.#actors[position_dni];
                 }
@@ -447,12 +447,12 @@ let VideoSystem = (function () {
             }
 
             // Factory for Director
-            getDirector(name, lastname1, lastname2, dni, born, picture) {
+            getDirector(name, lastname1, lastname2, dni, born, picture, rol) {
                 let position_dni = this.#directors.findIndex((director) => director.dni === dni);
                 let person;
 
                 if (position_dni === -1) { // The person is not registered yet
-                    person = new Person(name, lastname1, lastname2, dni, born, picture);
+                    person = new Person(name, lastname1, lastname2, dni, born, picture, rol);
                 } else { // The person is registered
                     person = this.#directors[position_dni];
                 }
@@ -775,6 +775,30 @@ let VideoSystem = (function () {
                         // We go through all the productions.
                         for (let i = 0; i < actorsProduction.length; i++) {
                             yield actorsProduction[i];
+                        }
+                    }
+                };
+
+            }
+
+            // Gets an iterator with the productions of a Person
+            getProductionsPersonByDNI(dni) {
+                // if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
+
+                let personProductions = new Array();
+
+                for (let actorObject of this.#actors) {
+                    if (actorObject.actor.name === person.name) {
+                        for (let production of actorObject.productions) {
+                            personProductions.push(production);
+                        }
+                    }
+                }
+                return {
+                    *[Symbol.iterator]() {
+                        // We go through all the productions.
+                        for (let i = 0; i < personProductions.length; i++) {
+                            yield personProductions[i];
                         }
                     }
                 };

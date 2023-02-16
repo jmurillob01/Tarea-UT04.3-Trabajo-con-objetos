@@ -8,6 +8,7 @@ const REGEX_NAME_LASTNAME = /^[ a-zA-Záéíóú]+/; // Pattern for name
 const REGEX_BORN = /^([0-2][0-9]|3[0-1])(\/)(0[1-9]|1[0-2])(\/)(\d{4})$/;// Pattern for born
 const REGEX_IMG = /.*(png|jpg|jpeg|gif)$/;
 const REGEX_DNI = /^[0-9]{8}[A-Za-z]{1}$/;
+const REGEX_ROL = /.*^(actor|director)$/;
 
 class Person {
 
@@ -50,8 +51,9 @@ class Person {
     #born;
     #picture;
     #dni;
+    #rol;
 
-    constructor(name, lastname1, lastname2 = "",dni, born, picture = "") {
+    constructor(name, lastname1, lastname2 = "",dni, born, picture = "", rol = "") {
 
         // Name check
         if (!REGEX_NAME_LASTNAME.test(name) || name.trim() == "") throw new InvalidPersonException("name");
@@ -67,6 +69,9 @@ class Person {
         if (!REGEX_IMG.test(picture) && picture.trim() != "") throw new InvalidPersonException("picture");
         //DNI check
         if (!REGEX_DNI.test(dni)) throw new InvalidPersonException("dni");
+        // Rol check
+        console.log(REGEX_ROL.test(rol));
+        if (!REGEX_ROL.test(rol)) throw new InvalidPersonException("rol");
 
         this.#name = name;
         this.#lastname1 = lastname1;
@@ -74,6 +79,7 @@ class Person {
         this.#born = this.#createDate(born);
         this.#picture = picture;
         this.#dni = dni;
+        this.#rol = rol;
     }
 
     get name() { // Getter name
@@ -108,6 +114,10 @@ class Person {
 
     get dni() { // Getter dni
         return this.#dni;
+    }
+
+    get rol(){
+        return this.#rol;
     }
 
     // toString method
