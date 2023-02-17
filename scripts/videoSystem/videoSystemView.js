@@ -24,7 +24,7 @@ class VideoSystemView {
 					<div class="cat-list-image">
                         <img class="img-fluid" alt="${category.name}" src="../img/fantasyCategory.jpg" />
 					</div>
-					<div class="cat-list-text">
+					<div class="cat-list-text text-center">
 						<h3>${category.name}</h3>
 						<div>${category.description}</div>
 					</div>
@@ -98,13 +98,15 @@ class VideoSystemView {
         let container = document.createElement("div");
         container.id = ("production-list");
         container.className = "container my3";
+        
 
         let header = document.createElement("h2");
         header.className = ("mt-5");
         header.innerHTML = (category);
 
         let containerChild = document.createElement("div");
-        containerChild.className = ("container-row");
+        containerChild.className = ("container-row d-flex");
+        containerChild.style.justifyContent = "center";
 
         container.appendChild(header);
         for (let production of productions) {
@@ -158,9 +160,11 @@ class VideoSystemView {
 
         // Actors
         let containerChildActors = document.createElement("div");
-        containerChildActors.className = ("container-row");
+        containerChildActors.className = ("container-row d-flex");
+        containerChildActors.style.justifyContent = "center";
+
         let headerActor = document.createElement("h2");
-        headerActor.className = ("mt-5");
+        headerActor.className = ("mt-5 text-center");
         headerActor.innerHTML = ("Actores");
         container.appendChild(headerActor);
 
@@ -180,9 +184,11 @@ class VideoSystemView {
 
         // Directors
         let containerChildDirectors = document.createElement("div");
-        containerChildDirectors.className = ("container-row");
+        containerChildDirectors.className = ("container-row d-flex");
+        containerChildDirectors.style.justifyContent = "center";
+        
         let headerDirector = document.createElement("h2");
-        headerDirector.className = ("mt-5");
+        headerDirector.className = ("mt-5 text-center");
         headerDirector.innerHTML = ("Directores");
         container.appendChild(headerDirector);
 
@@ -273,7 +279,9 @@ class VideoSystemView {
         container.className = "container my3";
 
         let containerChildPerson = document.createElement("div");
-        containerChildPerson.className = ("container-row");
+        containerChildPerson.className = ("container-row d-flex" );
+        containerChildPerson.style.justifyContent = "center";
+
         let headerPerson = document.createElement("h2");
         headerPerson.className = ("mt-5");
         headerPerson.innerHTML = (rol + "es");
