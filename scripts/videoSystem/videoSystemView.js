@@ -9,9 +9,6 @@ class VideoSystemView {
     }
 
     showCategories(categories) {
-        let main = document.getElementById("main");
-        let categoriesFather = document.getElementById("categories");
-
         this.emptyMainElements();
 
         let container = document.createElement("div");
@@ -62,6 +59,7 @@ class VideoSystemView {
         ul.appendChild(li);
     }
 
+    // Show randoms productions in the home menu
     showProductions(randomNumbers, productions) {
         let productionsFather = document.getElementById("productions");
 
@@ -89,12 +87,12 @@ class VideoSystemView {
                 `;
                 container.appendChild(productionDiv);
             }
-
             count++;
         }
         productionsFather.appendChild(container);
     }
 
+    // List productions from a category
     listProductions(productions, category) {
         this.emptyMainElements();
         let container = document.createElement("div");
@@ -127,6 +125,7 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
+    // Productions information
     listProductionInformation(production, casting, directors, category) {
         this.emptyMainElements();
 
@@ -210,6 +209,7 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
+    // Productions from persons
     listPersonProductions(productions, actor) {
         this.emptyMainElements();
         let container = document.createElement("div");
@@ -264,7 +264,8 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
-    listPersons(personList, rol){
+    // List Actors and directors
+    listPersons(personList, rol) {
         this.emptyMainElements();
 
         let container = document.createElement("div");
@@ -296,16 +297,12 @@ class VideoSystemView {
     }
 
     bindInit(handler) {
-        // $('#init').click((event) => {
-        // 	handler();
-        // });
-
         document.getElementById("logo").addEventListener("click", function () {
             handler();
         });
     }
 
-    // Mostrar las producciones
+    // productions from categories
     bindProductionsCategoryList(handler) {
         let categoryList = document.getElementsByClassName('a-categories');
 
@@ -316,6 +313,7 @@ class VideoSystemView {
         }
     }
 
+    // Categories on the nav
     bindProductionsCategoryListInMenu(handler) {
         let categoryListNav = document.getElementsByClassName('dropdown-item');
 
@@ -326,6 +324,7 @@ class VideoSystemView {
         }
     }
 
+    // On click productions
     bindProductionInformation(handler) {
         let productionList = document.getElementsByClassName("card-production");
 
@@ -336,6 +335,7 @@ class VideoSystemView {
         }
     }
 
+    // Card persons from production
     bindProductionPerson(handler) {
         let personList = document.getElementsByClassName("person-production");
 
@@ -346,7 +346,8 @@ class VideoSystemView {
         }
     }
 
-    bindPersonsNav(handler){
+
+    bindPersonsNav(handler) {
         let personMenus = document.getElementsByClassName("nav-person");
 
         for (let option of personMenus) {
@@ -356,12 +357,13 @@ class VideoSystemView {
         }
     }
 
+    // Empty the main
     emptyMainElements() {
         let main = document.getElementById("main");
         let categories = document.getElementById('categories');
         let productionsRandom = document.getElementById('productions');
 
-        // Hay más de elementos que no son los principales
+        // More elements, no principal
         if (main.childElementCount > 2) {
             while (main.childElementCount > 2) {
                 main.lastElementChild.remove();

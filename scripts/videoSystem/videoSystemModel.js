@@ -87,7 +87,8 @@ let VideoSystem = (function () {
                 return this.#productions.findIndex(compareElements);
             }
 
-            #getProductionPositionByTitle(title) { // Es - Núevo método para obtener la posición de una producción buscada por título
+            // New method to obtain the position of a production searched by title
+            #getProductionPositionByTitle(title) {
                 function compareElements(element) {
                     return (element.title === title)
                 }
@@ -339,7 +340,7 @@ let VideoSystem = (function () {
                 return serie;
             }
 
-            // Add new Production to the system
+            // Add new Production to the system deprecated?
             // addProduction(production) {
             //     if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
 
@@ -429,6 +430,7 @@ let VideoSystem = (function () {
                 return person;
             }
 
+            // Get an actor for his dni
             getActorByDNI(dni) {
                 let position_dni = this.#getActorPositionDNI(dni);
 
@@ -437,6 +439,7 @@ let VideoSystem = (function () {
                 return person;
             }
 
+            // Get a director for his dni
             getDirectorByDNI(dni) {
                 let position_dni = this.#getDirectorPositionDNI(dni);
 
@@ -642,7 +645,7 @@ let VideoSystem = (function () {
 
                         // let title = this.#productions[positionProd].title;
 
-                        this.#directors[position].productions.splice(positionProd, 1); // Eliminate production
+                        this.#directors[position].productions.splice(positionProd, 1); // Delete production
                     } catch (error) {
                         console.log(error.message);
                     }
@@ -697,16 +700,11 @@ let VideoSystem = (function () {
                 for (let production of productions) {
                     try { // We avoid incorrect productions and eliminate the correct ones
                         if (!(production instanceof Production) || production == null) throw new ProductionVideoSystemException();
-                        // ! Estoy pillando la posición del array de producciones general, no del actor
                         let positionProd = this.#actors[position].productions.indexOf(production.title);
-                        // let positionProd = this.#getProductionPosition(production);
 
                         if (positionProd === -1) throw new ProductionNonExistsVideoSystemException();
 
-                        // let title = this.#productions[positionProd].title;
-
                         this.#actors[position].productions.splice(positionProd, 1);
-                        // this.#actors[position].productions.splice(title, 1);
                     } catch (error) {
                         console.log(error.message);
                     }
@@ -768,7 +766,6 @@ let VideoSystem = (function () {
 
             // Gets an iterator with the productions of a director.
             getProductionsDirector(person) {
-                // ES-es Con la nueva implementación de roles, este error estaría evitado
                 if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
 
                 let directorsProduction = new Array();
@@ -792,7 +789,7 @@ let VideoSystem = (function () {
 
             // Gets an iterator with the productions of a director.
             getProductionsDirectorByDNI(dni) {
-                // ES-es Con la nueva implementación de roles, este error estaría evitado
+                // With the new implementation of roles, this error would be avoided.
                 // if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
 
                 let directorsProduction = new Array();
@@ -822,7 +819,6 @@ let VideoSystem = (function () {
 
             // Gets an iterator with the productions of an Actor.
             getProductionsActor(person) {
-                // ES-es Con la nueva implementación de roles, este error estaría evitado
                 if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
 
                 let actorsProduction = new Array();
@@ -848,7 +844,7 @@ let VideoSystem = (function () {
 
             // Gets an iterator with the productions of an Actor.
             getProductionsActorByDNI(dni) {
-                // ES-es Con la nueva implementación de roles, este error estaría evitado
+                // With the new implementation of roles, this error would be avoided.
                 // if (!(person instanceof Person) || person == null) throw new PersonVideoSystemException();
 
                 let actorsProduction = new Array();
@@ -936,13 +932,13 @@ let VideoSystem = (function () {
                 return this.#productions[position];
             }
 
-            getCategoryByProduction(title){ // Es-es Obtenemos el nombre de la categoría a la que pertenece
+            getCategoryByProduction(title) { // Get the name of the category to which it belongs
 
                 let categoryName;
 
                 for (let categoryObject of this.#categories) {
                     for (let production of categoryObject.productions) {
-                        if(production === title){
+                        if (production === title) {
                             categoryName = categoryObject.category.name;
                             break;
                         }

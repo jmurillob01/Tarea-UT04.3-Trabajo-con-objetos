@@ -28,8 +28,7 @@ class VideoSystemController {
         var serie4 = this.#videoSystem.getSerie("El príncipe de Bel-Air", "United States", "10/11/1990", "Will Smith actúa más o menos como él es en la vida real, en esta comedia satírica descomplicada de NBC. La madre ficticia de Will lo envía lejos del barrio agitado de Filadelfia donde vivía, a la casa de su tío Phil y su tía Vivan en Bel-Air", "/productions/El_Principe_Bell-Air.jpg");
         var serie5 = this.#videoSystem.getSerie("Ted Lasso", "United States", "19/08/2020", "Ted Lasso, un entrenador de fútbol de poca monta, es contratado para entrenar a un equipo de fútbol profesional en Inglaterra, a pesar de no tener experiencia como entrenador.", "/productions/Ted_Lasso.jpg");
         var serie6 = this.#videoSystem.getSerie("Paranormal", "Egypt", "05/11/2020", "En la década de 1960, el hematólogo Dr. Refaat Ismail se convierte en un sujeto a quien acudir para las investigaciones paranormales.", "/productions/Paranormal.jpg");
-        // Testear
-        // this.#videoSystem.addProduction(movie1, movie2, movie3);
+
         this.#videoSystem.assignCategory(cat1, movie1, serie1, serie2, serie3);
         this.#videoSystem.assignCategory(cat2, movie2, movie3, serie4, serie5);
         this.#videoSystem.assignCategory(cat3, serie6, movie4, movie5, movie6);
@@ -69,6 +68,7 @@ class VideoSystemController {
         var actor20 = this.#videoSystem.getActor("Ahmed", "Sayed", "", "00001021A", "11/06/1980", "/persons/Ahmed_Sayed.jpg", "actor");
         var actor21 = this.#videoSystem.getActor("Aya", "Samaha", "", "00001022A", "31/03/1992", "/persons/Aya_Samaha.jpg", "actor");
 
+        // Assigns
         this.#videoSystem.assignDirector(director1, movie1);
         this.#videoSystem.assignDirector(director2, movie2, movie3);
         this.#videoSystem.assignDirector(director3, movie4);
@@ -102,9 +102,6 @@ class VideoSystemController {
         this.#videoSystem.assignActor(actor20, serie6);
         this.#videoSystem.assignActor(actor21, serie6);
 
-        // Actor Temporal para seguir con el funcionamiento de nuestra app, una vez terminada se estableceran los actores y direcores correctamente
-        // this.#videoSystem.assignActor(actorTemporal, movie4, movie5, movie6, serie1, serie2, serie3, serie4, serie5, serie6);
-
         // User
         let adminUser = this.#videoSystem.getUser("Javier", "javiermb@gmail.com", "Abcd1234");
         this.#videoSystem.addUser(adminUser);
@@ -118,7 +115,7 @@ class VideoSystemController {
         this.onLoad();
         this.onInit();
 
-        // Enlazamos handlers con la vista
+        // We bind handlers with the view
         this.#videoSystemView.bindInit(this.handleInit);
     }
 
@@ -126,20 +123,19 @@ class VideoSystemController {
         this.#loadVideoSystemObjects();
         this.onListCategories();
         this.onListPersons();
-
-        // this.onListRandomProductions();
     }
 
     onInit = () => {
         this.#videoSystemView.showCategories(this.#videoSystem.categories);
         this.onListRandomProductions();
-        // Mostrar producciones de una categoría
+        // Show productions of a category
         this.#videoSystemView.bindProductionsCategoryList(
             this.handleProductionsCategoryList
         );
     }
 
-    onListCategories = () => { // Es-es Muestra las categorías en el nav
+    // Show categories in the nav
+    onListCategories = () => {
         this.#videoSystemView.showCategoriesInMenu(this.#videoSystem.categories);
         this.#videoSystemView.bindProductionsCategoryListInMenu(
             this.handleProductionsCategoryList
@@ -166,7 +162,7 @@ class VideoSystemController {
         }
 
         this.#videoSystemView.showProductions(randomNumbers, this.#videoSystem.productions);
-        // ES - Aquí hacer llamada para asignar el click de las producciones
+
         this.#videoSystemView.bindProductionInformation(
             this.handleProductionInformation
         );
@@ -180,11 +176,9 @@ class VideoSystemController {
         let category = this.#videoSystem.getCategory(title);
         this.#videoSystemView.listProductions(this.#videoSystem.getProductionsObjectCategory(category), category.name);
 
-        // ES - Aquí hacer llamada para asignar el click de las producciones
         this.#videoSystemView.bindProductionInformation(
             this.handleProductionInformation
         );
-        // this.#managerView.bindShowProduct(this.handleShowProduct);
     }
 
     handleProductionInformation = (title) => {
@@ -199,7 +193,7 @@ class VideoSystemController {
         );
     }
 
-    handleProductionPerson = (dni, rol) => { // ES-es Actores de una producción
+    handleProductionPerson = (dni, rol) => { // Actors from a production
         let productionPerson;
         let person;
 
