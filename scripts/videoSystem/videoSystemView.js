@@ -214,14 +214,36 @@ class VideoSystemView {
         this.emptyMainElements();
         let container = document.createElement("div");
         container.id = ("production-list");
-        container.className = "container my3";
+        container.className = "container my3"
+
+        let containerActor = document.createElement("div");
+        containerActor.className = "container mb-5 d-flex justify-content-center"
+        containerActor.innerHTML = (`
+        <div class="card card-query mb-3 mt-5" style="max-width: 550px;">
+            <div class="row g-0">
+                <div class="col-md-6">
+                    <img src="../img/${actor.picture}" class="img-fluid rounded-start person-img-info" alt="${actor.picture}">
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+                    <h5 class="card-title">${actor.name + " " + actor.lastname1}</h5>
+                    <p class="card-text">Fecha de nacimiento: ${actor.born}</p>
+                    <p class="card-text">Identificador: ${actor.dni}</p>
+                    <p class="card-text"><small class="text-muted">Rol: ${actor.rol}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `);
+
+        container.appendChild(containerActor);
 
         let header = document.createElement("h2");
-        header.className = ("mt-5");
+        header.className = ("text-center");
         header.innerHTML = ("Where to find " + actor.name + " " + actor.lastname1 + ":");
 
         let containerChild = document.createElement("div");
-        containerChild.className = ("container-row");
+        containerChild.className = ("container-row d-flex justify-content-center");
 
         container.appendChild(header);
         for (let production of productions) {
