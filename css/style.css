@@ -1,0 +1,62 @@
+:root {
+    --bg-grey-100: #5b5b5b;
+    --bg-grey-200: #717171;
+    --bg-white-100: #ffffff;
+}
+
+html, body {
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Nav */
+/* TODO: al estar en un enlace activo que el color se mantenga, hacer con JS */
+.navbar,
+.dropdown-menu {
+    background-color: var(--bg-grey-100) !important;
+}
+
+.navbar-brand,
+.nav-link {
+    color: var(--bg-white-100);
+}
+
+.dropdown-item:hover {
+    background-color: var(--bg-grey-200) !important;
+}
+
+table{
+    height: auto !important;
+}
+
+.container-row {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: left;
+    margin-left: 10px;
+    gap: 20px;
+}
+
+.person-img, .production-image {
+    width: 287px;
+    height: 250px;
+}
+
+/* .person-img-info{
+    width: 450px;
+    height: 300px;
+} */
+
+/* footer */
+footer {
+    margin-top: 40vh;
+}
+
+.footer-container {
+    background-color: var(--bg-grey-100);
+    color: var(--bg-white-100)
+}
+
+.copyright {
+    border-top: 1px solid black;
+}

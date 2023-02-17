@@ -1,26 +1,26 @@
 "use strict";
 
-import { AbstractClassException,InvalidProductionException} from "./Exception.js";
+import { AbstractClassException, InvalidProductionException } from "./Exception.js";
 
 
 const REGEX_NATIONALITY = /^[ a-zA-Záéíóú]+/; // Pattern for nationality
 const REGEX_PUBLIICATION = /^([0-2][0-9]|3[0-1])(\/)(0[1-9]|1[0-2])(\/)(\d{4})$/;// Pattern for publication date
 const REGEX_IMG = /.*(png|jpg|jpeg|gif)$/;
 
-class Production{
+class Production {
 
     // Function to create a date
     #createDate(date) {
         // As we have developed the program, the third position (2) will be the delimiter
         let separator = date[2];
         let arrayDate = date.split(separator, 3);
-        return  new Date(arrayDate[2], arrayDate[1] - 1, arrayDate[0]);
+        return new Date(arrayDate[2], arrayDate[1] - 1, arrayDate[0]);
     }
 
     // Function to create a date string
-    #toStringDate(date = ""){
+    #toStringDate(date = "") {
 
-        if (date == ""){ // If we don't get the date, it means you worked with the object property
+        if (date == "") { // If we don't get the date, it means you worked with the object property
             date = this.#publication;
         }
 
@@ -40,17 +40,17 @@ class Production{
 
         return str;
     }
-    
+
     #title;
     #nacionality;
     #publication;
     #synopsis;
     #image;
 
-    constructor(title, nationality = "", publication, synopsis = "", image = ""){
+    constructor(title, nationality = "", publication, synopsis = "", image = "") {
         // abstract class
         if (new.target === Production) throw new AbstractClassException("Production");
-    
+
         if (!isNaN(title) || title.trim() === "") throw new InvalidProductionException("title"); // title check
 
         // nationality check
@@ -76,9 +76,30 @@ class Production{
         this.#image = image;
     }
 
-    get title(){
+    get title() {
         return this.#title;
     }
+
+    get synopsis() {
+        return this.#synopsis;
+    }
+
+    get image() {
+        return this.#image;
+    }
+
+    get publication() {
+        return this.#toStringDate(this.#publication);
+    }
+
+    get nacionality() {
+        return this.#nacionality;
+    }
 }
+
+Object.defineProperty(Production.prototype, 'title', {enumerable: true});
+Object.defineProperty(Production.prototype, 'synopsis', {enumerable: true});
+Object.defineProperty(Production.prototype, 'image', {enumerable: true});
+Object.defineProperty(Production.prototype, 'publication', {enumerable: true});
 
 export default Production;
