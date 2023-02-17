@@ -190,7 +190,9 @@ class VideoSystemController {
     handleProductionInformation = (title) => {
         let production = this.#videoSystem.getProductionObject(title);
 
-        this.#videoSystemView.listProductionInformation(production, this.#videoSystem.getCast(production), this.#videoSystem.getDirectorsDepartment(production));
+        let category = this.#videoSystem.getCategoryByProduction(title);
+
+        this.#videoSystemView.listProductionInformation(production, this.#videoSystem.getCast(production), this.#videoSystem.getDirectorsDepartment(production), category);
 
         this.#videoSystemView.bindProductionPerson(
             this.handleProductionPerson
@@ -224,7 +226,7 @@ class VideoSystemController {
             personsList = this.#videoSystem.actors;
         }
 
-        this.#videoSystemView.listPersons(personsList);
+        this.#videoSystemView.listPersons(personsList, rol);
 
         this.#videoSystemView.bindProductionPerson(
             this.handleProductionPerson

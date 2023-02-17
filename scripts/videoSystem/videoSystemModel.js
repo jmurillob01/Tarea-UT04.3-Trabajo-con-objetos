@@ -936,6 +936,21 @@ let VideoSystem = (function () {
                 return this.#productions[position];
             }
 
+            getCategoryByProduction(title){ // Es-es Obtenemos el nombre de la categoría a la que pertenece
+
+                let categoryName;
+
+                for (let categoryObject of this.#categories) {
+                    for (let production of categoryObject.productions) {
+                        if(production === title){
+                            categoryName = categoryObject.category.name;
+                            break;
+                        }
+                    }
+                }
+
+                return categoryName;
+            }
         }
 
         let instance = new VideoSystem(name); // We return the VideoSystem object to be a single instance.

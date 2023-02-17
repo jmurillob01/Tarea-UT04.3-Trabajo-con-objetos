@@ -127,7 +127,7 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
-    listProductionInformation(production, casting, directors) {
+    listProductionInformation(production, casting, directors, category) {
         this.emptyMainElements();
 
         let container = document.createElement("div");
@@ -135,23 +135,23 @@ class VideoSystemView {
         container.className = ("container my3");
 
         container.innerHTML = (`
-            <table class="table table-secondary mt-5">
+            <table class="table table-secondary table-bordered mt-5">
                 <thead>
                     <tr>
-                    <th class="table-secondary" scope="col">#</th>
                     <th class="table-secondary" scope="col">Título</th>
                     <th class="table-secondary" scope="col">Synopsis</th>
                     <th class="table-secondary" scope="col">Publicación</th>
                     <th class="table-secondary" scope="col">Origen</th>
+                    <th class="table-secondary" scope="col">Categoría</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row">1</th>
                         <td>${production.title}</td>
                         <td>${production.synopsis}</td>
                         <td>${production.publication}</td>
                         <td>${production.nacionality}</td>
+                        <td>${category}</td>
                     </tr>
                 </tbody>
                 </table>
@@ -242,7 +242,7 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
-    listPersons(personList){
+    listPersons(personList, rol){
         this.emptyMainElements();
 
         let container = document.createElement("div");
@@ -253,7 +253,8 @@ class VideoSystemView {
         containerChildPerson.className = ("container-row");
         let headerPerson = document.createElement("h2");
         headerPerson.className = ("mt-5");
-        headerPerson.innerHTML = ("Actores");
+        headerPerson.innerHTML = (rol + "es");
+        headerPerson.style.textTransform = ("Capitalize");
         container.appendChild(headerPerson);
 
         for (let person of personList) {
