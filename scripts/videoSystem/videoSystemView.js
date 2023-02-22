@@ -323,8 +323,14 @@ class VideoSystemView {
     }
 
     bindInit(handler) {
-        document.getElementById("logo").addEventListener("click", function () {
-            handler();
+
+        // $('#logo').click((event) => {
+        // 	this.#executeHandler(handler, [], 'body', { action: 'logo' }, '#', event);
+        // });
+
+        document.getElementById("logo").addEventListener("click" , (event) => {
+        this.#executeHandler(handler, [], 'body', {action: 'logo'}, '#', event);
+            // handler();
         });
     }
 
