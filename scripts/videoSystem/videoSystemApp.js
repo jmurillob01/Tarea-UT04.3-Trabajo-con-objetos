@@ -11,6 +11,23 @@ let VideoSystemApp;
 	VideoSystemApp = new VideoSystemController(
 		VideoSystem.getInstance(), new VideoSystemView()
 	);
+
+    const historyActions = {
+		init: () => VideoSystemApp.handleInit(),
+        // Esto son las acciones que se añaden al objeto del historial
+		// showShoppingCart: () => ShoppingCartApp.handleShowShoppingCart(),
+		// productsCategoryList: (event) => ManagerApp.handleProductsCategoryList(event.state.category),
+		// productsTypeList: (event) =>  ManagerApp.handleProductsTypeList(event.state.type),
+		// showProduct: (event) => ManagerApp.handleShowProduct(event.state.serial)
+	}
+
+	window.addEventListener('popstate', function(event) {
+		if (event.state){
+			historyActions[event.state.action](event);
+		}
+	});
+
+	history.replaceState({action: 'init'}, null);
 })();
 
 export default VideoSystemApp;
