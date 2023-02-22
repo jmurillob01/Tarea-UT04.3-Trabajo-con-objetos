@@ -196,7 +196,6 @@ class VideoSystemController {
     handleProductionPerson = (dni, rol) => { // Actors from a production
         let productionPerson;
         let person;
-
         if (rol == "director") { // Director
             productionPerson = this.#videoSystem.getProductionsDirectorByDNI(dni);
             person = this.#videoSystem.getDirectorByDNI(dni).director;

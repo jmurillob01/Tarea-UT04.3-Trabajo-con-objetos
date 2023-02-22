@@ -4,8 +4,13 @@ class VideoSystemView {
 
     // This is done with JQuery, if it doesn't work switch to DOM
     #executeHandler(handler, handlerArguments, scrollElement, data, url, event) {
-        console.log(handlerArguments);
-        handler(handlerArguments);
+        console.log(typeof handlerArguments);
+        if (typeof handlerArguments == "object") {
+            handler(handlerArguments[0], handlerArguments[1]);
+        } else {
+            handler(handlerArguments);
+        }
+
         // handler(...handlerArguments); Si pongo los ... da error
         $(scrollElement).get(0).scrollIntoView();
         history.pushState(data, null, url);
@@ -89,7 +94,7 @@ class VideoSystemView {
                 productionDiv.innerHTML = `
 				
                 <div class="card card-production" data-title="${production.title}" style="width: 18rem;"> <a href="#production-info">
-                    <img src="../img/${production.image}" class="card-img-top person-img" alt="...">
+                    <img src="../img/${production.image}" class="card-img-top person-img" alt="..." data-title="${production.title}">
                     <div class="card-body">
                         <p class="card-text">${production.title}</p>
                     </div>
@@ -125,7 +130,7 @@ class VideoSystemView {
             div.innerHTML = (`
             <div class="col-md-4"> <a href="#production-info">
                 <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
-                    <img src="../img/${production.image}" class="card-img-top person-img" alt="...">
+                    <img src="../img/${production.image}" class="card-img-top person-img" alt="..." data-title="${production.title}">
                     <div class="card-body">
                         <p class="card-text">${production.title}</p>
                     </div>
@@ -185,7 +190,7 @@ class VideoSystemView {
             containerActor.innerHTML = (`
             <div class="card person-production" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}" style="width: 18rem;">
                 <a href="#actor-info">
-                <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="...">
+                <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="..." data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}">
                 <div class="card-body">
                     <p class="card-text">${actor.actor.name} ${actor.actor.lastname1}</p>
                 </div>
@@ -212,7 +217,7 @@ class VideoSystemView {
                 containerDirector.innerHTML = (`
             <div class="card person-production" data-dni="${director.director.dni}" data-rol="${director.director.rol}" style="width: 18rem;">
             <a href="#director-info">
-                <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="...">
+                <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="..." data-dni="${director.director.dni}" data-rol="${director.director.rol}">
                 <div class="card-body">
                     <p class="card-text">${director.director.name} ${director.director.lastname1}</p>
                 </div>
@@ -274,7 +279,7 @@ class VideoSystemView {
             <div class="col-md-4">
             <a href="#production-info">
                 <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
-                    <img src="../img/${production.image}" class="card-img-top person-img" alt="...">
+                    <img src="../img/${production.image}" class="card-img-top person-img" alt="..." data-title="${production.title}">
                     <div class="card-body">
                         <p class="card-text">${production.title}</p>
                     </div>
@@ -311,7 +316,7 @@ class VideoSystemView {
             containerPerson.innerHTML = (`
             <div class="card person-production" data-dni="${person.dni}" data-rol="${person.rol}" style="width: 18rem;">
                 <a href="#${person.rol}-info">
-                <img src="../img/${person.picture}" class="card-img-top person-img" alt="...">
+                <img src="../img/${person.picture}" class="card-img-top person-img" alt="..." data-dni="${person.dni}" data-rol="${person.rol}">
                 <div class="card-body">
                     <p class="card-text">${person.name} ${person.lastname1}</p>
                 </div>
@@ -330,8 +335,8 @@ class VideoSystemView {
         // 	this.#executeHandler(handler, [], 'body', { action: 'logo' }, '#', event);
         // });
 
-        document.getElementById("logo").addEventListener("click" , (event) => {
-        this.#executeHandler(handler, [], 'body', {action: 'logo'}, '#', event);
+        document.getElementById("logo").addEventListener("click", (event) => {
+            this.#executeHandler(handler, [], 'body', { action: 'init' }, '', event);
             // handler();
         });
     }
@@ -342,8 +347,7 @@ class VideoSystemView {
 
         for (let category of categoryList) {
             category.addEventListener("click", (event) => {
-                console.log(event.target.dataset.category); // El título se pierde por el camino
-                this.#executeHandler(handler, event.target.dataset.category, 'body', {action: 'ProductionsCategoryList', categoryName: event.target.dataset.category}, '#category-list', event);
+                this.#executeHandler(handler, event.target.dataset.category, 'body', { action: 'ProductionsCategoryList', categoryName: event.target.dataset.category }, '#category-list', event);
                 // handler(this.dataset.category);
             });
         }
@@ -354,8 +358,9 @@ class VideoSystemView {
         let categoryListNav = document.getElementsByClassName('dropdown-item');
 
         for (let category of categoryListNav) {
-            category.addEventListener("click", function () {
-                handler(this.dataset.category);
+            category.addEventListener("click", (event) => {
+                this.#executeHandler(handler, event.target.dataset.category, 'body', { action: 'ProductionsCategoryListMenu', categoryName: event.target.dataset.category }, '#category-list', event);
+                // handler(this.dataset.category);
             });
         }
     }
@@ -365,8 +370,9 @@ class VideoSystemView {
         let productionList = document.getElementsByClassName("card-production");
 
         for (let production of productionList) {
-            production.addEventListener("click", function () {
-                handler(this.dataset.title);
+            production.addEventListener("click", (event) => {
+                this.#executeHandler(handler, event.target.dataset.title, 'body', { action: 'ProductionInformation', productionTitle: event.target.dataset.title }, '#production-info', event);
+                // handler(this.dataset.title);
             });
         }
     }
@@ -376,8 +382,9 @@ class VideoSystemView {
         let personList = document.getElementsByClassName("person-production");
 
         for (let person of personList) {
-            person.addEventListener("click", function () {
-                handler(this.dataset.dni, this.dataset.rol);
+            person.addEventListener("click", (event) => {
+                this.#executeHandler(handler, [event.target.dataset.dni, event.target.dataset.rol], 'body', { action: 'PersonInformation', personDNI: event.target.dataset.dni, personRol: event.target.dataset.rol }, `#${event.target.dataset.rol}-info`, event);
+                // handler(this.dataset.dni, this.dataset.rol);
             });
         }
     }
@@ -387,9 +394,11 @@ class VideoSystemView {
         let personMenus = document.getElementsByClassName("nav-person");
 
         for (let option of personMenus) {
-            option.addEventListener("click", function () {
-                option.href = `#${this.dataset.rol}-list`; // We have to modify the URL from here
-                handler(this.dataset.rol);
+            option.addEventListener("click", (event) => {
+                // console.log(event.target);
+                option.href = `#${event.target.dataset.rol}-list`; // We have to modify the URL from here
+                this.#executeHandler(handler, event.target.dataset.rol, 'body', { action: 'PersonNav', personRol: event.target.dataset.rol }, `#${event.target.dataset.rol}-list`, event);
+                // handler(this.dataset.rol);
             });
         }
     }

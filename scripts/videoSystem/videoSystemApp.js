@@ -15,17 +15,16 @@ let VideoSystemApp;
     const historyActions = {
         
 		init: () => VideoSystemApp.handleInit(),
-        ProductionsCategoryList: (event) => VideoSystemApp.handleProductionsCategoryList(event.state.categoryName)
-        // Esto son las acciones que se añaden al objeto del historial
-		// showShoppingCart: () => ShoppingCartApp.handleShowShoppingCart(),
-		// productsCategoryList: (event) => ManagerApp.handleProductsCategoryList(event.state.category),
-		// productsTypeList: (event) =>  ManagerApp.handleProductsTypeList(event.state.type),
-		// showProduct: (event) => ManagerApp.handleShowProduct(event.state.serial)
+        ProductionsCategoryList: (event) => VideoSystemApp.handleProductionsCategoryList(event.state.categoryName),
+        ProductionsCategoryListMenu: (event) => VideoSystemApp.handleProductionsCategoryList(event.state.categoryName),
+        ProductionInformation: (event) =>VideoSystemApp.handleProductionInformation(event.state.productionTitle),
+        PersonInformation: (event) =>VideoSystemApp.handleProductionPerson(event.state.personDNI, event.state.personRol),
+        PersonNav: (event) => VideoSystemApp.handlePersonsNav(event.state.personRol)
 	}
 
 	window.addEventListener('popstate', function(event) {
 		if (event.state){
-            // Hay que arreglar en el init, si haces click en el logo, luego avanzas y retrocedes, da error
+            console.log("popstate: " + event.state.action);
 			historyActions[event.state.action](event);
 		}
 	});
