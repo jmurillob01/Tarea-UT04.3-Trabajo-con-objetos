@@ -28,7 +28,7 @@ class VideoSystemView {
             categoryDiv.className = "col-lg-4 col-md-5 mt-5";
 
             categoryDiv.innerHTML = `
-				<a data-category="${category.name}" href="#product-list" class="a-categories">
+				<a data-category="${category.name}" href="#category-list" class="a-categories">
 					<div class="cat-list-image">
                         <img class="img-fluid" alt="${category.name}" src="../img/fantasyCategory.jpg" />
 					</div>
@@ -49,7 +49,7 @@ class VideoSystemView {
 
         li.className = "nav-item dropdown";
         li.innerHTML = (`
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#category-list" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Categorías
         </a>`);
 
@@ -58,7 +58,7 @@ class VideoSystemView {
         for (let category of categories) {
             let liCategories = document.createElement("li");
             liCategories.innerHTML = `
-            <a data-category="${category.name}" class="dropdown-item" href="#productlist">
+            <a data-category="${category.name}" class="dropdown-item" href="#category-list">
                 ${category.name}
             </a>`;
             ulCategories.appendChild(liCategories);
@@ -86,11 +86,12 @@ class VideoSystemView {
 
                 productionDiv.innerHTML = `
 				
-                <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
+                <div class="card card-production" data-title="${production.title}" style="width: 18rem;"> <a href="#production-info">
                     <img src="../img/${production.image}" class="card-img-top person-img" alt="...">
                     <div class="card-body">
                         <p class="card-text">${production.title}</p>
                     </div>
+                    </a>
                  </div>
                 `;
                 container.appendChild(productionDiv);
@@ -120,13 +121,14 @@ class VideoSystemView {
         for (let production of productions) {
             let div = document.createElement("div");
             div.innerHTML = (`
-            <div class="col-md-4">
+            <div class="col-md-4"> <a href="#production-info">
                 <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
                     <img src="../img/${production.image}" class="card-img-top person-img" alt="...">
                     <div class="card-body">
                         <p class="card-text">${production.title}</p>
                     </div>
                 </div>
+                </a>
              </div>`);
 
             containerChild.appendChild(div);
@@ -180,10 +182,12 @@ class VideoSystemView {
             let containerActor = document.createElement("div");
             containerActor.innerHTML = (`
             <div class="card person-production" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}" style="width: 18rem;">
+                <a href="#actor-info">
                 <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="...">
                 <div class="card-body">
                     <p class="card-text">${actor.actor.name} ${actor.actor.lastname1}</p>
                 </div>
+                </a>
             </div>
             `);
             containerChildActors.appendChild(containerActor);
@@ -205,10 +209,12 @@ class VideoSystemView {
                 let containerDirector = document.createElement("div");
                 containerDirector.innerHTML = (`
             <div class="card person-production" data-dni="${director.director.dni}" data-rol="${director.director.rol}" style="width: 18rem;">
+            <a href="#director-info">
                 <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="...">
                 <div class="card-body">
                     <p class="card-text">${director.director.name} ${director.director.lastname1}</p>
                 </div>
+            </a>
             </div>
             `);
                 containerChildDirectors.appendChild(containerDirector);
@@ -264,13 +270,15 @@ class VideoSystemView {
             let div = document.createElement("div");
             div.innerHTML = (`
             <div class="col-md-4">
+            <a href="#production-info">
                 <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
                     <img src="../img/${production.image}" class="card-img-top person-img" alt="...">
                     <div class="card-body">
                         <p class="card-text">${production.title}</p>
                     </div>
                 </div>
-             </div>`);
+            </a>
+            </div>`);
 
             containerChild.appendChild(div);
         }
@@ -300,10 +308,12 @@ class VideoSystemView {
             let containerPerson = document.createElement("div");
             containerPerson.innerHTML = (`
             <div class="card person-production" data-dni="${person.dni}" data-rol="${person.rol}" style="width: 18rem;">
+                <a href="#${person.rol}-info">
                 <img src="../img/${person.picture}" class="card-img-top person-img" alt="...">
                 <div class="card-body">
                     <p class="card-text">${person.name} ${person.lastname1}</p>
                 </div>
+                </a>
             </div>
             `);
             containerChildPerson.appendChild(containerPerson);
@@ -368,6 +378,7 @@ class VideoSystemView {
 
         for (let option of personMenus) {
             option.addEventListener("click", function () {
+                option.href = `#${this.dataset.rol}-list`; // We have to modify the URL from here
                 handler(this.dataset.rol);
             });
         }
