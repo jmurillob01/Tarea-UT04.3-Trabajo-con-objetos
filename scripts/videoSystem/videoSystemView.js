@@ -2,6 +2,14 @@
 
 class VideoSystemView {
 
+    // This is done with JQuery, if it doesn't work switch to DOM
+    #executeHandler(handler, handlerArguments, scrollElement, data, url, event) {
+        handler(...handlerArguments);
+        $(scrollElement).get(0).scrollIntoView();
+        history.pushState(data, null, url);
+        event.preventDefault();
+    }
+
     constructor() {
         this.main = document.getElementById('main');
         this.categories = document.getElementById('categories');
@@ -98,7 +106,7 @@ class VideoSystemView {
         let container = document.createElement("div");
         container.id = ("production-list");
         container.className = "container my3";
-        
+
 
         let header = document.createElement("h2");
         header.className = ("mt-5");
@@ -186,7 +194,7 @@ class VideoSystemView {
         let containerChildDirectors = document.createElement("div");
         containerChildDirectors.className = ("container-row d-flex");
         containerChildDirectors.style.justifyContent = "center";
-        
+
         let headerDirector = document.createElement("h2");
         headerDirector.className = ("mt-5 text-center");
         headerDirector.innerHTML = ("Directores");
@@ -279,7 +287,7 @@ class VideoSystemView {
         container.className = "container my3";
 
         let containerChildPerson = document.createElement("div");
-        containerChildPerson.className = ("container-row d-flex" );
+        containerChildPerson.className = ("container-row d-flex");
         containerChildPerson.style.justifyContent = "center";
 
         let headerPerson = document.createElement("h2");
