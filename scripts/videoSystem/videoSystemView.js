@@ -4,7 +4,9 @@ class VideoSystemView {
 
     // This is done with JQuery, if it doesn't work switch to DOM
     #executeHandler(handler, handlerArguments, scrollElement, data, url, event) {
-        handler(...handlerArguments);
+        console.log(handlerArguments);
+        handler(handlerArguments);
+        // handler(...handlerArguments); Si pongo los ... da error
         $(scrollElement).get(0).scrollIntoView();
         history.pushState(data, null, url);
         event.preventDefault();
@@ -30,7 +32,7 @@ class VideoSystemView {
             categoryDiv.innerHTML = `
 				<a data-category="${category.name}" href="#category-list" class="a-categories">
 					<div class="cat-list-image">
-                        <img class="img-fluid" alt="${category.name}" src="../img/fantasyCategory.jpg" />
+                        <img class="img-fluid" alt="${category.name}" src="../img/fantasyCategory.jpg" data-category="${category.name}" />
 					</div>
 					<div class="cat-list-text text-center">
 						<h3>${category.name}</h3>
@@ -339,8 +341,10 @@ class VideoSystemView {
         let categoryList = document.getElementsByClassName('a-categories');
 
         for (let category of categoryList) {
-            category.addEventListener("click", function () {
-                handler(this.dataset.category);
+            category.addEventListener("click", (event) => {
+                console.log(event.target.dataset.category); // El título se pierde por el camino
+                this.#executeHandler(handler, event.target.dataset.category, 'body', {action: 'ProductionsCategoryList', categoryName: event.target.dataset.category}, '#category-list', event);
+                // handler(this.dataset.category);
             });
         }
     }

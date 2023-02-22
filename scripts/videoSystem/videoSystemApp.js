@@ -13,7 +13,9 @@ let VideoSystemApp;
 	);
 
     const historyActions = {
+        
 		init: () => VideoSystemApp.handleInit(),
+        ProductionsCategoryList: (event) => VideoSystemApp.handleProductionsCategoryList(event.state.categoryName)
         // Esto son las acciones que se añaden al objeto del historial
 		// showShoppingCart: () => ShoppingCartApp.handleShowShoppingCart(),
 		// productsCategoryList: (event) => ManagerApp.handleProductsCategoryList(event.state.category),
@@ -23,6 +25,7 @@ let VideoSystemApp;
 
 	window.addEventListener('popstate', function(event) {
 		if (event.state){
+            // Hay que arreglar en el init, si haces click en el logo, luego avanzas y retrocedes, da error
 			historyActions[event.state.action](event);
 		}
 	});
