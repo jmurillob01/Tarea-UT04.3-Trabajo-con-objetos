@@ -2,9 +2,11 @@
 
 class VideoSystemView {
 
+    // #windows = [];
+    #windows = new Map();
+
     // This is done with JQuery, if it doesn't work switch to DOM
     #executeHandler(handler, handlerArguments, scrollElement, data, url, event) {
-        console.log(typeof handlerArguments);
         if (typeof handlerArguments == "object") {
             handler(handlerArguments[0], handlerArguments[1]);
         } else {
@@ -21,6 +23,10 @@ class VideoSystemView {
         this.main = document.getElementById('main');
         this.categories = document.getElementById('categories');
         this.menu = document.getElementById('navbar');
+    }
+
+    get windows() {
+        return this.#windows;
     }
 
     showCategories(categories) {
@@ -147,7 +153,6 @@ class VideoSystemView {
     // Productions information
     listProductionInformation(production, casting, directors, category) {
         this.emptyMainElements();
-
         let container = document.createElement("div");
         container.id = ("production-info");
         container.className = ("container my3");
@@ -172,7 +177,9 @@ class VideoSystemView {
                         <td>${category}</td>
                     </tr>
                 </tbody>
-                </table>
+            </table>
+
+            <button type="button" data-title="${production.title}" id="b-open" class="btn btn-dark">Abrir en nueva ventana</button>
             `);
 
         // Actors
@@ -234,6 +241,101 @@ class VideoSystemView {
 
 
         this.main.appendChild(container);
+    }
+
+    // Productions information
+    listProductionInformationNewWindow(production, casting, directors, category) {
+        // this.emptyMainElements();
+        let main = $(this.productionWindow.document.getElementsByTagName("main"));
+
+        let container = document.createElement("div");
+        container.id = ("production-info");
+        container.className = ("container my3");
+
+        container.innerHTML = (`
+            <table class="table table-secondary table-bordered mt-5">
+                <thead>
+                    <tr>
+                    <th class="table-secondary" scope="col">Título</th>
+                    <th class="table-secondary" scope="col">Synopsis</th>
+                    <th class="table-secondary" scope="col">Publicación</th>
+                    <th class="table-secondary" scope="col">Origen</th>
+                    <th class="table-secondary" scope="col">Categoría</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>${production.title}</td>
+                        <td>${production.synopsis}</td>
+                        <td>${production.publication}</td>
+                        <td>${production.nacionality}</td>
+                        <td>${category}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            `);
+
+        // Actors
+        let containerChildActors = document.createElement("div");
+        containerChildActors.className = ("container-row d-flex");
+        containerChildActors.style.justifyContent = "center";
+
+        let headerActor = document.createElement("h2");
+        headerActor.className = ("mt-5 text-center");
+        headerActor.innerHTML = ("Actores");
+        container.appendChild(headerActor);
+
+        for (let actor of casting) {
+            let containerActor = document.createElement("div");
+            containerActor.innerHTML = (`
+            <div class="card person-production" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}" style="width: 18rem;">
+                <a href="#actor-info">
+                <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="..." data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}">
+                <div class="card-body">
+                    <p class="card-text">${actor.actor.name} ${actor.actor.lastname1}</p>
+                </div>
+                </a>
+            </div>
+            `);
+            containerChildActors.appendChild(containerActor);
+        }
+        container.appendChild(containerChildActors);
+
+        // Directors
+        let containerChildDirectors = document.createElement("div");
+        containerChildDirectors.className = ("container-row d-flex");
+        containerChildDirectors.style.justifyContent = "center";
+
+        let headerDirector = document.createElement("h2");
+        headerDirector.className = ("mt-5 text-center");
+        headerDirector.innerHTML = ("Directores");
+        container.appendChild(headerDirector);
+
+        for (let director of directors) {
+            try {
+                let containerDirector = document.createElement("div");
+                containerDirector.innerHTML = (`
+            <div class="card person-production" data-dni="${director.director.dni}" data-rol="${director.director.rol}" style="width: 18rem;">
+            <a href="#director-info">
+                <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="..." data-dni="${director.director.dni}" data-rol="${director.director.rol}">
+                <div class="card-body">
+                    <p class="card-text">${director.director.name} ${director.director.lastname1}</p>
+                </div>
+            </a>
+            </div>
+            `);
+                containerChildDirectors.appendChild(containerDirector);
+            } catch (error) {
+                console.error(error.message);
+            }
+
+        }
+        container.appendChild(containerChildDirectors);
+
+
+        main.append(container);
+        // this.productionWindow.document.body.scrollIntoView();
     }
 
     // Productions from persons
@@ -401,6 +503,42 @@ class VideoSystemView {
                 // handler(this.dataset.rol);
             });
         }
+    }
+
+    bindCloseWindows(handler) {
+        let closeButton = document.getElementById("nav-closeWindows");
+        closeButton.addEventListener("click", (event) => {
+            handler(this.productionWindow)
+        });
+    }
+
+    bindShowProductInNewWindow(handler) {
+        let button = document.getElementById("b-open");
+        button.addEventListener("click", (event) => {
+            
+            if (!this.#windows.has(`${event.target.dataset.title}`)) {
+                console.log("if");
+                this.productionWindow = window.open("../public/production.html", `${event.target.dataset.title}`, "width=800, height=600, top=250, left=250, titlebar=yes, toolbar=no, menubar=no, location=no");
+                this.productionWindow.addEventListener('DOMContentLoaded', () => {
+                    handler(event.target.dataset.title)
+                });
+                this.#windows.set(`${event.target.dataset.title}`, this.productionWindow); // Add elements to the map
+            }else if(this.#windows.has(`${event.target.dataset.title}`) && this.#windows.get(`${event.target.dataset.title}`).closed){
+                console.log("elseif");
+                this.#windows.get(`${event.target.dataset.title}`).close();
+                this.productionWindow = window.open("../public/production.html", `${event.target.dataset.title}`, "width=800, height=600, top=250, left=250, titlebar=yes, toolbar=no, menubar=no, location=no");
+                this.productionWindow.addEventListener('DOMContentLoaded', () => {
+                    handler(event.target.dataset.title)
+                });
+                this.#windows.set(`${event.target.dataset.title}`, this.productionWindow); // Add elements to the map
+            } else {
+                console.log("else");
+                let windowActive = this.#windows.get(`${event.target.dataset.title}`);
+                windowActive.focus();
+            }
+            this.productionWindow.id = `${event.target.dataset.title}`;
+            this.productionWindow.class = `windows`;
+        });
     }
 
     // Empty the main
