@@ -11,6 +11,25 @@ let VideoSystemApp;
 	VideoSystemApp = new VideoSystemController(
 		VideoSystem.getInstance(), new VideoSystemView()
 	);
+
+    const historyActions = {
+        
+		init: () => VideoSystemApp.handleInit(),
+        ProductionsCategoryList: (event) => VideoSystemApp.handleProductionsCategoryList(event.state.categoryName),
+        ProductionsCategoryListMenu: (event) => VideoSystemApp.handleProductionsCategoryList(event.state.categoryName),
+        ProductionInformation: (event) =>VideoSystemApp.handleProductionInformation(event.state.productionTitle),
+        PersonInformation: (event) =>VideoSystemApp.handleProductionPerson(event.state.personDNI, event.state.personRol),
+        PersonNav: (event) => VideoSystemApp.handlePersonsNav(event.state.personRol)
+	}
+
+	window.addEventListener('popstate', function(event) {
+		if (event.state){
+            console.log("popstate: " + event.state.action);
+			historyActions[event.state.action](event);
+		}
+	});
+
+	history.replaceState({action: 'init'}, null);
 })();
 
 export default VideoSystemApp;

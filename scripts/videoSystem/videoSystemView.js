@@ -2,10 +2,31 @@
 
 class VideoSystemView {
 
+    // #windows = [];
+    #windows = new Map();
+
+    // This is done with JQuery, if it doesn't work switch to DOM
+    #executeHandler(handler, handlerArguments, scrollElement, data, url, event) {
+        if (typeof handlerArguments == "object") {
+            handler(handlerArguments[0], handlerArguments[1]);
+        } else {
+            handler(handlerArguments);
+        }
+
+        // handler(...handlerArguments); Si pongo los ... da error
+        $(scrollElement).get(0).scrollIntoView();
+        history.pushState(data, null, url);
+        event.preventDefault();
+    }
+
     constructor() {
         this.main = document.getElementById('main');
         this.categories = document.getElementById('categories');
         this.menu = document.getElementById('navbar');
+    }
+
+    get windows() {
+        return this.#windows;
     }
 
     showCategories(categories) {
@@ -20,12 +41,12 @@ class VideoSystemView {
             categoryDiv.className = "col-lg-4 col-md-5 mt-5";
 
             categoryDiv.innerHTML = `
-				<a data-category="${category.name}" href="#product-list" class="a-categories">
+				<a data-category="${category.name}" href="#category-list" class="a-categories">
 					<div class="cat-list-image">
-                        <img class="img-fluid" alt="${category.name}" src="../img/fantasyCategory.jpg" />
+                        <img class="img-fluid" alt="${category.name}" src="../img/fantasyCategory.jpg" data-category="${category.name}" />
 					</div>
-					<div class="cat-list-text text-center">
-						<h3>${category.name}</h3>
+					<div class="cat-list-text text-center" data-category="${category.name}">
+						<h3 data-category="${category.name}">${category.name}</h3>
 						<div>${category.description}</div>
 					</div>
 				</a>`;
@@ -41,7 +62,7 @@ class VideoSystemView {
 
         li.className = "nav-item dropdown";
         li.innerHTML = (`
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#category-list" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Categorías
         </a>`);
 
@@ -50,7 +71,7 @@ class VideoSystemView {
         for (let category of categories) {
             let liCategories = document.createElement("li");
             liCategories.innerHTML = `
-            <a data-category="${category.name}" class="dropdown-item" href="#productlist">
+            <a data-category="${category.name}" class="dropdown-item" href="#category-list">
                 ${category.name}
             </a>`;
             ulCategories.appendChild(liCategories);
@@ -78,11 +99,12 @@ class VideoSystemView {
 
                 productionDiv.innerHTML = `
 				
-                <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
-                    <img src="../img/${production.image}" class="card-img-top person-img" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">${production.title}</p>
+                <div class="card card-production" data-title="${production.title}" style="width: 18rem;"> <a href="#production-info">
+                    <img src="../img/${production.image}" class="card-img-top person-img" alt="..." data-title="${production.title}">
+                    <div class="card-body" data-title="${production.title}">
+                        <p class="card-text" data-title="${production.title}">${production.title}</p>
                     </div>
+                    </a>
                  </div>
                 `;
                 container.appendChild(productionDiv);
@@ -98,7 +120,7 @@ class VideoSystemView {
         let container = document.createElement("div");
         container.id = ("production-list");
         container.className = "container my3";
-        
+
 
         let header = document.createElement("h2");
         header.className = ("mt-5");
@@ -112,13 +134,14 @@ class VideoSystemView {
         for (let production of productions) {
             let div = document.createElement("div");
             div.innerHTML = (`
-            <div class="col-md-4">
+            <div class="col-md-4"> <a href="#production-info">
                 <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
-                    <img src="../img/${production.image}" class="card-img-top person-img" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">${production.title}</p>
+                    <img src="../img/${production.image}" class="card-img-top person-img" alt="..." data-title="${production.title}">
+                    <div class="card-body" data-title="${production.title}">
+                        <p class="card-text" data-title="${production.title}">${production.title}</p>
                     </div>
                 </div>
+                </a>
              </div>`);
 
             containerChild.appendChild(div);
@@ -130,6 +153,100 @@ class VideoSystemView {
     // Productions information
     listProductionInformation(production, casting, directors, category) {
         this.emptyMainElements();
+        let container = document.createElement("div");
+        container.id = ("production-info");
+        container.className = ("container my3");
+
+        container.innerHTML = (`
+            <table class="table table-secondary table-bordered mt-5">
+                <thead>
+                    <tr>
+                    <th class="table-secondary" scope="col">Título</th>
+                    <th class="table-secondary" scope="col">Synopsis</th>
+                    <th class="table-secondary" scope="col">Publicación</th>
+                    <th class="table-secondary" scope="col">Origen</th>
+                    <th class="table-secondary" scope="col">Categoría</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>${production.title}</td>
+                        <td>${production.synopsis}</td>
+                        <td>${production.publication}</td>
+                        <td>${production.nacionality}</td>
+                        <td>${category}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button type="button" data-title="${production.title}" id="b-open" class="btn btn-dark">Abrir en nueva ventana</button>
+            `);
+
+        // Actors
+        let containerChildActors = document.createElement("div");
+        containerChildActors.className = ("container-row d-flex");
+        containerChildActors.style.justifyContent = "center";
+
+        let headerActor = document.createElement("h2");
+        headerActor.className = ("mt-5 text-center");
+        headerActor.innerHTML = ("Actores");
+        container.appendChild(headerActor);
+
+        for (let actor of casting) {
+            let containerActor = document.createElement("div");
+            containerActor.innerHTML = (`
+            <div class="card person-production" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}" style="width: 18rem;">
+                <a href="#actor-info">
+                <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="..." data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}">
+                <div class="card-body" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}">
+                    <p class="card-text" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}">${actor.actor.name} ${actor.actor.lastname1}</p>
+                </div>
+                </a>
+            </div>
+            `);
+            containerChildActors.appendChild(containerActor);
+        }
+        container.appendChild(containerChildActors);
+
+        // Directors
+        let containerChildDirectors = document.createElement("div");
+        containerChildDirectors.className = ("container-row d-flex");
+        containerChildDirectors.style.justifyContent = "center";
+
+        let headerDirector = document.createElement("h2");
+        headerDirector.className = ("mt-5 text-center");
+        headerDirector.innerHTML = ("Directores");
+        container.appendChild(headerDirector);
+
+        for (let director of directors) {
+            try {
+                let containerDirector = document.createElement("div");
+                containerDirector.innerHTML = (`
+            <div class="card person-production" data-dni="${director.director.dni}" data-rol="${director.director.rol}" style="width: 18rem;">
+            <a href="#director-info">
+                <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="..." data-dni="${director.director.dni}" data-rol="${director.director.rol}">
+                <div class="card-body" data-dni="${director.director.dni}" data-rol="${director.director.rol}">
+                    <p class="card-text " data-dni="${director.director.dni}" data-rol="${director.director.rol}">${director.director.name} ${director.director.lastname1}</p>
+                </div>
+            </a>
+            </div>
+            `);
+                containerChildDirectors.appendChild(containerDirector);
+            } catch (error) {
+                console.error(error.message);
+            }
+
+        }
+        container.appendChild(containerChildDirectors);
+
+
+        this.main.appendChild(container);
+    }
+
+    // Productions information
+    listProductionInformationNewWindow(production, casting, directors, category) {
+        // this.emptyMainElements();
+        let main = $(this.productionWindow.document.getElementsByTagName("main"));
 
         let container = document.createElement("div");
         container.id = ("production-info");
@@ -155,7 +272,8 @@ class VideoSystemView {
                         <td>${category}</td>
                     </tr>
                 </tbody>
-                </table>
+            </table>
+
             `);
 
         // Actors
@@ -172,10 +290,12 @@ class VideoSystemView {
             let containerActor = document.createElement("div");
             containerActor.innerHTML = (`
             <div class="card person-production" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}" style="width: 18rem;">
-                <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="...">
+                <a href="#actor-info">
+                <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="..." data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}">
                 <div class="card-body">
                     <p class="card-text">${actor.actor.name} ${actor.actor.lastname1}</p>
                 </div>
+                </a>
             </div>
             `);
             containerChildActors.appendChild(containerActor);
@@ -186,7 +306,7 @@ class VideoSystemView {
         let containerChildDirectors = document.createElement("div");
         containerChildDirectors.className = ("container-row d-flex");
         containerChildDirectors.style.justifyContent = "center";
-        
+
         let headerDirector = document.createElement("h2");
         headerDirector.className = ("mt-5 text-center");
         headerDirector.innerHTML = ("Directores");
@@ -197,10 +317,12 @@ class VideoSystemView {
                 let containerDirector = document.createElement("div");
                 containerDirector.innerHTML = (`
             <div class="card person-production" data-dni="${director.director.dni}" data-rol="${director.director.rol}" style="width: 18rem;">
-                <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="...">
+            <a href="#director-info">
+                <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="..." data-dni="${director.director.dni}" data-rol="${director.director.rol}">
                 <div class="card-body">
                     <p class="card-text">${director.director.name} ${director.director.lastname1}</p>
                 </div>
+            </a>
             </div>
             `);
                 containerChildDirectors.appendChild(containerDirector);
@@ -212,7 +334,8 @@ class VideoSystemView {
         container.appendChild(containerChildDirectors);
 
 
-        this.main.appendChild(container);
+        main.append(container);
+        // this.productionWindow.document.body.scrollIntoView();
     }
 
     // Productions from persons
@@ -256,13 +379,15 @@ class VideoSystemView {
             let div = document.createElement("div");
             div.innerHTML = (`
             <div class="col-md-4">
+            <a href="#production-info">
                 <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
-                    <img src="../img/${production.image}" class="card-img-top person-img" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">${production.title}</p>
+                    <img src="../img/${production.image}" class="card-img-top person-img" alt="..." data-title="${production.title}">
+                    <div class="card-body" data-title="${production.title}">
+                        <p class="card-text" data-title="${production.title}">${production.title}</p>
                     </div>
                 </div>
-             </div>`);
+            </a>
+            </div>`);
 
             containerChild.appendChild(div);
         }
@@ -279,7 +404,7 @@ class VideoSystemView {
         container.className = "container my3";
 
         let containerChildPerson = document.createElement("div");
-        containerChildPerson.className = ("container-row d-flex" );
+        containerChildPerson.className = ("container-row d-flex");
         containerChildPerson.style.justifyContent = "center";
 
         let headerPerson = document.createElement("h2");
@@ -292,10 +417,12 @@ class VideoSystemView {
             let containerPerson = document.createElement("div");
             containerPerson.innerHTML = (`
             <div class="card person-production" data-dni="${person.dni}" data-rol="${person.rol}" style="width: 18rem;">
-                <img src="../img/${person.picture}" class="card-img-top person-img" alt="...">
-                <div class="card-body">
-                    <p class="card-text">${person.name} ${person.lastname1}</p>
+                <a href="#${person.rol}-info">
+                <img src="../img/${person.picture}" class="card-img-top person-img" alt="..." data-dni="${person.dni}" data-rol="${person.rol}">
+                <div class="card-body" data-dni="${person.dni}" data-rol="${person.rol}">
+                    <p class="card-text" data-dni="${person.dni}" data-rol="${person.rol}">${person.name} ${person.lastname1}</p>
                 </div>
+                </a>
             </div>
             `);
             containerChildPerson.appendChild(containerPerson);
@@ -305,8 +432,14 @@ class VideoSystemView {
     }
 
     bindInit(handler) {
-        document.getElementById("logo").addEventListener("click", function () {
-            handler();
+
+        // $('#logo').click((event) => {
+        // 	this.#executeHandler(handler, [], 'body', { action: 'logo' }, '#', event);
+        // });
+
+        document.getElementById("logo").addEventListener("click", (event) => {
+            this.#executeHandler(handler, [], 'body', { action: 'init' }, '', event);
+            // handler();
         });
     }
 
@@ -315,8 +448,9 @@ class VideoSystemView {
         let categoryList = document.getElementsByClassName('a-categories');
 
         for (let category of categoryList) {
-            category.addEventListener("click", function () {
-                handler(this.dataset.category);
+            category.addEventListener("click", (event) => {
+                this.#executeHandler(handler, event.target.dataset.category, 'body', { action: 'ProductionsCategoryList', categoryName: event.target.dataset.category }, '#category-list', event);
+                // handler(this.dataset.category);
             });
         }
     }
@@ -326,8 +460,9 @@ class VideoSystemView {
         let categoryListNav = document.getElementsByClassName('dropdown-item');
 
         for (let category of categoryListNav) {
-            category.addEventListener("click", function () {
-                handler(this.dataset.category);
+            category.addEventListener("click", (event) => {
+                this.#executeHandler(handler, event.target.dataset.category, 'body', { action: 'ProductionsCategoryListMenu', categoryName: event.target.dataset.category }, '#category-list', event);
+                // handler(this.dataset.category);
             });
         }
     }
@@ -337,8 +472,9 @@ class VideoSystemView {
         let productionList = document.getElementsByClassName("card-production");
 
         for (let production of productionList) {
-            production.addEventListener("click", function () {
-                handler(this.dataset.title);
+            production.addEventListener("click", (event) => {
+                this.#executeHandler(handler, event.target.dataset.title, 'body', { action: 'ProductionInformation', productionTitle: event.target.dataset.title }, '#production-info', event);
+                // handler(this.dataset.title);
             });
         }
     }
@@ -348,8 +484,9 @@ class VideoSystemView {
         let personList = document.getElementsByClassName("person-production");
 
         for (let person of personList) {
-            person.addEventListener("click", function () {
-                handler(this.dataset.dni, this.dataset.rol);
+            person.addEventListener("click", (event) => {
+                this.#executeHandler(handler, [event.target.dataset.dni, event.target.dataset.rol], 'body', { action: 'PersonInformation', personDNI: event.target.dataset.dni, personRol: event.target.dataset.rol }, `#${event.target.dataset.rol}-info`, event);
+                // handler(this.dataset.dni, this.dataset.rol);
             });
         }
     }
@@ -359,10 +496,49 @@ class VideoSystemView {
         let personMenus = document.getElementsByClassName("nav-person");
 
         for (let option of personMenus) {
-            option.addEventListener("click", function () {
-                handler(this.dataset.rol);
+            option.addEventListener("click", (event) => {
+                // console.log(event.target);
+                option.href = `#${event.target.dataset.rol}-list`; // We have to modify the URL from here
+                this.#executeHandler(handler, event.target.dataset.rol, 'body', { action: 'PersonNav', personRol: event.target.dataset.rol }, `#${event.target.dataset.rol}-list`, event);
+                // handler(this.dataset.rol);
             });
         }
+    }
+
+    bindCloseWindows(handler) {
+        let closeButton = document.getElementById("nav-closeWindows");
+        closeButton.addEventListener("click", (event) => {
+            handler(this.productionWindow)
+        });
+    }
+
+    bindShowProductInNewWindow(handler) {
+        let button = document.getElementById("b-open");
+        button.addEventListener("click", (event) => {
+            
+            if (!this.#windows.has(`${event.target.dataset.title}`)) {
+                console.log("if");
+                this.productionWindow = window.open("../public/production.html", `${event.target.dataset.title}`, "width=800, height=600, top=250, left=250, titlebar=yes, toolbar=no, menubar=no, location=no");
+                this.productionWindow.addEventListener('DOMContentLoaded', () => {
+                    handler(event.target.dataset.title)
+                });
+                this.#windows.set(`${event.target.dataset.title}`, this.productionWindow); // Add elements to the map
+            }else if(this.#windows.has(`${event.target.dataset.title}`) && this.#windows.get(`${event.target.dataset.title}`).closed){
+                console.log("elseif");
+                this.#windows.get(`${event.target.dataset.title}`).close();
+                this.productionWindow = window.open("../public/production.html", `${event.target.dataset.title}`, "width=800, height=600, top=250, left=250, titlebar=yes, toolbar=no, menubar=no, location=no");
+                this.productionWindow.addEventListener('DOMContentLoaded', () => {
+                    handler(event.target.dataset.title)
+                });
+                this.#windows.set(`${event.target.dataset.title}`, this.productionWindow); // Add elements to the map
+            } else {
+                console.log("else");
+                let windowActive = this.#windows.get(`${event.target.dataset.title}`);
+                windowActive.focus();
+            }
+            this.productionWindow.id = `${event.target.dataset.title}`;
+            this.productionWindow.class = `windows`;
+        });
     }
 
     // Empty the main
