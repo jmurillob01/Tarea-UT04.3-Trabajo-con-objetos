@@ -123,6 +123,7 @@ class VideoSystemController {
         this.#loadVideoSystemObjects();
         this.onListCategories();
         this.onListPersons();
+        this.onCloseMenu();
     }
 
     onInit = () => {
@@ -140,11 +141,18 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionsCategoryListInMenu(
             this.handleProductionsCategoryList
         );
+        
     }
 
     onListPersons = () => {
         this.#videoSystemView.bindPersonsNav(
             this.handlePersonsNav
+        );
+    }
+
+    onCloseMenu = () =>{
+        this.#videoSystemView.bindCloseWindows(
+            this.handleCloseWindows
         );
     }
 
@@ -188,6 +196,10 @@ class VideoSystemController {
 
         this.#videoSystemView.listProductionInformation(production, this.#videoSystem.getCast(production), this.#videoSystem.getDirectorsDepartment(production), category);
 
+        this.#videoSystemView.bindShowProductInNewWindow(
+            this.handleShowProductionsInNewWindow
+        );
+
         this.#videoSystemView.bindProductionPerson(
             this.handleProductionPerson
         );
@@ -196,7 +208,6 @@ class VideoSystemController {
     handleProductionPerson = (dni, rol) => { // Actors from a production
         let productionPerson;
         let person;
-
         if (rol == "director") { // Director
             productionPerson = this.#videoSystem.getProductionsDirectorByDNI(dni);
             person = this.#videoSystem.getDirectorByDNI(dni).director;
@@ -225,6 +236,29 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionPerson(
             this.handleProductionPerson
         );
+    }
+
+    handleShowProductionsInNewWindow = (title) => {
+        try {
+
+            let production = this.#videoSystem.getProductionObject(title);
+
+            let category = this.#videoSystem.getCategoryByProduction(title);
+
+            this.#videoSystemView.listProductionInformationNewWindow(production, this.#videoSystem.getCast(production), this.#videoSystem.getDirectorsDepartment(production), category);
+
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    handleCloseWindows = () =>{
+        let windows = this.#videoSystemView.windows;
+
+        windows.forEach(windowElement=> {
+            windowElement.close();
+            this.#videoSystemView.windows.delete(windowElement.id);
+        });
     }
 }
 
