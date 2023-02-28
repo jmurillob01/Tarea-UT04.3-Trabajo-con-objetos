@@ -281,8 +281,7 @@ class VideoSystemController {
         this.#videoSystemView.bindNewProductionForm(this.handleCreateProduction);
     }
 
-    handleCreateProduction = (productionType, title, nationality, date, synopsis, imagePath) => {
-
+    handleCreateProduction = (productionType, categories, actors, director, title, nationality, date, synopsis, imagePath) => {
         let prod;
         try {
             if (productionType = "movie") {
@@ -290,16 +289,22 @@ class VideoSystemController {
             } else {
                 prod = this.#videoSystem.getSerie(title, nationality, date, synopsis, imagePath);
             }
-            this.#videoSystem.addProduction(prod);
+            for (let category of categories) {
+                this.#videoSystem.assignCategory(this.#videoSystem.getCategory(category), prod);
+            }
+
+            for (let actor of actors) {
+                let person = this.#videoSystem.getActorByDNI(actor);
+                this.#videoSystem.assignActor(person.actor, prod);
+            }
+            let person =this.#videoSystem.getDirectorByDNI(director);
+            this.#videoSystem.assignDirector(person.director, prod);
         } catch (error) {
             console.error(error.message);
         }
-    }
 
-    // handleCreateFormModals = (id) => {
-    //     console.log(id);
-    //     this.#videoSystemView.showFormsModals(id);
-    // }
+        console.log([...this.#videoSystem.productions]);
+    }
 }
 
 export default VideoSystemController;

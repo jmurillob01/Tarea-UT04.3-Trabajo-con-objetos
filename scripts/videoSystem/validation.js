@@ -88,13 +88,15 @@ function newProductionValidation(handler) {
             showFeedBack($(this.productionType), true);
         }
 
-        
         if (!isValid) {
             firstInvalidElement.focus();
         } else {
             let date = adjustDate(this.publishDate.value);
             let imagePath = ImageProduction();
-            handler(this.productionType.value,this.productionTitle.value, this.nationality.value, date, this.synopsis.value, imagePath);
+            let categories = categoryList();
+            let actors = actorList();
+
+            handler(this.productionType.value, categories, actors, this.selectDirectors.value, this.productionTitle.value, this.nationality.value, date, this.synopsis.value, imagePath);
         }
 
         event.preventDefault();
@@ -115,5 +117,26 @@ function ImageProduction() { // ES-es Solo funcionan con imagenes que estén en 
     return path + "" + filename;
 }
 
+function categoryList(){
+    let categoryList = [];
+   
+    for (let option of document.getElementById("selectCategories")) {
+        if (option.selected) {
+            categoryList.push(option.value);
+        }
+    }
+    return categoryList;
+}
+
+function actorList(){
+    let actorList = [];
+
+    for (let option of document.getElementById("selectActors")) {
+        if (option.selected) {
+            actorList.push(option.value);
+        }
+    }
+    return actorList;
+}
 
 export { showFeedBack, defaultCheckElement, newProductionValidation };

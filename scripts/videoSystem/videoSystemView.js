@@ -545,14 +545,14 @@ class VideoSystemView {
 
         for (let director of directors) {
             let option = document.createElement("option");
-            option.name = director.dni;
+            option.value = director.dni;
             option.append(director.name + " " + director.lastname1);
             selectDirectors.appendChild(option);
         }
 
         for (let actor of actors) {
             let option = document.createElement("option");
-            option.name = actor.dni;
+            option.value = actor.dni;
             option.append(actor.name + " " + actor.lastname1);
             selectActors.appendChild(option);
         }
