@@ -431,26 +431,71 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
-    showFormsModals(){
-       this.newProductionModal();
-       console.log("Cargado formulario");
+    showFormsModals() {
+        this.newProductionModal();
+        console.log("Cargado formulario");
     }
 
-    newProductionModal(){
+    newProductionModal() {
         let containerFather = document.getElementById("modals");
         console.log("containerFather");
         let container = document.createElement("div");
 
         container.innerHTML = (`
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade" id="newProduction" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+              <h5 class="modal-title">Crear Producciones</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-              ...
+            <div class="modal-body"> 
+            <!--Formulario -->
+            <form class="row g-3 needs-validation">
+                <div class="col-md-6 position-relative">
+                    <label for="validationTooltip01" class="form-label">Título</label>
+                    <input type="text" class="form-control" id="validationTooltip01" required >
+                    <div class="invalid-tooltip">
+                        Nombre no válido
+                    </div>
+                </div>
+                <div class="col-md-6 position-relative">
+                    <label for="validationTooltip01" class="form-label">Fecha de publicación</label>
+                    <input type="date" class="form-control" id="validationTooltip01" required >
+                    <div class="invalid-tooltip">
+                        Fecha no válida
+                    </div>
+                </div>
+                <div class="col-md-4 position-relative">
+                    <label for="validationTooltip01" class="form-label">Nacionalidad</label>
+                    <input type="date" class="form-control" id="validationTooltip01" required>
+                    <div class="invalid-tooltip">
+                        Fecha no válida
+                    </div>
+                </div>
+                <div class="col-md-8 position-relative">
+                    <label for="validationTooltip01" class="form-label">Imagen</label>
+                    <input type="file" class="form-control" id="validationTooltip01" required>
+                    <div class="invalid-tooltip">
+                        Fecha no válida
+                    </div>
+                </div>
+                <div class="col-md-12 position-relative">
+                    <label for="validationTooltipUsername" class="form-label">Synopsis</label>
+                    <div class="input-group require-validation">
+                        <textarea rows="10" class="form-control" id="validationTooltipUsername" aria-describedby="validationTooltipUsernamePrepend" required></textarea>
+                        <div class="invalid-tooltip">
+                            Please choose a unique and valid username.
+                        </div>
+                        <div class="valid-tooltip">
+                        Looks good!
+                    </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Crear</button>
+                </div>
+            </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -460,7 +505,7 @@ class VideoSystemView {
         </div>
       </div>
         `);
-        
+
         containerFather.appendChild(container);
     }
 
@@ -546,14 +591,14 @@ class VideoSystemView {
     bindShowProductInNewWindow(handler) {
         let button = document.getElementById("b-open");
         button.addEventListener("click", (event) => {
-            
+
             if (!this.#windows.has(`${event.target.dataset.title}`)) {
                 this.productionWindow = window.open("../public/production.html", `${event.target.dataset.title}`, "width=800, height=600, top=250, left=250, titlebar=yes, toolbar=no, menubar=no, location=no");
                 this.productionWindow.addEventListener('DOMContentLoaded', () => {
                     handler(event.target.dataset.title)
                 });
                 this.#windows.set(`${event.target.dataset.title}`, this.productionWindow); // Add elements to the map
-            }else if(this.#windows.has(`${event.target.dataset.title}`) && this.#windows.get(`${event.target.dataset.title}`).closed){
+            } else if (this.#windows.has(`${event.target.dataset.title}`) && this.#windows.get(`${event.target.dataset.title}`).closed) {
                 this.#windows.get(`${event.target.dataset.title}`).close();
                 this.productionWindow = window.open("../public/production.html", `${event.target.dataset.title}`, "width=800, height=600, top=250, left=250, titlebar=yes, toolbar=no, menubar=no, location=no");
                 this.productionWindow.addEventListener('DOMContentLoaded', () => {
@@ -577,7 +622,7 @@ class VideoSystemView {
     //             handler(event.target.id);
     //             // console.log(event.target.id);
     //         });
-            
+
     //     }
     // }
 
