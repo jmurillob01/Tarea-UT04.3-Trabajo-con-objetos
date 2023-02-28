@@ -150,7 +150,15 @@ class VideoSystemController {
         // this.#videoSystemView.bindFormListInMenu(
         //     this.handleCreateFormModals
         // );
-        this.#videoSystemView.showFormsModals();
+        let directors = this.#videoSystem.directors;
+        let actors = this.#videoSystem.actors;
+        let categories = this.#videoSystem.categories;
+        this.#videoSystemView.showFormsModals(directors, actors, categories);
+
+        // ES-es Habría que hacer llamada al bind que tendrá el handler para validar,
+        this.#videoSystemView.bindFormMenu(
+            this.handleNewProductionForm,
+        );
     }
 
     onListPersons = () => {
@@ -270,10 +278,18 @@ class VideoSystemController {
         });
     }
 
-    handleCreateFormModals = (id) => {
-        console.log("handler");
-        this.#videoSystemView.showFormsModals(id);
+    handleNewProductionForm = () =>{
+        this.#videoSystemView.bindNewProductionForm(this.handleCreateProduction);
     }
+
+    handleCreateProduction = () => {
+        
+    }
+
+    // handleCreateFormModals = (id) => {
+    //     console.log(id);
+    //     this.#videoSystemView.showFormsModals(id);
+    // }
 }
 
 export default VideoSystemController;

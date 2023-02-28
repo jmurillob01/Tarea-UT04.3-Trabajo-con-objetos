@@ -431,14 +431,13 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
-    showFormsModals() {
-        this.newProductionModal();
+    showFormsModals(directors, actors, categories) {
+        this.newProductionModal(directors, actors, categories);
         console.log("Cargado formulario");
     }
-
-    newProductionModal() {
+    // ES-es Cambiar para usar como Pablo en las prácticas, no usar una sola función
+    newProductionModal(directors, actors, categories) {
         let containerFather = document.getElementById("modals");
-        console.log("containerFather");
         let container = document.createElement("div");
 
         container.innerHTML = (`
@@ -451,7 +450,7 @@ class VideoSystemView {
             </div>
             <div class="modal-body"> 
             <!--Formulario -->
-            <form class="row g-3 needs-validation">
+            <form class="row g-3 needs-validation" role="form" novalidate>
                 <div class="col-md-6 position-relative">
                     <label for="validationTooltip01" class="form-label">Título</label>
                     <input type="text" class="form-control" id="validationTooltip01" required >
@@ -492,6 +491,27 @@ class VideoSystemView {
                     </div>
                     </div>
                 </div>
+                <div class="col-md-4 position-relative">
+                    <label for="validationTooltip01" class="form-label">Director Principal</label>
+                    <select name="selectDirectors" id="selectDirectors" class="form-select" aria-label="select example"></select>
+                    <div class="invalid-tooltip">
+                        Fecha no válida
+                    </div>
+                </div>
+                <div class="col-md-8 position-relative">
+                    <label for="validationTooltip01" class="form-label">Categorias</label>
+                    <select name="selectCategories" id="selectCategories" class="form-select" multiple aria-label="multiple select example"></select>
+                    <div class="invalid-tooltip">
+                        Fecha no válida
+                    </div>
+                </div>
+                <div class="col-md-12 position-relative">
+                    <label for="validationTooltip01" class="form-label">Actores</label>
+                    <select name="selectActors" id="selectActors" class="form-select" multiple aria-label="multiple select example"></select>
+                    <div class="invalid-tooltip">
+                        Fecha no válida
+                    </div>
+                </div>
                 <div class="col-12">
                     <button class="btn btn-primary" type="submit">Crear</button>
                 </div>
@@ -507,6 +527,30 @@ class VideoSystemView {
         `);
 
         containerFather.appendChild(container);
+        let selectDirectors = document.getElementById("selectDirectors");
+        let selectActors = document.getElementById("selectActors");
+        let selectCategories = document.getElementById("selectCategories");
+
+        for (let director of directors) {
+            let option = document.createElement("option");
+            option.name = director.dni;
+            option.append(director.name + " " + director.lastname1);
+            selectDirectors.appendChild(option);
+        }
+
+        for (let actor of actors) {
+            let option = document.createElement("option");
+            option.name = actor.dni;
+            option.append(actor.name + " " + actor.lastname1);
+            selectActors.appendChild(option);
+        }
+
+        for (let category of categories) {
+            let option = document.createElement("option");
+            option.name = category.name;
+            option.append(category.name);
+            selectCategories.appendChild(option);
+        }
     }
 
     bindInit(handler) {
@@ -620,11 +664,23 @@ class VideoSystemView {
     //     for (let formItem of formList) {
     //         formItem.addEventListener("click", (event) =>{
     //             handler(event.target.id);
-    //             // console.log(event.target.id);
+    //             console.log(event.target.id);
     //         });
 
     //     }
     // }
+
+    bindFormMenu(hCreateProduction) { // ES-es Relacionamos los botones de los formularios con sus validaciones
+        let newProductionLink = document.getElementById("newProductionLink");
+        newProductionLink.addEventListener("click", (event) => {
+            // this.#executeHandler(hCreateProduction, [], '#new-production', { action: 'newCategory' }, '#', event);
+            hCreateProduction();
+        });
+    }
+
+    bindNewProductionForm(handler){
+        newProductionValidation(handler);
+    }
 
     // Empty the main
     emptyMainElements() {
