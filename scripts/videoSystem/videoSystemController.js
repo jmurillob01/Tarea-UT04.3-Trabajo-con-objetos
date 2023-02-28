@@ -142,7 +142,7 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionsCategoryListInMenu(
             this.handleProductionsCategoryList
         );
-        
+
     }
 
     onListForms = () => {
@@ -155,9 +155,8 @@ class VideoSystemController {
         let categories = this.#videoSystem.categories;
         this.#videoSystemView.showFormsModals(directors, actors, categories);
 
-        // ES-es Habría que hacer llamada al bind que tendrá el handler para validar,
         this.#videoSystemView.bindFormMenu(
-            this.handleNewProductionForm,
+            this.handleNewProductionForm
         );
     }
 
@@ -167,7 +166,7 @@ class VideoSystemController {
         );
     }
 
-    onCloseMenu = () =>{
+    onCloseMenu = () => {
         this.#videoSystemView.bindCloseWindows(
             this.handleCloseWindows
         );
@@ -269,21 +268,32 @@ class VideoSystemController {
         }
     }
 
-    handleCloseWindows = () =>{
+    handleCloseWindows = () => {
         let windows = this.#videoSystemView.windows;
 
-        windows.forEach(windowElement=> {
+        windows.forEach(windowElement => {
             windowElement.close();
             this.#videoSystemView.windows.delete(windowElement.id);
         });
     }
 
-    handleNewProductionForm = () =>{
+    handleNewProductionForm = () => {
         this.#videoSystemView.bindNewProductionForm(this.handleCreateProduction);
     }
 
-    handleCreateProduction = () => {
-        
+    handleCreateProduction = (productionType, title, nationality, date, synopsis, imagePath) => {
+
+        let prod;
+        try {
+            if (productionType = "movie") {
+                prod = this.#videoSystem.getMovie(title, nationality, date, synopsis, imagePath);
+            } else {
+                prod = this.#videoSystem.getSerie(title, nationality, date, synopsis, imagePath);
+            }
+            this.#videoSystem.addProduction(prod);
+        } catch (error) {
+            console.error(error.message);
+        }
     }
 
     // handleCreateFormModals = (id) => {

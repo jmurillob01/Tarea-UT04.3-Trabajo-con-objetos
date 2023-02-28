@@ -1,5 +1,7 @@
 "use strict";
 
+import { showFeedBack, defaultCheckElement, newProductionValidation} from "./validation.js";
+
 class VideoSystemView {
 
     // #windows = [];
@@ -450,66 +452,76 @@ class VideoSystemView {
             </div>
             <div class="modal-body"> 
             <!--Formulario -->
-            <form class="row g-3 needs-validation" role="form" novalidate>
+            <form name="fNewProduction" class="row g-3 needs-validation" role="form" novalidate enctype="multipart/form-data">
                 <div class="col-md-6 position-relative">
                     <label for="validationTooltip01" class="form-label">Título</label>
-                    <input type="text" class="form-control" id="validationTooltip01" required >
+                    <input type="text" class="form-control" id="productionTitle" pattern="^[a-zA-Z0-9]{1,20}$" required>
                     <div class="invalid-tooltip">
                         Nombre no válido
                     </div>
                 </div>
                 <div class="col-md-6 position-relative">
                     <label for="validationTooltip01" class="form-label">Fecha de publicación</label>
-                    <input type="date" class="form-control" id="validationTooltip01" required >
+                    <input type="date" class="form-control" id="publishDate" required >
                     <div class="invalid-tooltip">
                         Fecha no válida
                     </div>
                 </div>
                 <div class="col-md-4 position-relative">
                     <label for="validationTooltip01" class="form-label">Nacionalidad</label>
-                    <input type="date" class="form-control" id="validationTooltip01" required>
+                    <input type="text" class="form-control" id="nationality" required>
                     <div class="invalid-tooltip">
-                        Fecha no válida
+                        Nacionalidad Inválida
                     </div>
                 </div>
                 <div class="col-md-8 position-relative">
                     <label for="validationTooltip01" class="form-label">Imagen</label>
-                    <input type="file" class="form-control" id="validationTooltip01" required>
+                    <input type="file" class="form-control" id="image" pattern=".*(png|jpg|jpeg|gif)$" required>
                     <div class="invalid-tooltip">
-                        Fecha no válida
+                        Imagen no válida
                     </div>
                 </div>
                 <div class="col-md-12 position-relative">
                     <label for="validationTooltipUsername" class="form-label">Synopsis</label>
                     <div class="input-group require-validation">
-                        <textarea rows="10" class="form-control" id="validationTooltipUsername" aria-describedby="validationTooltipUsernamePrepend" required></textarea>
+                        <textarea rows="10" class="form-control" id="synopsis" aria-describedby="validationTooltipUsernamePrepend" required></textarea>
                         <div class="invalid-tooltip">
-                            Please choose a unique and valid username.
+                            Descripción no válida
                         </div>
-                        <div class="valid-tooltip">
-                        Looks good!
-                    </div>
                     </div>
                 </div>
                 <div class="col-md-4 position-relative">
                     <label for="validationTooltip01" class="form-label">Director Principal</label>
-                    <select name="selectDirectors" id="selectDirectors" class="form-select" aria-label="select example"></select>
+                    <select name="selectDirectors" id="selectDirectors" class="form-select" aria-label="select example"><option></option></select>
                     <div class="invalid-tooltip">
-                        Fecha no válida
+                        Selecciona datos válidos
                     </div>
                 </div>
                 <div class="col-md-8 position-relative">
                     <label for="validationTooltip01" class="form-label">Categorias</label>
                     <select name="selectCategories" id="selectCategories" class="form-select" multiple aria-label="multiple select example"></select>
                     <div class="invalid-tooltip">
-                        Fecha no válida
+                    Selecciona datos válidos
                     </div>
                 </div>
                 <div class="col-md-12 position-relative">
                     <label for="validationTooltip01" class="form-label">Actores</label>
                     <select name="selectActors" id="selectActors" class="form-select" multiple aria-label="multiple select example"></select>
                     <div class="invalid-tooltip">
-                        Fecha no válida
+                    Selecciona datos válidos
+                    </div>
+                </div>
+                <div class="col-md-6 position-relative">
+                    <input class="form-check-input" type="radio" name="production" id="productionType" value="movie" required>
+                    <label class="form-check-label" for="movieRadio">
+                        Película
+                    </label>
+                    <input class="form-check-input" type="radio" name="production" value="serie">
+                    <label class="form-check-label" for="serieRadio">
+                        Serie
+                    </label>
+                    <div class="invalid-tooltip">
+                    Este parámetro es necesario
                     </div>
                 </div>
                 <div class="col-12">
