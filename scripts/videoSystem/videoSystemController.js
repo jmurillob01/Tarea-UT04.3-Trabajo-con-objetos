@@ -124,6 +124,7 @@ class VideoSystemController {
         this.onListCategories();
         this.onListPersons();
         this.onCloseMenu();
+        this.onListForms();
     }
 
     onInit = () => {
@@ -142,6 +143,14 @@ class VideoSystemController {
             this.handleProductionsCategoryList
         );
         
+    }
+
+    onListForms = () => {
+        // ES-es De momento solo necesitamos el bind
+        // this.#videoSystemView.bindFormListInMenu(
+        //     this.handleCreateFormModals
+        // );
+        this.#videoSystemView.showFormsModals();
     }
 
     onListPersons = () => {
@@ -259,6 +268,11 @@ class VideoSystemController {
             windowElement.close();
             this.#videoSystemView.windows.delete(windowElement.id);
         });
+    }
+
+    handleCreateFormModals = (id) => {
+        console.log("handler");
+        this.#videoSystemView.showFormsModals(id);
     }
 }
 

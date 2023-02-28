@@ -71,7 +71,7 @@ class VideoSystemView {
         for (let category of categories) {
             let liCategories = document.createElement("li");
             liCategories.innerHTML = `
-            <a data-category="${category.name}" class="dropdown-item" href="#category-list">
+            <a data-category="${category.name}" class="dropdown-item category-dropdown-item" href="#category-list">
                 ${category.name}
             </a>`;
             ulCategories.appendChild(liCategories);
@@ -431,6 +431,39 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
+    showFormsModals(){
+       this.newProductionModal();
+       console.log("Cargado formulario");
+    }
+
+    newProductionModal(){
+        let containerFather = document.getElementById("modals");
+        console.log("containerFather");
+        let container = document.createElement("div");
+
+        container.innerHTML = (`
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+          </div>
+        </div>
+      </div>
+        `);
+        
+        containerFather.appendChild(container);
+    }
+
     bindInit(handler) {
 
         // $('#logo').click((event) => {
@@ -457,7 +490,7 @@ class VideoSystemView {
 
     // Categories on the nav
     bindProductionsCategoryListInMenu(handler) {
-        let categoryListNav = document.getElementsByClassName('dropdown-item');
+        let categoryListNav = document.getElementsByClassName('category-dropdown-item'); // ES-es He cambiado el nombre de la clase para que no interfiera con los formularios
 
         for (let category of categoryListNav) {
             category.addEventListener("click", (event) => {
@@ -497,10 +530,8 @@ class VideoSystemView {
 
         for (let option of personMenus) {
             option.addEventListener("click", (event) => {
-                // console.log(event.target);
                 option.href = `#${event.target.dataset.rol}-list`; // We have to modify the URL from here
                 this.#executeHandler(handler, event.target.dataset.rol, 'body', { action: 'PersonNav', personRol: event.target.dataset.rol }, `#${event.target.dataset.rol}-list`, event);
-                // handler(this.dataset.rol);
             });
         }
     }
@@ -517,14 +548,12 @@ class VideoSystemView {
         button.addEventListener("click", (event) => {
             
             if (!this.#windows.has(`${event.target.dataset.title}`)) {
-                console.log("if");
                 this.productionWindow = window.open("../public/production.html", `${event.target.dataset.title}`, "width=800, height=600, top=250, left=250, titlebar=yes, toolbar=no, menubar=no, location=no");
                 this.productionWindow.addEventListener('DOMContentLoaded', () => {
                     handler(event.target.dataset.title)
                 });
                 this.#windows.set(`${event.target.dataset.title}`, this.productionWindow); // Add elements to the map
             }else if(this.#windows.has(`${event.target.dataset.title}`) && this.#windows.get(`${event.target.dataset.title}`).closed){
-                console.log("elseif");
                 this.#windows.get(`${event.target.dataset.title}`).close();
                 this.productionWindow = window.open("../public/production.html", `${event.target.dataset.title}`, "width=800, height=600, top=250, left=250, titlebar=yes, toolbar=no, menubar=no, location=no");
                 this.productionWindow.addEventListener('DOMContentLoaded', () => {
@@ -532,7 +561,6 @@ class VideoSystemView {
                 });
                 this.#windows.set(`${event.target.dataset.title}`, this.productionWindow); // Add elements to the map
             } else {
-                console.log("else");
                 let windowActive = this.#windows.get(`${event.target.dataset.title}`);
                 windowActive.focus();
             }
@@ -541,6 +569,18 @@ class VideoSystemView {
         });
     }
 
+    // bindFormListInMenu(handler){
+    //     let formList = document.getElementsByClassName("form-dropdown-item");
+
+    //     for (let formItem of formList) {
+    //         formItem.addEventListener("click", (event) =>{
+    //             handler(event.target.id);
+    //             // console.log(event.target.id);
+    //         });
+            
+    //     }
+    // }
+
     // Empty the main
     emptyMainElements() {
         let main = document.getElementById("main");
@@ -548,8 +588,8 @@ class VideoSystemView {
         let productionsRandom = document.getElementById('productions');
 
         // More elements, no principal
-        if (main.childElementCount > 2) {
-            while (main.childElementCount > 2) {
+        if (main.childElementCount > 3) {
+            while (main.childElementCount > 3) {
                 main.lastElementChild.remove();
             }
         }
