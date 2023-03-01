@@ -513,17 +513,15 @@ class VideoSystemView {
                     Selecciona datos válidos
                     </div>
                 </div>
-                <div class="col-md-6 position-relative">
-                    <input class="form-check-input" type="radio" name="production" id="productionType" value="movie" required>
-                    <label class="form-check-label" for="movieRadio">
-                        Película
-                    </label>
-                    <input class="form-check-input" type="radio" name="production" value="serie">
-                    <label class="form-check-label" for="serieRadio">
-                        Serie
-                    </label>
+                <div class="col-md-12 position-relative">
+                    <label for="relationAssign" class="form-label">Tipo de producción</label>
+                    <select name="productionType" id="productionType" class="form-select" aria-label="select example">
+                    <option></option>
+                    <option name="serie">serie</option>
+                    <option name="movie">movie</option>
+                    </select>
                     <div class="invalid-tooltip">
-                    Este parámetro es necesario
+                        Selecciona datos válidos
                     </div>
                 </div>
                 <div class="col-12">

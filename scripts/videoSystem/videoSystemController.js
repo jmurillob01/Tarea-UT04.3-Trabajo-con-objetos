@@ -331,8 +331,11 @@ class VideoSystemController {
                 let person = this.#videoSystem.getActorByDNI(actor);
                 this.#videoSystem.assignActor(person.actor, prod);
             }
-            let person = this.#videoSystem.getDirectorByDNI(director);
-            this.#videoSystem.assignDirector(person.director, prod);
+
+            if (director != "") {
+                let person = this.#videoSystem.getDirectorByDNI(director);
+                this.#videoSystem.assignDirector(person.director, prod);
+            }
         } catch (error) {
             console.error(error.message);
         }
