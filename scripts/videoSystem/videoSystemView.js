@@ -1,6 +1,6 @@
 "use strict";
 
-import { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation } from "./validation.js";
+import { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation } from "./validation.js";
 
 class VideoSystemView {
 
@@ -635,16 +635,14 @@ class VideoSystemView {
                     </div>
                 </div>
                 <div class="col-md-12 position-relative">
-                    <input class="form-check-input form-relate-radio" type="radio" name="relation" id="relationAssign" value="assign" required>
-                    <label class="form-check-label">
-                        Asignar
-                    </label>
-                    <input class="form-check-input form-relate-radio" type="radio" name="relation" value="desassign">
-                    <label class="form-check-label">
-                        Desasignar
-                    </label>
+                    <label for="relationAssign" class="form-label">Producción</label>
+                    <select name="relationAssign" id="relationAssign" class="form-select" aria-label="select example">
+                    <option></option>
+                    <option name="assign">assign</option>
+                    <option name="desassign">desassign</option>
+                    </select>
                     <div class="invalid-tooltip">
-                    Este parámetro es necesario
+                        Selecciona datos válidos
                     </div>
                 </div>
                  <div class="col-md-6 position-relative">
@@ -656,7 +654,7 @@ class VideoSystemView {
                 </div>
                 <div class="col-md-6 position-relative">
                     <label for="validationTooltip01" class="form-label">Directores</label>
-                    <select name="selectDirectors" id="selectDirectorsRelate" class="form-select" multiple aria-label="select example"></select>
+                    <select name="selectDirectorsRelate" id="selectDirectorsRelate" class="form-select" multiple aria-label="select example"></select>
                     <div class="invalid-tooltip">
                         Selecciona datos válidos
                     </div>
@@ -684,31 +682,48 @@ class VideoSystemView {
             selectProduccion.appendChild(option);
         }
         selectProduccion.addEventListener("change", (event) => {
-            for (let radio of radioButtons) {
-                radio.checked = false;
-            }
+            document.getElementById("relationAssign").value = "";
+            
             this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
         }); // ES-es limpiar todo para que al cambiar de producción no de error con personas incorrectas
 
-        let radioButtons = document.getElementsByClassName("form-relate-radio");
+        // let radioButtons = document.getElementsByClassName("form-relate-radio");
 
-        for (let radio of radioButtons) {
-            radio.addEventListener("click", (event) => {
-                let production = document.getElementById("selectProductionRelate");
-                if (production.value != "") {
-                    if (radio.value == "assign") {
-                        // Función añadir actores y directores que no contiene la producción
-                        this.assignPersons(production.value, actors, directors, hProductionActors);
-                    } else {
-                        // Función para eliminar actores y directores que contiene la producción
-                        this.desAssignPersons(production.value, actors, directors, hProductionActors);
-                    }
-                } else {
-                    radio.checked = false;
+        // for (let radio of radioButtons) {
+        //     radio.addEventListener("click", (event) => {
+        //         let production = document.getElementById("selectProductionRelate");
+        //         if (production.value != "") {
+        //             if (radio.value == "assign") {
+        //                 // Función añadir actores y directores que no contiene la producción
+        //                 this.assignPersons(production.value, actors, directors, hProductionActors);
+        //             } else {
+        //                 // Función para eliminar actores y directores que contiene la producción
+        //                 this.desAssignPersons(production.value, actors, directors, hProductionActors);
+        //             }
+        //         } else {
+        //             radio.checked = false;
+        //             this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
+        //         }
+        //     });
+        // }
+        let selectAssign = document.getElementById("relationAssign");
+        selectAssign.addEventListener("change", (event) => {
+            let production = document.getElementById("selectProductionRelate");
+            if (production.value != "") {
+                if (selectAssign.value == "assign") {
+                    // Función añadir actores y directores que no contiene la producción
+                    this.assignPersons(production.value, actors, directors, hProductionActors);
+                } else if(selectAssign.value == "desassign"){
+                    // Función para eliminar actores y directores que contiene la producción
+                    this.desAssignPersons(production.value, actors, directors, hProductionActors);
+                }else{
                     this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
                 }
-            });
-        }
+            } else {
+                radio.checked = false;
+                this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
+            }
+        });
     }
 
     bindInit(handler) {
@@ -836,7 +851,7 @@ class VideoSystemView {
     }
 
     bindRelateProductionForm(handler) {
-        // relateProductionValidation(handler);
+        relateProductionValidation(handler);
     }
 
     // Empty the main

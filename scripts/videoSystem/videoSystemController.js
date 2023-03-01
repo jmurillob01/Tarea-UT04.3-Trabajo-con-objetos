@@ -293,7 +293,7 @@ class VideoSystemController {
     }
 
     handleRelateProductionForm = () => {
-        this.#videoSystemView.bindRelateProductionForm(this.handleDeleteProduction);
+        this.#videoSystemView.bindRelateProductionForm(this.handleRelateProduction);
     }
 
     hProductionPersons = (title) => { // ES-es Funciona para recibir el título al seleccionar, podemos obtener el casting
@@ -312,7 +312,7 @@ class VideoSystemController {
             directorsNif.push(director.director.dni);
         }
 
-        return {castingNif, directorsNif};
+        return { castingNif, directorsNif };
     }
 
     handleCreateProduction = (productionType, categories, actors, director, title, nationality, date, synopsis, imagePath) => {
@@ -346,6 +346,37 @@ class VideoSystemController {
         } catch (error) {
             console.error(error.message);
         }
+    }
+
+    handleRelateProduction = (title, relation, actors, directors) => {
+
+        let prod = this.#videoSystem.getProductionObject(title);
+        console.log(relation);
+        if (relation == "assign") {
+            for (let actor of actors) {
+                let person = this.#videoSystem.getActorByDNI(actor);
+                this.#videoSystem.assignActor(person.actor, prod);
+            }
+
+            for (let director of directors) {
+                let person = this.#videoSystem.getDirectorByDNI(director);
+                this.#videoSystem.assignDirector(person.director, prod);
+            }
+        } else {
+
+            console.log(prod);
+            for (let actor of actors) {
+                let person = this.#videoSystem.getActorByDNI(actor);
+                this.#videoSystem.deassignActor(person.actor, prod);
+            }
+
+            for (let director of directors) {
+                let person = this.#videoSystem.getDirectorByDNI(director);
+                this.#videoSystem.deassignDirector(person.director, prod);
+            }
+        }
+
+        console.log("Bien?");
     }
 
     handleReloadCloseForm = () => {

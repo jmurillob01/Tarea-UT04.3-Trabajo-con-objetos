@@ -94,7 +94,9 @@ function newProductionValidation(handler) {
             let date = adjustDate(this.publishDate.value);
             let imagePath = ImageProduction();
             let categories = categoryList();
-            let actors = actorList();
+            // let actors = actorList();
+            let actors = selectedPersonList("selectActors");
+            // console.log(actors);
             handler(this.productionType.value, categories, actors, this.selectDirectors.value, this.productionTitle.value, this.nationality.value, date, this.synopsis.value, imagePath);
         }
 
@@ -110,18 +112,70 @@ function deleteProductionValidation(handler) {
         let isValid = true;
         let firstInvalidElement = null;
 
-        if (!this.selectProduction.checkValidity() || this.selectProduction.value == "") {
+        if (!this.selectProductionDelete.checkValidity() || this.selectProductionDelete.value == "") {
             isValid = false;
-            showFeedBack($(this.selectProduction), false);
-            firstInvalidElement = this.selectProduction;
+            showFeedBack($(this.selectProductionDelete), false);
+            firstInvalidElement = this.selectProductionDelete;
         } else {
-            showFeedBack($(this.selectProduction), true);
+            showFeedBack($(this.selectProductionDelete), true);
         }
 
         if (!isValid) {
             firstInvalidElement.focus();
         } else {
-            handler(this.selectProduction.value);
+            handler(this.selectProductionDelete.value);
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+    });
+}
+
+function relateProductionValidation(handler){
+    let form = document.forms.frelationProduction;
+
+    $(form).submit(function (event) {
+        let isValid = true;
+        let firstInvalidElement = null;
+
+        if (!this.selectProductionRelate.checkValidity() || this.selectProductionRelate.value == "") {
+            isValid = false;
+            showFeedBack($(this.selectProductionRelate), false);
+            firstInvalidElement = this.selectProductionRelate;
+        } else {
+            showFeedBack($(this.selectProductionRelate), true);
+        }
+
+        if (!this.relationAssign.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.relationAssign), false);
+            firstInvalidElement = this.relationAssign;
+        } else {
+            showFeedBack($(this.relationAssign), true);
+        }
+
+        if (!this.selectActorsRelate.checkValidity() || this.selectActorsRelate.value == "") {
+            isValid = false;
+            showFeedBack($(this.selectActorsRelate), false);
+            firstInvalidElement = this.selectActorsRelate;
+        } else {
+            showFeedBack($(this.selectActorsRelate), true);
+        }
+
+        if (!this.selectDirectorsRelate.checkValidity() || this.selectDirectorsRelate.value == "") {
+            isValid = false;
+            showFeedBack($(this.selectDirectorsRelate), false);
+            firstInvalidElement = this.selectDirectorsRelate;
+        } else {
+            showFeedBack($(this.selectDirectorsRelate), true);
+        }
+
+        if (!isValid) {
+            firstInvalidElement.focus();
+        } else {
+            let actors = selectedPersonList("selectActorsRelate");
+            let directors = selectedPersonList("selectDirectorsRelate");
+            handler(this.selectProductionRelate.value, this.relationAssign.value, actors, directors);
         }
 
         event.preventDefault();
@@ -153,15 +207,26 @@ function categoryList() {
     return categoryList;
 }
 
-function actorList() {
-    let actorList = [];
+// function actorList() {
+//     let actorList = [];
 
-    for (let option of document.getElementById("selectActors")) {
+//     for (let option of document.getElementById("selectActors")) {
+//         if (option.selected) {
+//             actorList.push(option.value);
+//         }
+//     }
+//     return actorList;
+// }
+
+
+function selectedPersonList(idSelected) {
+    let selectedList = [];
+
+    for (let option of document.getElementById(idSelected)) {
         if (option.selected) {
-            actorList.push(option.value);
+            selectedList.push(option.value);
         }
     }
-    return actorList;
+    return selectedList;
 }
-
-export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation };
+export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation };
