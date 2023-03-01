@@ -95,8 +95,33 @@ function newProductionValidation(handler) {
             let imagePath = ImageProduction();
             let categories = categoryList();
             let actors = actorList();
-
             handler(this.productionType.value, categories, actors, this.selectDirectors.value, this.productionTitle.value, this.nationality.value, date, this.synopsis.value, imagePath);
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+    });
+}
+
+function deleteProductionValidation(handler) {
+    let form = document.forms.fDeleteProduction;
+
+    $(form).submit(function (event) {
+        let isValid = true;
+        let firstInvalidElement = null;
+
+        if (!this.selectProduction.checkValidity() || this.selectProduction.value == "") {
+            isValid = false;
+            showFeedBack($(this.selectProduction), false);
+            firstInvalidElement = this.selectProduction;
+        } else {
+            showFeedBack($(this.selectProduction), true);
+        }
+
+        if (!isValid) {
+            firstInvalidElement.focus();
+        } else {
+            handler(this.selectProduction.value);
         }
 
         event.preventDefault();
@@ -117,9 +142,9 @@ function ImageProduction() { // ES-es Solo funcionan con imagenes que estén en 
     return path + "" + filename;
 }
 
-function categoryList(){
+function categoryList() {
     let categoryList = [];
-   
+
     for (let option of document.getElementById("selectCategories")) {
         if (option.selected) {
             categoryList.push(option.value);
@@ -128,7 +153,7 @@ function categoryList(){
     return categoryList;
 }
 
-function actorList(){
+function actorList() {
     let actorList = [];
 
     for (let option of document.getElementById("selectActors")) {
@@ -139,4 +164,4 @@ function actorList(){
     return actorList;
 }
 
-export { showFeedBack, defaultCheckElement, newProductionValidation };
+export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation };

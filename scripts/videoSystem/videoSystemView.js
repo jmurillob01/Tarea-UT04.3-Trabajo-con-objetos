@@ -1,6 +1,6 @@
 "use strict";
 
-import { showFeedBack, defaultCheckElement, newProductionValidation} from "./validation.js";
+import { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation } from "./validation.js";
 
 class VideoSystemView {
 
@@ -433,11 +433,12 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
-    showFormsModals(directors, actors, categories) {
+    showFormsModals(directors, actors, categories, productions) {
+        this.deleteFormModals();
         this.newProductionModal(directors, actors, categories);
-        console.log("Cargado formulario");
+        this.deleteProductionModal(productions);
     }
-    // ES-es Cambiar para usar como Pablo en las prácticas, no usar una sola función
+
     newProductionModal(directors, actors, categories) {
         let containerFather = document.getElementById("modals");
         let container = document.createElement("div");
@@ -448,7 +449,7 @@ class VideoSystemView {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Crear Producciones</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close close-modal" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body"> 
             <!--Formulario -->
@@ -530,8 +531,7 @@ class VideoSystemView {
             </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Understood</button>
+              <button type="button" class="btn btn-secondary close-modal" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -562,6 +562,53 @@ class VideoSystemView {
             option.name = category.name;
             option.append(category.name);
             selectCategories.appendChild(option);
+        }
+    }
+
+    deleteProductionModal(productions) {
+        let containerFather = document.getElementById("modals");
+        let container = document.createElement("div");
+
+        container.innerHTML = (`
+        <div class="modal fade" id="deleteProduction" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Crear Producciones</h5>
+              <button type="button" class="btn-close close-modal" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"> 
+            <!--Formulario -->
+            <form name="fDeleteProduction" class="row g-3 needs-validation" role="form">
+                <div class="col-md-4 position-relative">
+                    <label for="validationTooltip01" class="form-label">Producción</label>
+                    <select name="selectProduction" id="selectProduction" class="form-select" aria-label="select example"><option></option></select>
+                    <div class="invalid-tooltip">
+                        Selecciona datos válidos
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Eliminar</button>
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary close-modal" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+        `);
+
+        containerFather.appendChild(container);
+        let selectProduccion = document.getElementById("selectProduction");
+
+
+        for (let production of productions) {
+            let option = document.createElement("option");
+            option.value = production.title;
+            option.append(production.title);
+            selectProduccion.appendChild(option);
         }
     }
 
@@ -670,28 +717,24 @@ class VideoSystemView {
         });
     }
 
-    // bindFormListInMenu(handler){
-    //     let formList = document.getElementsByClassName("form-dropdown-item");
-
-    //     for (let formItem of formList) {
-    //         formItem.addEventListener("click", (event) =>{
-    //             handler(event.target.id);
-    //             console.log(event.target.id);
-    //         });
-
-    //     }
-    // }
-
-    bindFormMenu(hCreateProduction) { // ES-es Relacionamos los botones de los formularios con sus validaciones
+    bindFormMenu(hCreateProduction,hdeleteProduction) { // ES-es Relacionamos los botones de los formularios con sus validaciones
         let newProductionLink = document.getElementById("newProductionLink");
         newProductionLink.addEventListener("click", (event) => {
-            // this.#executeHandler(hCreateProduction, [], '#new-production', { action: 'newCategory' }, '#', event);
             hCreateProduction();
+        });
+
+        let deleteProductionLink =  document.getElementById("deleteProductionLink");
+        deleteProductionLink.addEventListener("click", (event) => { // ES-es Esto es lo que duplica
+            hdeleteProduction();
         });
     }
 
-    bindNewProductionForm(handler){
+    bindNewProductionForm(handler) {
         newProductionValidation(handler);
+    }
+
+    bindDeleteProductionForm(handler){ // ES-es Aquí se duplica
+        deleteProductionValidation(handler);
     }
 
     // Empty the main
@@ -713,8 +756,23 @@ class VideoSystemView {
         while (productionsRandom.firstElementChild) {
             productionsRandom.firstElementChild.remove();
         }
+    }
 
+    deleteFormModals(){
+        let modalContainer = document.getElementById("modals");
+        while (modalContainer.childElementCount > 0) {
+            modalContainer.lastElementChild.remove();
+        }
+    }
 
+    reloadPageCLose(handler){
+        let modalsClose = document.getElementsByClassName("close-modal");
+
+        for (let button of modalsClose) {
+            button.addEventListener("click", (event) => {
+                handler();
+            })
+        }
     }
 }
 

@@ -124,7 +124,7 @@ class VideoSystemController {
         this.onListCategories();
         this.onListPersons();
         this.onCloseMenu();
-        this.onListForms();
+        this.onListItemFormMenu(); // by adding the eventListener only on page load, we avoid errors
     }
 
     onInit = () => {
@@ -134,6 +134,7 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionsCategoryList(
             this.handleProductionsCategoryList
         );
+        this.onListForms();
     }
 
     // Show categories in the nav
@@ -146,17 +147,22 @@ class VideoSystemController {
     }
 
     onListForms = () => {
-        // ES-es De momento solo necesitamos el bind
-        // this.#videoSystemView.bindFormListInMenu(
-        //     this.handleCreateFormModals
-        // );
         let directors = this.#videoSystem.directors;
         let actors = this.#videoSystem.actors;
         let categories = this.#videoSystem.categories;
-        this.#videoSystemView.showFormsModals(directors, actors, categories);
+        let productions = this.#videoSystem.productions;
 
+        this.#videoSystemView.showFormsModals(directors, actors, categories, productions);
+
+        this.#videoSystemView.reloadPageCLose( // ES-es Para que al cerrar el modal se recargue la página de forma controlada
+            this.handleReloadCloseForm
+        );
+    }
+
+    onListItemFormMenu = () => {
         this.#videoSystemView.bindFormMenu(
-            this.handleNewProductionForm
+            this.handleNewProductionForm,
+            this.handleDeleteProductionForm,
         );
     }
 
@@ -281,6 +287,10 @@ class VideoSystemController {
         this.#videoSystemView.bindNewProductionForm(this.handleCreateProduction);
     }
 
+    handleDeleteProductionForm = () => {
+        this.#videoSystemView.bindDeleteProductionForm(this.handleDeleteProduction);
+    }
+
     handleCreateProduction = (productionType, categories, actors, director, title, nationality, date, synopsis, imagePath) => {
         let prod;
         try {
@@ -297,13 +307,25 @@ class VideoSystemController {
                 let person = this.#videoSystem.getActorByDNI(actor);
                 this.#videoSystem.assignActor(person.actor, prod);
             }
-            let person =this.#videoSystem.getDirectorByDNI(director);
+            let person = this.#videoSystem.getDirectorByDNI(director);
             this.#videoSystem.assignDirector(person.director, prod);
         } catch (error) {
             console.error(error.message);
         }
+    }
 
-        console.log([...this.#videoSystem.productions]);
+    handleDeleteProduction = (title) => {
+        let prod = this.#videoSystem.getProductionObject(title);
+
+        try {
+            this.#videoSystem.removeProduction(prod);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    handleReloadCloseForm = () => {
+        this.handleInit();
     }
 }
 
