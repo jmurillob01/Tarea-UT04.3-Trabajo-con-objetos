@@ -1,6 +1,6 @@
 "use strict";
 
-import { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation } from "./validation.js";
+import { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation, relateRemoveCategoryValidation } from "./validation.js";
 
 class VideoSystemView {
 
@@ -442,6 +442,7 @@ class VideoSystemView {
         this.deleteProductionModal(productions);
         this.newCategoryModal();
         this.relationsProductionModal(actors, directors, productions, hProductionActors)
+        this.deleteCategoryModal(categories);
     }
 
     newProductionModal(directors, actors, categories) {
@@ -774,6 +775,52 @@ class VideoSystemView {
 
     }
 
+    deleteCategoryModal(categories) {
+        let containerFather = document.getElementById("modals");
+        let container = document.createElement("div");
+
+        container.innerHTML = (`
+        <div class="modal fade" id="fdeleteCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Eliminar Categoría</h5>
+              <button type="button" class="btn-close close-modal" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"> 
+            <!--Formulario -->
+            <form name="fremoveCategory" class="row g-3 needs-validation" novalidate role="form">
+                <div class="col-md-12 position-relative">
+                    <label for="validationTooltip01" class="form-label">Categorías</label>
+                    <select name="selectRemoveCat" id="selectRemoveCat" class="form-select" aria-label="select example"><option></option></select>
+                    <div class="invalid-tooltip">
+                        Selecciona datos válidos
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Borrar</button>
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary close-modal" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+        `);
+
+        containerFather.appendChild(container);
+
+        let selectRemoveCategory = document.getElementById("selectRemoveCat"); // ES-es select de producciones
+        for (let category of categories) {
+            let option = document.createElement("option");
+            option.value = category.name;
+            option.append(category.name);
+            selectRemoveCategory.appendChild(option);
+        }
+    }
+
     bindInit(handler) {
         document.getElementById("logo").addEventListener("click", (event) => {
             this.#executeHandler(handler, [], 'body', { action: 'init' }, '', event);
@@ -873,7 +920,7 @@ class VideoSystemView {
         });
     }
 
-    bindFormMenu(hCreateProduction, hdeleteProduction, hrelateProduction, hCreateCategory) { // ES-es Relacionamos los botones de los formularios con sus validaciones
+    bindFormMenu(hCreateProduction, hdeleteProduction, hrelateProduction, hCreateCategory, hRemoveCategory) { // ES-es Relacionamos los botones de los formularios con sus validaciones
         let newProductionLink = document.getElementById("newProductionLink");
         newProductionLink.addEventListener("click", (event) => {
             hCreateProduction();
@@ -893,6 +940,11 @@ class VideoSystemView {
         createCategoryLink.addEventListener("click", (event) => {
             hCreateCategory();
         });
+
+        let deleteCategoryLink = document.getElementById("deleteCategoryLink");
+        deleteCategoryLink.addEventListener("click", (event) => {
+            hRemoveCategory();
+        });
     }
 
     bindNewProductionForm(handler) {
@@ -909,6 +961,10 @@ class VideoSystemView {
 
     bindNewCategoryForm(handler) {
         relateNewCategoryValidation(handler);
+    }
+
+    bindRemoveCategoryForm(handler){
+        relateRemoveCategoryValidation(handler);
     }
 
     // Empty the main

@@ -131,7 +131,7 @@ function deleteProductionValidation(handler) {
     });
 }
 
-function relateProductionValidation(handler){
+function relateProductionValidation(handler) {
     let form = document.forms.frelationProduction;
 
     $(form).submit(function (event) {
@@ -183,13 +183,13 @@ function relateProductionValidation(handler){
     });
 }
 
-function relateNewCategoryValidation(handler){
+function relateNewCategoryValidation(handler) {
     let form = document.forms.fnewCategory;
 
     $(form).submit(function (event) {
         let isValid = true;
         let firstInvalidElement = null;
-        
+
         if (!this.titleCat.checkValidity()) {
             isValid = false;
             showFeedBack($(this.titleCat), false);
@@ -205,11 +205,37 @@ function relateNewCategoryValidation(handler){
         } else {
             showFeedBack($(this.descCat), true);
         }
-        
+
         if (!isValid) {
             firstInvalidElement.focus();
         } else {
             handler(this.titleCat.value, this.descCat.value);
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+    });
+}
+
+function relateRemoveCategoryValidation(handler) {
+    let form = document.forms.fremoveCategory;
+
+    $(form).submit(function (event) {
+        let isValid = true;
+        let firstInvalidElement = null;
+
+        if (!this.selectRemoveCat.checkValidity() || this.selectRemoveCat.value == "") {
+            isValid = false;
+            showFeedBack($(this.selectRemoveCat), false);
+            firstInvalidElement = this.selectRemoveCat;
+        } else {
+            showFeedBack($(this.selectRemoveCat), true);
+        }
+
+        if (!isValid) {
+            firstInvalidElement.focus();
+        } else {
+            handler(this.selectRemoveCat.value);
         }
 
         event.preventDefault();
@@ -263,4 +289,4 @@ function selectedPersonList(idSelected) {
     }
     return selectedList;
 }
-export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation};
+export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation, relateRemoveCategoryValidation };
