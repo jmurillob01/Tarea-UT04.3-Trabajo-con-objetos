@@ -1,6 +1,6 @@
 "use strict";
 
-import { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation } from "./validation.js";
+import { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation } from "./validation.js";
 
 class VideoSystemView {
 
@@ -59,10 +59,13 @@ class VideoSystemView {
     }
 
     showCategoriesInMenu(categories) {
+        this.deleteCategoriesNav();
+
         let ul = document.getElementById("navBar-menu");
         let li = document.createElement("li");
 
-        li.className = "nav-item dropdown";
+        li.className = "nav-item dropdown ";
+        li.id = "categories-dropdown";
         li.innerHTML = (`
         <a class="nav-link dropdown-toggle" href="#category-list" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Categorías
@@ -437,6 +440,7 @@ class VideoSystemView {
         this.deleteFormModals();
         this.newProductionModal(directors, actors, categories);
         this.deleteProductionModal(productions);
+        this.newCategoryModal();
         this.relationsProductionModal(actors, directors, productions, hProductionActors)
     }
 
@@ -578,7 +582,7 @@ class VideoSystemView {
             </div>
             <div class="modal-body"> 
             <!--Formulario -->
-            <form name="fDeleteProduction" class="row g-3 needs-validation" role="form">
+            <form name="fDeleteProduction" class="row g-3 needs-validation" novalidate role="form">
                 <div class="col-md-4 position-relative">
                     <label for="validationTooltip01" class="form-label">Producción</label>
                     <select name="selectProductionDelete" id="selectProductionDelete" class="form-select" aria-label="select example"><option></option></select>
@@ -624,7 +628,7 @@ class VideoSystemView {
             </div>
             <div class="modal-body"> 
             <!--Formulario -->
-            <form name="frelationProduction" class="row g-3 needs-validation" role="form">
+            <form name="frelationProduction" class="row g-3 needs-validation" novalidate role="form">
                 <div class="col-md-12 position-relative">
                     <label for="validationTooltip01" class="form-label">Producción</label>
                     <select name="selectProductionRelate" id="selectProductionRelate" class="form-select" aria-label="select example"><option></option></select>
@@ -681,7 +685,7 @@ class VideoSystemView {
         }
         selectProduccion.addEventListener("change", (event) => {
             document.getElementById("relationAssign").value = "";
-            
+
             this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
         }); // ES-es limpiar todo para que al cambiar de producción no de error con personas incorrectas
 
@@ -711,10 +715,10 @@ class VideoSystemView {
                 if (selectAssign.value == "assign") {
                     // Función añadir actores y directores que no contiene la producción
                     this.assignPersons(production.value, actors, directors, hProductionActors);
-                } else if(selectAssign.value == "desassign"){
+                } else if (selectAssign.value == "desassign") {
                     // Función para eliminar actores y directores que contiene la producción
                     this.desAssignPersons(production.value, actors, directors, hProductionActors);
-                }else{
+                } else {
                     this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
                 }
             } else {
@@ -722,6 +726,52 @@ class VideoSystemView {
                 this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
             }
         });
+    }
+
+    newCategoryModal() {
+        let containerFather = document.getElementById("modals");
+        let container = document.createElement("div");
+
+        container.innerHTML = (`
+        <div class="modal fade" id="fcreateCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Crear Categoría</h5>
+              <button type="button" class="btn-close close-modal" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"> 
+            <!--Formulario -->
+            <form name="fnewCategory" class="row g-3 needs-validation" novalidate role="form">
+                <div class="col-md-12 position-relative">
+                    <label for="titleCat" class="form-label">Nombre de la categoría</label>
+                    <input type="text" class="form-control" id="titleCat" pattern="^[a-zA-Z0-9áéíóú]{1,20}$" required>
+                    <div class="invalid-tooltip">
+                        Nombre no válido
+                    </div>
+                </div>
+                <div class="col-md-12 position-relative">
+                    <label for="descCat" class="form-label">Descripción de la categoría</label>
+                    <textarea rows="10" type="text" class="form-control" id="descCat" required> </textarea>
+                    <div class="invalid-tooltip">
+                        Descripción no válida
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Crear</button>
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary close-modal" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+        `);
+
+        containerFather.appendChild(container);
+
     }
 
     bindInit(handler) {
@@ -823,7 +873,7 @@ class VideoSystemView {
         });
     }
 
-    bindFormMenu(hCreateProduction, hdeleteProduction, hrelateProduction) { // ES-es Relacionamos los botones de los formularios con sus validaciones
+    bindFormMenu(hCreateProduction, hdeleteProduction, hrelateProduction, hCreateCategory) { // ES-es Relacionamos los botones de los formularios con sus validaciones
         let newProductionLink = document.getElementById("newProductionLink");
         newProductionLink.addEventListener("click", (event) => {
             hCreateProduction();
@@ -838,6 +888,11 @@ class VideoSystemView {
         relateProductionLink.addEventListener("click", (event) => {
             hrelateProduction();
         });
+
+        let createCategoryLink = document.getElementById("createCategoryLink");
+        createCategoryLink.addEventListener("click", (event) => {
+            hCreateCategory();
+        });
     }
 
     bindNewProductionForm(handler) {
@@ -850,6 +905,10 @@ class VideoSystemView {
 
     bindRelateProductionForm(handler) {
         relateProductionValidation(handler);
+    }
+
+    bindNewCategoryForm(handler) {
+        relateNewCategoryValidation(handler);
     }
 
     // Empty the main
@@ -880,6 +939,16 @@ class VideoSystemView {
         }
     }
 
+    deleteCategoriesNav() {
+        try {
+            let navMenu = document.getElementById("categories-dropdown");
+            let parent = navMenu.parentNode;
+            parent.removeChild(navMenu);
+        } catch (error) {
+            // console.error(error.message);
+        }
+
+    }
     reloadPageCLose(handler) {
         let modalsClose = document.getElementsByClassName("close-modal");
 

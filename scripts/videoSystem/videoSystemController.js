@@ -121,7 +121,7 @@ class VideoSystemController {
 
     onLoad = () => {
         this.#loadVideoSystemObjects();
-        this.onListCategories();
+        // this.onListCategories();
         this.onListPersons();
         this.onCloseMenu();
         this.onListItemFormMenu(); // by adding the eventListener only on page load, we avoid errors
@@ -135,6 +135,7 @@ class VideoSystemController {
             this.handleProductionsCategoryList
         );
         this.onListForms();
+        this.onListCategories(); // ES-es Hay que eliminar las categorías si existe
     }
 
     // Show categories in the nav
@@ -163,7 +164,8 @@ class VideoSystemController {
         this.#videoSystemView.bindFormMenu(
             this.handleNewProductionForm,
             this.handleDeleteProductionForm,
-            this.handleRelateProductionForm
+            this.handleRelateProductionForm,
+            this.handleNewCategoryForm
         );
     }
 
@@ -296,6 +298,10 @@ class VideoSystemController {
         this.#videoSystemView.bindRelateProductionForm(this.handleRelateProduction);
     }
 
+    handleNewCategoryForm = () => {
+        this.#videoSystemView.bindNewCategoryForm(this.handleCreateCategory);
+    }
+
     hProductionPersons = (title) => { // ES-es Funciona para recibir el título al seleccionar, podemos obtener el casting
         let prod = this.#videoSystem.getProductionObject(title);
 
@@ -354,7 +360,6 @@ class VideoSystemController {
     handleRelateProduction = (title, relation, actors, directors) => {
 
         let prod = this.#videoSystem.getProductionObject(title);
-        console.log(relation);
         if (relation == "assign") {
             for (let actor of actors) {
                 let person = this.#videoSystem.getActorByDNI(actor);
@@ -366,8 +371,6 @@ class VideoSystemController {
                 this.#videoSystem.assignDirector(person.director, prod);
             }
         } else {
-
-            console.log(prod);
             for (let actor of actors) {
                 let person = this.#videoSystem.getActorByDNI(actor);
                 this.#videoSystem.deassignActor(person.actor, prod);
@@ -378,8 +381,17 @@ class VideoSystemController {
                 this.#videoSystem.deassignDirector(person.director, prod);
             }
         }
+    }
 
-        console.log("Bien?");
+    handleCreateCategory = (title, desc) => {
+        let cat = this.#videoSystem.getCategory(title);
+        cat.description = desc;
+
+        try {
+            this.#videoSystem.addCategory(cat);
+        } catch (error) {
+            // console.error(error.message);
+        }
     }
 
     handleReloadCloseForm = () => {

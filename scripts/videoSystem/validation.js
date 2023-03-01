@@ -154,7 +154,7 @@ function relateProductionValidation(handler){
             showFeedBack($(this.relationAssign), true);
         }
 
-        if (!this.selectActorsRelate.checkValidity() || this.selectActorsRelate.value == "") {
+        if (!this.selectActorsRelate.checkValidity()) {
             isValid = false;
             showFeedBack($(this.selectActorsRelate), false);
             firstInvalidElement = this.selectActorsRelate;
@@ -162,7 +162,7 @@ function relateProductionValidation(handler){
             showFeedBack($(this.selectActorsRelate), true);
         }
 
-        if (!this.selectDirectorsRelate.checkValidity() || this.selectDirectorsRelate.value == "") {
+        if (!this.selectDirectorsRelate.checkValidity()) {
             isValid = false;
             showFeedBack($(this.selectDirectorsRelate), false);
             firstInvalidElement = this.selectDirectorsRelate;
@@ -176,6 +176,40 @@ function relateProductionValidation(handler){
             let actors = selectedPersonList("selectActorsRelate");
             let directors = selectedPersonList("selectDirectorsRelate");
             handler(this.selectProductionRelate.value, this.relationAssign.value, actors, directors);
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+    });
+}
+
+function relateNewCategoryValidation(handler){
+    let form = document.forms.fnewCategory;
+
+    $(form).submit(function (event) {
+        let isValid = true;
+        let firstInvalidElement = null;
+        
+        if (!this.titleCat.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.titleCat), false);
+            firstInvalidElement = this.titleCat;
+        } else {
+            showFeedBack($(this.titleCat), true);
+        }
+
+        if (!this.descCat.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.descCat), false);
+            firstInvalidElement = this.descCat;
+        } else {
+            showFeedBack($(this.descCat), true);
+        }
+        
+        if (!isValid) {
+            firstInvalidElement.focus();
+        } else {
+            handler(this.titleCat.value, this.descCat.value);
         }
 
         event.preventDefault();
@@ -229,4 +263,4 @@ function selectedPersonList(idSelected) {
     }
     return selectedList;
 }
-export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation };
+export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation};
