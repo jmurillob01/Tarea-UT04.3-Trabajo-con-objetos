@@ -152,7 +152,7 @@ class VideoSystemController {
         let categories = this.#videoSystem.categories;
         let productions = this.#videoSystem.productions;
 
-        this.#videoSystemView.showFormsModals(directors, actors, categories, productions);
+        this.#videoSystemView.showFormsModals(directors, actors, categories, productions, this.hProductionPersons);
 
         this.#videoSystemView.reloadPageCLose( // ES-es Para que al cerrar el modal se recargue la página de forma controlada
             this.handleReloadCloseForm
@@ -163,6 +163,7 @@ class VideoSystemController {
         this.#videoSystemView.bindFormMenu(
             this.handleNewProductionForm,
             this.handleDeleteProductionForm,
+            this.handleRelateProductionForm
         );
     }
 
@@ -289,6 +290,29 @@ class VideoSystemController {
 
     handleDeleteProductionForm = () => {
         this.#videoSystemView.bindDeleteProductionForm(this.handleDeleteProduction);
+    }
+
+    handleRelateProductionForm = () => {
+        this.#videoSystemView.bindRelateProductionForm(this.handleDeleteProduction);
+    }
+
+    hProductionPersons = (title) => { // ES-es Funciona para recibir el título al seleccionar, podemos obtener el casting
+        let prod = this.#videoSystem.getProductionObject(title);
+
+        let casting = this.#videoSystem.getCast(prod);
+        let castingNif = [];
+
+        for (let actor of casting) {
+            castingNif.push(actor.actor.dni);
+        }
+
+        let directors = this.#videoSystem.getDirectorsDepartment(prod);
+        let directorsNif = [];
+        for (let director of directors) {
+            directorsNif.push(director.director.dni);
+        }
+
+        return {castingNif, directorsNif};
     }
 
     handleCreateProduction = (productionType, categories, actors, director, title, nationality, date, synopsis, imagePath) => {

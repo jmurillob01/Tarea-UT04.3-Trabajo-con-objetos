@@ -433,10 +433,11 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
-    showFormsModals(directors, actors, categories, productions) {
+    showFormsModals(directors, actors, categories, productions, hProductionActors) {
         this.deleteFormModals();
         this.newProductionModal(directors, actors, categories);
         this.deleteProductionModal(productions);
+        this.relationsProductionModal(actors, directors, productions, hProductionActors)
     }
 
     newProductionModal(directors, actors, categories) {
@@ -574,7 +575,7 @@ class VideoSystemView {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Crear Producciones</h5>
+              <h5 class="modal-title">Eliminar Producciones</h5>
               <button type="button" class="btn-close close-modal" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body"> 
@@ -582,7 +583,7 @@ class VideoSystemView {
             <form name="fDeleteProduction" class="row g-3 needs-validation" role="form">
                 <div class="col-md-4 position-relative">
                     <label for="validationTooltip01" class="form-label">Producción</label>
-                    <select name="selectProduction" id="selectProduction" class="form-select" aria-label="select example"><option></option></select>
+                    <select name="selectProductionDelete" id="selectProductionDelete" class="form-select" aria-label="select example"><option></option></select>
                     <div class="invalid-tooltip">
                         Selecciona datos válidos
                     </div>
@@ -601,8 +602,7 @@ class VideoSystemView {
         `);
 
         containerFather.appendChild(container);
-        let selectProduccion = document.getElementById("selectProduction");
-
+        let selectProduccion = document.getElementById("selectProductionDelete");
 
         for (let production of productions) {
             let option = document.createElement("option");
@@ -612,12 +612,106 @@ class VideoSystemView {
         }
     }
 
+    relationsProductionModal(actors, directors, productions, hProductionActors) {
+        let containerFather = document.getElementById("modals");
+        let container = document.createElement("div");
+
+        container.innerHTML = (`
+        <div class="modal fade" id="relationsProduction" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Relaciones de Producciones</h5>
+              <button type="button" class="btn-close close-modal" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"> 
+            <!--Formulario -->
+            <form name="frelationProduction" class="row g-3 needs-validation" role="form">
+                <div class="col-md-12 position-relative">
+                    <label for="validationTooltip01" class="form-label">Producción</label>
+                    <select name="selectProductionRelate" id="selectProductionRelate" class="form-select" aria-label="select example"><option></option></select>
+                    <div class="invalid-tooltip">
+                        Selecciona datos válidos
+                    </div>
+                </div>
+                <div class="col-md-12 position-relative">
+                    <input class="form-check-input form-relate-radio" type="radio" name="relation" id="relationAssign" value="assign" required>
+                    <label class="form-check-label">
+                        Asignar
+                    </label>
+                    <input class="form-check-input form-relate-radio" type="radio" name="relation" value="desassign">
+                    <label class="form-check-label">
+                        Desasignar
+                    </label>
+                    <div class="invalid-tooltip">
+                    Este parámetro es necesario
+                    </div>
+                </div>
+                 <div class="col-md-6 position-relative">
+                    <label for="validationTooltip01" class="form-label">Actores</label>
+                    <select name="selectActorsRelate" id="selectActorsRelate" class="form-select" multiple aria-label="multiple select example"></select>
+                    <div class="invalid-tooltip">
+                    Selecciona datos válidos
+                    </div>
+                </div>
+                <div class="col-md-6 position-relative">
+                    <label for="validationTooltip01" class="form-label">Directores</label>
+                    <select name="selectDirectors" id="selectDirectorsRelate" class="form-select" multiple aria-label="select example"></select>
+                    <div class="invalid-tooltip">
+                        Selecciona datos válidos
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Actualizar relación</button>
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary close-modal" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+        `);
+
+        containerFather.appendChild(container);
+
+        let selectProduccion = document.getElementById("selectProductionRelate"); // ES-es select de producciones
+        for (let production of productions) {
+            let option = document.createElement("option");
+            option.value = production.title;
+            option.append(production.title);
+            selectProduccion.appendChild(option);
+        }
+        selectProduccion.addEventListener("change", (event) => {
+            for (let radio of radioButtons) {
+                radio.checked = false;
+            }
+            this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
+        }); // ES-es limpiar todo para que al cambiar de producción no de error con personas incorrectas
+
+        let radioButtons = document.getElementsByClassName("form-relate-radio");
+
+        for (let radio of radioButtons) {
+            radio.addEventListener("click", (event) => {
+                let production = document.getElementById("selectProductionRelate");
+                if (production.value != "") {
+                    if (radio.value == "assign") {
+                        // Función añadir actores y directores que no contiene la producción
+                        this.assignPersons(production.value, actors, directors, hProductionActors);
+                    } else {
+                        // Función para eliminar actores y directores que contiene la producción
+                        this.desAssignPersons(production.value, actors, directors, hProductionActors);
+                    }
+                } else {
+                    radio.checked = false;
+                    this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
+                }
+            });
+        }
+    }
+
     bindInit(handler) {
-
-        // $('#logo').click((event) => {
-        // 	this.#executeHandler(handler, [], 'body', { action: 'logo' }, '#', event);
-        // });
-
         document.getElementById("logo").addEventListener("click", (event) => {
             this.#executeHandler(handler, [], 'body', { action: 'init' }, '', event);
             // handler();
@@ -672,7 +766,6 @@ class VideoSystemView {
         }
     }
 
-
     bindPersonsNav(handler) {
         let personMenus = document.getElementsByClassName("nav-person");
 
@@ -717,15 +810,20 @@ class VideoSystemView {
         });
     }
 
-    bindFormMenu(hCreateProduction,hdeleteProduction) { // ES-es Relacionamos los botones de los formularios con sus validaciones
+    bindFormMenu(hCreateProduction, hdeleteProduction, hrelateProduction) { // ES-es Relacionamos los botones de los formularios con sus validaciones
         let newProductionLink = document.getElementById("newProductionLink");
         newProductionLink.addEventListener("click", (event) => {
             hCreateProduction();
         });
 
-        let deleteProductionLink =  document.getElementById("deleteProductionLink");
-        deleteProductionLink.addEventListener("click", (event) => { // ES-es Esto es lo que duplica
+        let deleteProductionLink = document.getElementById("deleteProductionLink");
+        deleteProductionLink.addEventListener("click", (event) => {
             hdeleteProduction();
+        });
+
+        let relateProductionLink = document.getElementById("relationsProductionLink");
+        relateProductionLink.addEventListener("click", (event) => {
+            hrelateProduction();
         });
     }
 
@@ -733,8 +831,12 @@ class VideoSystemView {
         newProductionValidation(handler);
     }
 
-    bindDeleteProductionForm(handler){ // ES-es Aquí se duplica
+    bindDeleteProductionForm(handler) {
         deleteProductionValidation(handler);
+    }
+
+    bindRelateProductionForm(handler) {
+        // relateProductionValidation(handler);
     }
 
     // Empty the main
@@ -758,20 +860,83 @@ class VideoSystemView {
         }
     }
 
-    deleteFormModals(){
+    deleteFormModals() {
         let modalContainer = document.getElementById("modals");
         while (modalContainer.childElementCount > 0) {
             modalContainer.lastElementChild.remove();
         }
     }
 
-    reloadPageCLose(handler){
+    reloadPageCLose(handler) {
         let modalsClose = document.getElementsByClassName("close-modal");
 
         for (let button of modalsClose) {
             button.addEventListener("click", (event) => {
                 handler();
             })
+        }
+    }
+
+    assignPersons(prodTitle, systemActors, systemDirectors, hProductionActors) { // ES-es Se pueden mover cosas entre ficheros con handler
+        let selectActors = document.getElementById("selectActorsRelate");
+        let selectDirectors = document.getElementById("selectDirectorsRelate");
+
+        let personData = hProductionActors(prodTitle);
+
+        this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
+
+        for (let actor of systemActors) {
+            if (!personData["castingNif"].includes(actor.dni)) { // ES-es Si el actor no pertenece a la producción no aparece
+                let option = document.createElement("option");
+                option.value = actor.dni;
+                option.append(actor.name + " " + actor.lastname1);
+                selectActors.appendChild(option);
+            }
+        }
+
+        for (let director of systemDirectors) {
+            if (!personData["directorsNif"].includes(director.dni)) { // ES-es Si el director no pertenece a la producción no aparece
+                let option = document.createElement("option");
+                option.value = director.dni;
+                option.append(director.name + " " + director.lastname1);
+                selectDirectors.appendChild(option);
+            }
+        }
+    }
+
+    desAssignPersons(prodTitle, systemActors, systemDirectors, hProductionActors) { // ES-es Se pueden mover cosas entre ficheros con handler
+        let selectActors = document.getElementById("selectActorsRelate");
+        let selectDirectors = document.getElementById("selectDirectorsRelate");
+
+        let personData = hProductionActors(prodTitle);
+
+        this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
+
+        for (let actor of systemActors) {
+            if (personData["castingNif"].includes(actor.dni)) { // ES-es Si el actor no pertenece a la producción no aparece
+                let option = document.createElement("option");
+                option.value = actor.dni;
+                option.append(actor.name + " " + actor.lastname1);
+                selectActors.appendChild(option);
+            }
+        }
+
+        for (let director of systemDirectors) {
+            if (personData["directorsNif"].includes(director.dni)) { // ES-es Si el director no pertenece a la producción no aparece
+                let option = document.createElement("option");
+                option.value = director.dni;
+                option.append(director.name + " " + director.lastname1);
+                selectDirectors.appendChild(option);
+            }
+        }
+    }
+
+    emptyChildsSelect([...idList]) {
+        for (let id of idList) {
+            let select = document.getElementById(id);
+            while (select.childElementCount > 0) {
+                select.lastElementChild.remove();
+            }
         }
     }
 }
