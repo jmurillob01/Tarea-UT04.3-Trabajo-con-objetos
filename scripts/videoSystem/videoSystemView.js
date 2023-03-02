@@ -808,6 +808,8 @@ class VideoSystemView {
                         Selecciona datos válidos
                     </div>
                 </div>
+                <div class="col-md-12 position-relative customFeed" id="deleteCategoryFeed">
+                </div>
                 <div class="col-12">
                     <button class="btn btn-primary" type="submit">Borrar</button>
                 </div>
@@ -940,6 +942,8 @@ class VideoSystemView {
                     <div class="invalid-tooltip">
                         Selecciona datos válidos
                     </div>
+                </div>
+                <div class="col-md-12 position-relative customFeed" id="deletePersonFeed">
                 </div>
                 <div class="col-12">
                     <button class="btn btn-primary" type="submit">Borrar Persona</button>

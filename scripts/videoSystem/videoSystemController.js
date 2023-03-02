@@ -408,7 +408,7 @@ class VideoSystemController {
             this.#videoSystem.addCategory(cat);
         } catch (error) {
             let feedback = document.getElementById("createCategoryFeed");
-            feedback.innerHTML = (`${error.message}`);
+            feedback.innerHTML = (`La categoría ya existe en el sistema`);
         }
     }
 
@@ -418,7 +418,8 @@ class VideoSystemController {
         try {
             this.#videoSystem.removeCategory(cat);
         } catch (error) {
-
+            let feedback = document.getElementById("deleteCategoryFeed");
+            feedback.innerHTML = (`La categoría ya se ha borrado, reinicia el Formulario para actualizar`);
         }
     }
 
@@ -432,7 +433,7 @@ class VideoSystemController {
             }
         } catch (error) {
             let feedback = document.getElementById("createPersonFeed");
-            feedback.innerHTML = (`${error.message}`);
+            feedback.innerHTML = (`Esta persona ya existe en el sistema`);
         }
     }
 
@@ -449,7 +450,8 @@ class VideoSystemController {
                     this.#videoSystem.removeDirector(deletePerson.director);
                 }
             } catch (error) {
-                console.error(error.message);
+                let feedback = document.getElementById("deletePersonFeed");
+                feedback.innerHTML = (`Esta persona ya se ha borrado, reinicia el Formulario para actualizar`);
             }
         }
     }
