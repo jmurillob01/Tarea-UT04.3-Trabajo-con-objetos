@@ -598,6 +598,8 @@ class VideoSystemView {
                         Selecciona datos válidos
                     </div>
                 </div>
+                <div class="col-md-12 position-relative customFeed" id="deleteProductionFeed">
+                </div>
                 <div class="col-12">
                     <button class="btn btn-primary" type="submit">Eliminar</button>
                 </div>

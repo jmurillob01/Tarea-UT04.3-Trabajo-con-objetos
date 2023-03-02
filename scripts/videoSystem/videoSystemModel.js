@@ -5,7 +5,8 @@ import {
     CategoryNonExistsVideoSystemException, DefaultCategoryVideoSystemException, UserVideoSystemException,
     UserExistsVideoSystemException, UserNonExistsVideoSystemException, ProductionVideoSystemException,
     ProductionExistsVideoSystemException, ProductionNonExistsVideoSystemException, PersonVideoSystemException,
-    PersonExistsVideoSystemException, PersonNonExistsVideoSystemException, ProductionAssignExistsVideoSystemException
+    PersonExistsVideoSystemException, PersonNonExistsVideoSystemException, ProductionAssignExistsVideoSystemException,
+    PersonAssignExistsVideoSystemException
 } from "../Exception.js";
 import Category from "../Category.js";
 import User from "../User.js";
@@ -615,7 +616,7 @@ let VideoSystem = (function () {
 
                         let title = this.#productions[positionProd].title;
                         if (this.#directors[position].productions.indexOf(title) !== -1) { // If the production is already assigned to the category, an exception is thrown
-                            throw new ProductionAssignExistsVideoSystemException(title);
+                            throw new PersonAssignExistsVideoSystemException(person.name);
                         }
 
                         this.#directors[position].productions.push(title); // Assign the production
@@ -677,7 +678,7 @@ let VideoSystem = (function () {
 
                         let title = this.#productions[positionProd].title;
                         if (this.#actors[position].productions.indexOf(title) !== -1) { // If the production is already assigned to the category, an exception is thrown
-                            throw new ProductionAssignExistsVideoSystemException(title);
+                            throw new PersonAssignExistsVideoSystemException(person.name);
                         }
 
                         this.#actors[position].productions.push(title);

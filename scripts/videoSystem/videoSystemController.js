@@ -369,7 +369,8 @@ class VideoSystemController {
         try {
             this.#videoSystem.removeProduction(prod);
         } catch (error) {
-            console.error(error.message);
+            let feedback = document.getElementById("deleteProductionFeed");
+            feedback.innerHTML = (`Esta producción ya se ha eliminado, cierra el formulario para ver actualización`);
         }
     }
 
