@@ -358,7 +358,8 @@ class VideoSystemController {
                 this.#videoSystem.assignDirector(person.director, prod);
             }
         } catch (error) {
-            console.error(error.message);
+            let feedback = document.getElementById("createProductionFeed");
+            feedback.innerHTML = (`${error.message}`);
         }
     }
 
@@ -405,7 +406,8 @@ class VideoSystemController {
         try {
             this.#videoSystem.addCategory(cat);
         } catch (error) {
-            // console.error(error.message);
+            let feedback = document.getElementById("createCategoryFeed");
+            feedback.innerHTML = (`${error.message}`);
         }
     }
 
@@ -428,7 +430,8 @@ class VideoSystemController {
                 this.#videoSystem.addDirector(person);
             }
         } catch (error) {
-            console.error(error.message);
+            let feedback = document.getElementById("createPersonFeed");
+            feedback.innerHTML = (`${error.message}`);
         }
     }
 

@@ -534,6 +534,8 @@ class VideoSystemView {
                         Selecciona datos válidos
                     </div>
                 </div>
+                <div class="col-md-12 position-relative customFeed" id="createProductionFeed">
+                </div>
                 <div class="col-12">
                     <button class="btn btn-primary" type="submit">Crear</button>
                 </div>
@@ -763,6 +765,8 @@ class VideoSystemView {
                         Descripción no válida
                     </div>
                 </div>
+                <div class="col-md-12 position-relative customFeed" id="createCategoryFeed">
+                </div>
                 <div class="col-12">
                     <button class="btn btn-primary" type="submit">Crear</button>
                 </div>
@@ -893,6 +897,8 @@ class VideoSystemView {
                     <div class="invalid-tooltip">
                         Selecciona datos válidos
                     </div>
+                </div>
+                <div class="col-md-12 position-relative customFeed" id="createPersonFeed">
                 </div>
                 <div class="col-12">
                     <button class="btn btn-primary" type="submit">Crear Persona</button>
