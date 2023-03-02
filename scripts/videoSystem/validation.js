@@ -243,6 +243,82 @@ function relateRemoveCategoryValidation(handler) {
     });
 }
 
+function createPersonValidation(handler){
+    let form = document.forms.fcreatePerson;
+
+    $(form).submit(function (event) {
+        let isValid = true;
+        let firstInvalidElement = null;
+
+        if (!this.personName.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.personName), false);
+            firstInvalidElement = this.personName;
+        } else {
+            showFeedBack($(this.personName), true);
+        }
+
+        if (!this.personLastname1.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.personLastname1), false);
+            firstInvalidElement = this.personLastname1;
+        } else {
+            showFeedBack($(this.personLastname1), true);
+        }
+
+        if (!this.personLastname2.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.personLastname2), false);
+            firstInvalidElement = this.personLastname2;
+        } else {
+            showFeedBack($(this.personLastname2), true);
+        }
+
+        if (!this.personDNI.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.personDNI), false);
+            firstInvalidElement = this.personDNI;
+        } else {
+            showFeedBack($(this.personDNI), true);
+        }
+
+        if (!this.bornDate.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.bornDate), false);
+            firstInvalidElement = this.bornDate;
+        } else {
+            showFeedBack($(this.bornDate), true);
+        }
+
+        if (!this.personPicture.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.personPicture), false);
+            firstInvalidElement = this.personPicture;
+        } else {
+            showFeedBack($(this.personPicture), true);
+        }
+
+        if (!this.personRol.checkValidity() || this.personRol.value == "") {
+            isValid = false;
+            showFeedBack($(this.personRol), false);
+            firstInvalidElement = this.personRol;
+        } else {
+            showFeedBack($(this.personRol), true);
+        }
+
+        if (!isValid) {
+            firstInvalidElement.focus();
+        } else {
+            let date = adjustDate(this.bornDate.value);
+            let imagePath = ImagePerson();
+            handler(this.personName.value, this.personLastname1.value, this.personLastname2.value, this.personDNI.value, date, imagePath, this.personRol.value);
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+    });
+}
+
 function adjustDate(date) { // Method to create a correct date
     date = date.split("-");
     date = date.reverse();
@@ -256,6 +332,12 @@ function ImageProduction() { // ES-es Solo funcionan con imagenes que estén en 
     return path + "" + filename;
 }
 
+function ImagePerson() { // ES-es Solo funcionan con imagenes que estén en la carpeta del proyecto, organizadas según su tipo producciones en producciones y personas en personas
+    let path = "/persons/";
+    var fileInput = document.getElementById('personPicture');
+    var filename = fileInput.files[0].name;
+    return path + "" + filename;
+}
 function categoryList() {
     let categoryList = [];
 
@@ -289,4 +371,6 @@ function selectedPersonList(idSelected) {
     }
     return selectedList;
 }
-export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation, relateRemoveCategoryValidation };
+export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation, relateRemoveCategoryValidation,
+    createPersonValidation
+};

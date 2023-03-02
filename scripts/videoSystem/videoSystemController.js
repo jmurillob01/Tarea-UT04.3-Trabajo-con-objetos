@@ -166,7 +166,8 @@ class VideoSystemController {
             this.handleDeleteProductionForm,
             this.handleRelateProductionForm,
             this.handleNewCategoryForm,
-            this.handleReomoveCategoryForm
+            this.handleReomoveCategoryForm,
+            this.handleCreatePersonForm
         );
     }
 
@@ -307,6 +308,10 @@ class VideoSystemController {
         this.#videoSystemView.bindRemoveCategoryForm(this.handleRemoveCategory);
     }
 
+    handleCreatePersonForm = () => {
+        this.#videoSystemView.bindCreatePersonForm(this.handleCreatePerson);
+    }
+
     hProductionPersons = (title) => { // ES-es Funciona para recibir el título al seleccionar, podemos obtener el casting
         let prod = this.#videoSystem.getProductionObject(title);
 
@@ -405,7 +410,20 @@ class VideoSystemController {
         try {
             this.#videoSystem.removeCategory(cat);
         } catch (error) {
-            
+
+        }
+    }
+
+    handleCreatePerson = (personName, personLastname1, personLastname2, personDNI, date, imagePath, personRol) => {
+        let person = this.#videoSystem.getActor(personName, personLastname1, personLastname2, personDNI, date, imagePath, personRol); // ES-es Da igual el factory que usamos, ya que ambos son personas y necesitan el rol
+        try {
+            if (personRol == "actor") {
+                this.#videoSystem.addActor(person);
+            } else if (personRol == "director") {
+                this.#videoSystem.addDirector(person);
+            }
+        } catch (error) {
+            console.error(error.message);
         }
     }
 

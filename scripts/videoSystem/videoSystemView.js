@@ -1,6 +1,8 @@
 "use strict";
 
-import { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation, relateRemoveCategoryValidation } from "./validation.js";
+import { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation, relateRemoveCategoryValidation,
+    createPersonValidation
+} from "./validation.js";
 
 class VideoSystemView {
 
@@ -443,6 +445,7 @@ class VideoSystemView {
         this.newCategoryModal();
         this.relationsProductionModal(actors, directors, productions, hProductionActors)
         this.deleteCategoryModal(categories);
+        this.createPersonModal();
     }
 
     newProductionModal(directors, actors, categories) {
@@ -821,6 +824,91 @@ class VideoSystemView {
         }
     }
 
+    createPersonModal() {
+        let containerFather = document.getElementById("modals");
+        let container = document.createElement("div");
+
+        container.innerHTML = (`
+        <div class="modal fade" id="fcreatePerson" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Crear Persona</h5>
+              <button type="button" class="btn-close close-modal" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"> 
+            <!--Formulario -->
+            <form name="fcreatePerson" class="row g-3 needs-validation" novalidate role="form" enctype="multipart/form-data">
+                <div class="col-md-4 position-relative">
+                    <label for="personName" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="personName" pattern="^[a-zA-Z]{1,20}$" required>
+                    <div class="invalid-tooltip">
+                        Nombre no válido
+                    </div>
+                </div>
+                <div class="col-md-4 position-relative">
+                    <label for="personLastname1" class="form-label">Apellido1</label>
+                    <input type="text" class="form-control" id="personLastname1" pattern="^[a-zA-Z]{1,20}$" required>
+                    <div class="invalid-tooltip">
+                        Apellido1 no válido
+                    </div>
+                </div>
+                <div class="col-md-4 position-relative">
+                    <label for="personLastname2" class="form-label">Apellido2</label>
+                    <input type="text" class="form-control" id="personLastname2">
+                    <div class="invalid-tooltip">
+                        Apellido2 no válido
+                    </div>
+                </div>
+                <div class="col-md-6 position-relative">
+                    <label for="bornDate" class="form-label">Fecha de nacimiento</label>
+                    <input type="date" class="form-control" id="bornDate" required >
+                    <div class="invalid-tooltip">
+                        Fecha no válida
+                    </div>
+                </div>
+                <div class="col-md-6 position-relative">
+                    <label for="personDNI" class="form-label">DNI</label>
+                    <input type="text" class="form-control" id="personDNI" pattern="^[0-9]{8}[A-Za-z]{1}$" required>
+                    <div class="invalid-tooltip">
+                        DNI no válido
+                    </div>
+                </div>
+                <div class="col-md-8 position-relative">
+                    <label for="personPicture" class="form-label">Imagen</label>
+                    <input type="file" class="form-control" id="personPicture" pattern=".*(png|jpg|jpeg|gif)$">
+                    <div class="invalid-tooltip">
+                        Imagen no válida
+                    </div>
+                </div>
+                <div class="col-md-4 position-relative">
+                    <label for="personRol" class="form-label">Rol</label>
+                    <select name="personRol" id="personRol" class="form-select" aria-label="select example">
+                    <option></option>
+                    <option name="actor">actor</option>
+                    <option name="director">director</option>
+                    </select>
+                    <div class="invalid-tooltip">
+                        Selecciona datos válidos
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Crear Persona</button>
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary close-modal" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+        `);
+
+        containerFather.appendChild(container);
+        
+    }
+
     bindInit(handler) {
         document.getElementById("logo").addEventListener("click", (event) => {
             this.#executeHandler(handler, [], 'body', { action: 'init' }, '', event);
@@ -920,7 +1008,7 @@ class VideoSystemView {
         });
     }
 
-    bindFormMenu(hCreateProduction, hdeleteProduction, hrelateProduction, hCreateCategory, hRemoveCategory) { // ES-es Relacionamos los botones de los formularios con sus validaciones
+    bindFormMenu(hCreateProduction, hdeleteProduction, hrelateProduction, hCreateCategory, hRemoveCategory, hcreatePerson) { // ES-es Relacionamos los botones de los formularios con sus validaciones
         let newProductionLink = document.getElementById("newProductionLink");
         newProductionLink.addEventListener("click", (event) => {
             hCreateProduction();
@@ -945,6 +1033,11 @@ class VideoSystemView {
         deleteCategoryLink.addEventListener("click", (event) => {
             hRemoveCategory();
         });
+
+        let createPersonLink = document.getElementById("createPersonLink");
+        createPersonLink.addEventListener("click", (event) => {
+            hcreatePerson();
+        });
     }
 
     bindNewProductionForm(handler) {
@@ -965,6 +1058,10 @@ class VideoSystemView {
 
     bindRemoveCategoryForm(handler){
         relateRemoveCategoryValidation(handler);
+    }
+
+    bindCreatePersonForm(handler){
+        createPersonValidation(handler);
     }
 
     // Empty the main
