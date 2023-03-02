@@ -1,7 +1,8 @@
 "use strict";
 
-import { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation, relateRemoveCategoryValidation,
-    createPersonValidation
+import {
+    showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation, relateRemoveCategoryValidation,
+    createPersonValidation, removePersonValidation
 } from "./validation.js";
 
 class VideoSystemView {
@@ -446,6 +447,7 @@ class VideoSystemView {
         this.relationsProductionModal(actors, directors, productions, hProductionActors)
         this.deleteCategoryModal(categories);
         this.createPersonModal();
+        this.removePersonModal(actors, directors);
     }
 
     newProductionModal(directors, actors, categories) {
@@ -906,8 +908,55 @@ class VideoSystemView {
         `);
 
         containerFather.appendChild(container);
-        
+
     }
+
+    removePersonModal(actors, directors) {
+        let containerFather = document.getElementById("modals");
+        let container = document.createElement("div");
+
+        container.innerHTML = (`
+        <div class="modal fade" id="fdeletePerson" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Crear Persona</h5>
+              <button type="button" class="btn-close close-modal" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"> 
+            <!--Formulario -->
+            <form name="fdeletePerson" class="row g-3 needs-validation" novalidate role="form" enctype="multipart/form-data">
+                <div class="col-md-12 position-relative">
+                    <label for="selectPersonRemove" class="form-label">Personas</label>
+                    <select name="selectPersonRemove" id="selectPersonRemove" class="form-select" multiple aria-label="select example"></select>
+                    <div class="invalid-tooltip">
+                        Selecciona datos válidos
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Borrar Persona</button>
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary close-modal" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+        `);
+
+        containerFather.appendChild(container);
+        let selectPersonRemove = document.getElementById("selectPersonRemove"); // ES-es select de producciones
+        let persons = [...actors].concat([...directors])
+        for (let person of persons) {
+            let option = document.createElement("option");
+            option.value = person.dni + "/" + person.rol;
+            option.append(person.name + " " + person.lastname1);
+            selectPersonRemove.appendChild(option);
+        }
+    }
+
 
     bindInit(handler) {
         document.getElementById("logo").addEventListener("click", (event) => {
@@ -1008,7 +1057,7 @@ class VideoSystemView {
         });
     }
 
-    bindFormMenu(hCreateProduction, hdeleteProduction, hrelateProduction, hCreateCategory, hRemoveCategory, hcreatePerson) { // ES-es Relacionamos los botones de los formularios con sus validaciones
+    bindFormMenu(hCreateProduction, hdeleteProduction, hrelateProduction, hCreateCategory, hRemoveCategory, hcreatePerson, hremovePerson) { // ES-es Relacionamos los botones de los formularios con sus validaciones
         let newProductionLink = document.getElementById("newProductionLink");
         newProductionLink.addEventListener("click", (event) => {
             hCreateProduction();
@@ -1038,6 +1087,11 @@ class VideoSystemView {
         createPersonLink.addEventListener("click", (event) => {
             hcreatePerson();
         });
+
+        let deletePersonLink = document.getElementById("deletePersonLink");
+        deletePersonLink.addEventListener("click", (event) => {
+            hremovePerson();
+        });
     }
 
     bindNewProductionForm(handler) {
@@ -1056,12 +1110,16 @@ class VideoSystemView {
         relateNewCategoryValidation(handler);
     }
 
-    bindRemoveCategoryForm(handler){
+    bindRemoveCategoryForm(handler) {
         relateRemoveCategoryValidation(handler);
     }
 
-    bindCreatePersonForm(handler){
+    bindCreatePersonForm(handler) {
         createPersonValidation(handler);
+    }
+
+    bindRemovePersonForm(handler) {
+        removePersonValidation(handler);
     }
 
     // Empty the main

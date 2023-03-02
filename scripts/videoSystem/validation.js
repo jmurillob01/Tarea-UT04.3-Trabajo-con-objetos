@@ -319,6 +319,33 @@ function createPersonValidation(handler){
     });
 }
 
+function removePersonValidation(handler){
+    let form = document.forms.fdeletePerson;
+
+    $(form).submit(function (event) {
+        let isValid = true;
+        let firstInvalidElement = null;
+
+        if (!this.selectPersonRemove.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.selectPersonRemove), false);
+            firstInvalidElement = this.selectPersonRemove;
+        } else {
+            showFeedBack($(this.selectPersonRemove), true);
+        }
+
+        if (!isValid) {
+            firstInvalidElement.focus();
+        } else {
+            let persons = selectedPersonList("selectPersonRemove");
+            handler(persons);
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+    });
+}
+
 function adjustDate(date) { // Method to create a correct date
     date = date.split("-");
     date = date.reverse();
@@ -363,7 +390,6 @@ function categoryList() {
 
 function selectedPersonList(idSelected) {
     let selectedList = [];
-
     for (let option of document.getElementById(idSelected)) {
         if (option.selected) {
             selectedList.push(option.value);
@@ -372,5 +398,5 @@ function selectedPersonList(idSelected) {
     return selectedList;
 }
 export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation, relateRemoveCategoryValidation,
-    createPersonValidation
+    createPersonValidation, removePersonValidation
 };

@@ -167,7 +167,8 @@ class VideoSystemController {
             this.handleRelateProductionForm,
             this.handleNewCategoryForm,
             this.handleReomoveCategoryForm,
-            this.handleCreatePersonForm
+            this.handleCreatePersonForm,
+            this.handleRemovePersonForm
         );
     }
 
@@ -312,6 +313,10 @@ class VideoSystemController {
         this.#videoSystemView.bindCreatePersonForm(this.handleCreatePerson);
     }
 
+    handleRemovePersonForm = () => {
+        this.#videoSystemView.bindRemovePersonForm(this.handleRemovePerson);
+    }
+
     hProductionPersons = (title) => { // ES-es Funciona para recibir el título al seleccionar, podemos obtener el casting
         let prod = this.#videoSystem.getProductionObject(title);
 
@@ -424,6 +429,24 @@ class VideoSystemController {
             }
         } catch (error) {
             console.error(error.message);
+        }
+    }
+
+    handleRemovePerson = (persons) => {
+        for (let person of persons) {
+            try {
+                let deletePerson;
+                let data = person.split("/");
+                if (data[1] == "actor") {
+                    deletePerson = this.#videoSystem.getActorByDNI(data[0]);
+                    this.#videoSystem.removeActor(deletePerson.actor);
+                } else {
+                    deletePerson = this.#videoSystem.getDirectorByDNI(data[0]);
+                    this.#videoSystem.removeDirector(deletePerson.director);
+                }
+            } catch (error) {
+                console.error(error.message);
+            }
         }
     }
 
