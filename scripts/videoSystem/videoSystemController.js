@@ -357,6 +357,9 @@ class VideoSystemController {
                 let person = this.#videoSystem.getDirectorByDNI(director);
                 this.#videoSystem.assignDirector(person.director, prod);
             }
+
+            let feedback = document.getElementById("createProductionFeed");
+            feedback.innerHTML = (``);
         } catch (error) {
             let feedback = document.getElementById("createProductionFeed");
             feedback.innerHTML = (`${error.message}`);
@@ -368,6 +371,8 @@ class VideoSystemController {
 
         try {
             this.#videoSystem.removeProduction(prod);
+            let feedback = document.getElementById("deleteProductionFeed");
+            feedback.innerHTML = (``);
         } catch (error) {
             let feedback = document.getElementById("deleteProductionFeed");
             feedback.innerHTML = (`Esta producción ya se ha eliminado, cierra el formulario para ver actualización`);
@@ -406,6 +411,8 @@ class VideoSystemController {
 
         try {
             this.#videoSystem.addCategory(cat);
+            let feedback = document.getElementById("createCategoryFeed");
+            feedback.innerHTML = (``);
         } catch (error) {
             let feedback = document.getElementById("createCategoryFeed");
             feedback.innerHTML = (`La categoría ya existe en el sistema`);
@@ -417,6 +424,8 @@ class VideoSystemController {
 
         try {
             this.#videoSystem.removeCategory(cat);
+            let feedback = document.getElementById("deleteCategoryFeed");
+            feedback.innerHTML = (``);
         } catch (error) {
             let feedback = document.getElementById("deleteCategoryFeed");
             feedback.innerHTML = (`La categoría ya se ha borrado, reinicia el Formulario para actualizar`);
@@ -431,6 +440,8 @@ class VideoSystemController {
             } else if (personRol == "director") {
                 this.#videoSystem.addDirector(person);
             }
+            let feedback = document.getElementById("createPersonFeed");
+            feedback.innerHTML = (``);
         } catch (error) {
             let feedback = document.getElementById("createPersonFeed");
             feedback.innerHTML = (`Esta persona ya existe en el sistema`);
@@ -449,6 +460,8 @@ class VideoSystemController {
                     deletePerson = this.#videoSystem.getDirectorByDNI(data[0]);
                     this.#videoSystem.removeDirector(deletePerson.director);
                 }
+                let feedback = document.getElementById("deletePersonFeed");
+                feedback.innerHTML = (``);
             } catch (error) {
                 let feedback = document.getElementById("deletePersonFeed");
                 feedback.innerHTML = (`Esta persona ya se ha borrado, reinicia el Formulario para actualizar`);

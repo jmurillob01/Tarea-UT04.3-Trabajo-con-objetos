@@ -511,7 +511,7 @@ class VideoSystemView {
                 </div>
                 <div class="col-md-8 position-relative">
                     <label for="validationTooltip01" class="form-label">Categorias</label>
-                    <select name="selectCategories" id="selectCategories" class="form-select" multiple aria-label="multiple select example"></select>
+                    <select name="selectCategories" id="selectCategories" class="form-select" aria-label="multiple select example"></select>
                     <div class="invalid-tooltip">
                     Selecciona datos válidos
                     </div>
