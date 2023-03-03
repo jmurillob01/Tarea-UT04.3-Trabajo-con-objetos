@@ -108,7 +108,7 @@ class VideoSystemView {
                 productionDiv.innerHTML = `
 				
                 <div class="card card-production" data-title="${production.title}" style="width: 18rem;"> <a href="#production-info">
-                    <img src="../img/${production.image}" class="card-img-top person-img" alt="..." data-title="${production.title}">
+                    <img src="../img/${production.image}" class="card-img-top person-img" alt="${production.image}" data-title="${production.title}">
                     <div class="card-body" data-title="${production.title}">
                         <p class="card-text" data-title="${production.title}">${production.title}</p>
                     </div>
@@ -144,7 +144,7 @@ class VideoSystemView {
             div.innerHTML = (`
             <div class="col-md-4"> <a href="#production-info">
                 <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
-                    <img src="../img/${production.image}" class="card-img-top person-img" alt="..." data-title="${production.title}">
+                    <img src="../img/${production.image}" class="card-img-top person-img" alt="${production.image}" data-title="${production.title}">
                     <div class="card-body" data-title="${production.title}">
                         <p class="card-text" data-title="${production.title}">${production.title}</p>
                     </div>
@@ -205,7 +205,7 @@ class VideoSystemView {
             containerActor.innerHTML = (`
             <div class="card person-production" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}" style="width: 18rem;">
                 <a href="#actor-info">
-                <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="..." data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}">
+                <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="${actor.actor.picture}" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}">
                 <div class="card-body" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}">
                     <p class="card-text" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}">${actor.actor.name} ${actor.actor.lastname1}</p>
                 </div>
@@ -232,7 +232,7 @@ class VideoSystemView {
                 containerDirector.innerHTML = (`
             <div class="card person-production" data-dni="${director.director.dni}" data-rol="${director.director.rol}" style="width: 18rem;">
             <a href="#director-info">
-                <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="..." data-dni="${director.director.dni}" data-rol="${director.director.rol}">
+                <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="${director.director.picture}" data-dni="${director.director.dni}" data-rol="${director.director.rol}">
                 <div class="card-body" data-dni="${director.director.dni}" data-rol="${director.director.rol}">
                     <p class="card-text " data-dni="${director.director.dni}" data-rol="${director.director.rol}">${director.director.name} ${director.director.lastname1}</p>
                 </div>
@@ -299,7 +299,7 @@ class VideoSystemView {
             containerActor.innerHTML = (`
             <div class="card person-production" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}" style="width: 18rem;">
                 <a href="#actor-info">
-                <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="..." data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}">
+                <img src="../img/${actor.actor.picture}" class="card-img-top person-img" alt="${actor.actor.picture}" data-dni="${actor.actor.dni}" data-rol="${actor.actor.rol}">
                 <div class="card-body">
                     <p class="card-text">${actor.actor.name} ${actor.actor.lastname1}</p>
                 </div>
@@ -326,7 +326,7 @@ class VideoSystemView {
                 containerDirector.innerHTML = (`
             <div class="card person-production" data-dni="${director.director.dni}" data-rol="${director.director.rol}" style="width: 18rem;">
             <a href="#director-info">
-                <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="..." data-dni="${director.director.dni}" data-rol="${director.director.rol}">
+                <img src="../img/${director.director.picture}" class="card-img-top person-img" alt="${director.director.picture}" data-dni="${director.director.dni}" data-rol="${director.director.rol}">
                 <div class="card-body">
                     <p class="card-text">${director.director.name} ${director.director.lastname1}</p>
                 </div>
@@ -389,7 +389,7 @@ class VideoSystemView {
             <div class="col-md-4">
             <a href="#production-info">
                 <div class="card card-production" data-title="${production.title}" style="width: 18rem;">
-                    <img src="../img/${production.image}" class="card-img-top person-img" alt="..." data-title="${production.title}">
+                    <img src="../img/${production.image}" class="card-img-top person-img" alt="${production.image}" data-title="${production.title}">
                     <div class="card-body" data-title="${production.title}">
                         <p class="card-text" data-title="${production.title}">${production.title}</p>
                     </div>
@@ -426,7 +426,7 @@ class VideoSystemView {
             containerPerson.innerHTML = (`
             <div class="card person-production" data-dni="${person.dni}" data-rol="${person.rol}" style="width: 18rem;">
                 <a href="#${person.rol}-info">
-                <img src="../img/${person.picture}" class="card-img-top person-img" alt="..." data-dni="${person.dni}" data-rol="${person.rol}">
+                <img src="../img/${person.picture}" class="card-img-top person-img" alt="${person.picture}" data-dni="${person.dni}" data-rol="${person.rol}">
                 <div class="card-body" data-dni="${person.dni}" data-rol="${person.rol}">
                     <p class="card-text" data-dni="${person.dni}" data-rol="${person.rol}">${person.name} ${person.lastname1}</p>
                 </div>
@@ -591,7 +591,7 @@ class VideoSystemView {
             <div class="modal-body"> 
             <!--Formulario -->
             <form name="fDeleteProduction" class="row g-3 needs-validation" novalidate role="form">
-                <div class="col-md-4 position-relative">
+                <div class="col-md-12 position-relative">
                     <label for="validationTooltip01" class="form-label">Producción</label>
                     <select name="selectProductionDelete" id="selectProductionDelete" class="form-select" aria-label="select example"><option></option></select>
                     <div class="invalid-tooltip">
