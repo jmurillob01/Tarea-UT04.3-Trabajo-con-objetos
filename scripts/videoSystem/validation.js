@@ -352,14 +352,14 @@ function adjustDate(date) { // Method to create a correct date
     return date.join("/");
 }
 
-function ImageProduction() { // ES-es Solo funcionan con imagenes que estén en la carpeta del proyecto, organizadas según su tipo producciones en producciones y personas en personas
+function ImageProduction() { // They only work with images that are in the project folder, organized according to their type productions in productions and people in people
     let path = "/productions/";
     var fileInput = document.getElementById('image');
     var filename = fileInput.files[0].name;
     return path + "" + filename;
 }
 
-function ImagePerson() { // ES-es Solo funcionan con imagenes que estén en la carpeta del proyecto, organizadas según su tipo producciones en producciones y personas en personas
+function ImagePerson() { // They only work with images that are in the project folder, organized according to their type productions in productions and people in people
     let path = "/persons/";
     var fileInput = document.getElementById('personPicture');
     var filename = fileInput.files[0].name;

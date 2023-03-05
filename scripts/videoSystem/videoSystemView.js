@@ -686,7 +686,7 @@ class VideoSystemView {
 
         containerFather.appendChild(container);
 
-        let selectProduccion = document.getElementById("selectProductionRelate"); // ES-es select de producciones
+        let selectProduccion = document.getElementById("selectProductionRelate"); // select productions
         for (let production of productions) {
             let option = document.createElement("option");
             option.value = production.title;
@@ -697,7 +697,7 @@ class VideoSystemView {
             document.getElementById("relationAssign").value = "";
 
             this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
-        }); // ES-es limpiar todo para que al cambiar de producción no de error con personas incorrectas
+        }); 
 
         // let radioButtons = document.getElementsByClassName("form-relate-radio");
 
@@ -723,10 +723,10 @@ class VideoSystemView {
             let production = document.getElementById("selectProductionRelate");
             if (production.value != "") {
                 if (selectAssign.value == "assign") {
-                    // Función añadir actores y directores que no contiene la producción
+                    // Add actors
                     this.assignPersons(production.value, actors, directors, hProductionActors);
                 } else if (selectAssign.value == "desassign") {
-                    // Función para eliminar actores y directores que contiene la producción
+                    // Add directors
                     this.desAssignPersons(production.value, actors, directors, hProductionActors);
                 } else {
                     this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
@@ -825,7 +825,7 @@ class VideoSystemView {
 
         containerFather.appendChild(container);
 
-        let selectRemoveCategory = document.getElementById("selectRemoveCat"); // ES-es select de producciones
+        let selectRemoveCategory = document.getElementById("selectRemoveCat"); //Select de producciones
         for (let category of categories) {
             let option = document.createElement("option");
             option.value = category.name;
@@ -959,7 +959,7 @@ class VideoSystemView {
         `);
 
         containerFather.appendChild(container);
-        let selectPersonRemove = document.getElementById("selectPersonRemove"); // ES-es select de producciones
+        let selectPersonRemove = document.getElementById("selectPersonRemove"); // Select productions
         let persons = [...actors].concat([...directors])
         for (let person of persons) {
             let option = document.createElement("option");
@@ -991,7 +991,7 @@ class VideoSystemView {
 
     // Categories on the nav
     bindProductionsCategoryListInMenu(handler) {
-        let categoryListNav = document.getElementsByClassName('category-dropdown-item'); // ES-es He cambiado el nombre de la clase para que no interfiera con los formularios
+        let categoryListNav = document.getElementsByClassName('category-dropdown-item'); // I have changed the name of the class so that it does not interfere with the forms
 
         for (let category of categoryListNav) {
             category.addEventListener("click", (event) => {
@@ -1069,7 +1069,7 @@ class VideoSystemView {
         });
     }
 
-    bindFormMenu(hCreateProduction, hdeleteProduction, hrelateProduction, hCreateCategory, hRemoveCategory, hcreatePerson, hremovePerson) { // ES-es Relacionamos los botones de los formularios con sus validaciones
+    bindFormMenu(hCreateProduction, hdeleteProduction, hrelateProduction, hCreateCategory, hRemoveCategory, hcreatePerson, hremovePerson) { //  We relate the buttons of the forms with their validations
         let newProductionLink = document.getElementById("newProductionLink");
         newProductionLink.addEventListener("click", (event) => {
             hCreateProduction();
@@ -1191,7 +1191,7 @@ class VideoSystemView {
         this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
 
         for (let actor of systemActors) {
-            if (!personData["castingNif"].includes(actor.dni)) { // ES-es Si el actor no pertenece a la producción no aparece
+            if (!personData["castingNif"].includes(actor.dni)) { // If the actor does not belong to the production, it does not appear
                 let option = document.createElement("option");
                 option.value = actor.dni;
                 option.append(actor.name + " " + actor.lastname1);
@@ -1200,7 +1200,7 @@ class VideoSystemView {
         }
 
         for (let director of systemDirectors) {
-            if (!personData["directorsNif"].includes(director.dni)) { // ES-es Si el director no pertenece a la producción no aparece
+            if (!personData["directorsNif"].includes(director.dni)) { // If the director does not belong to the production, he does not appear
                 let option = document.createElement("option");
                 option.value = director.dni;
                 option.append(director.name + " " + director.lastname1);
@@ -1209,7 +1209,7 @@ class VideoSystemView {
         }
     }
 
-    desAssignPersons(prodTitle, systemActors, systemDirectors, hProductionActors) { // ES-es Se pueden mover cosas entre ficheros con handler
+    desAssignPersons(prodTitle, systemActors, systemDirectors, hProductionActors) {
         let selectActors = document.getElementById("selectActorsRelate");
         let selectDirectors = document.getElementById("selectDirectorsRelate");
 
@@ -1218,7 +1218,7 @@ class VideoSystemView {
         this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
 
         for (let actor of systemActors) {
-            if (personData["castingNif"].includes(actor.dni)) { // ES-es Si el actor no pertenece a la producción no aparece
+            if (personData["castingNif"].includes(actor.dni)) { 
                 let option = document.createElement("option");
                 option.value = actor.dni;
                 option.append(actor.name + " " + actor.lastname1);
@@ -1227,7 +1227,7 @@ class VideoSystemView {
         }
 
         for (let director of systemDirectors) {
-            if (personData["directorsNif"].includes(director.dni)) { // ES-es Si el director no pertenece a la producción no aparece
+            if (personData["directorsNif"].includes(director.dni)) {
                 let option = document.createElement("option");
                 option.value = director.dni;
                 option.append(director.name + " " + director.lastname1);
