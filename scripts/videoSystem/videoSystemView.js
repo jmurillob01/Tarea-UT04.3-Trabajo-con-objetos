@@ -1,7 +1,7 @@
 "use strict";
 
 import {
-    showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation, relateRemoveCategoryValidation,
+    showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, NewCategoryValidation, RemoveCategoryValidation,
     createPersonValidation, removePersonValidation
 } from "./validation.js";
 
@@ -762,7 +762,7 @@ class VideoSystemView {
                 </div>
                 <div class="col-md-12 position-relative">
                     <label for="descCat" class="form-label">Descripción de la categoría</label>
-                    <textarea rows="10" type="text" class="form-control" id="descCat" required> </textarea>
+                    <textarea rows="10" type="text" class="form-control" id="descCat" required></textarea>
                     <div class="invalid-tooltip">
                         Descripción no válida
                     </div>
@@ -886,7 +886,7 @@ class VideoSystemView {
                 </div>
                 <div class="col-md-8 position-relative">
                     <label for="personPicture" class="form-label">Imagen</label>
-                    <input type="file" class="form-control" id="personPicture" pattern=".*(png|jpg|jpeg|gif)$">
+                    <input type="file" class="form-control" id="personPicture" required pattern=".*(png|jpg|jpeg|gif)$">
                     <div class="invalid-tooltip">
                         Imagen no válida
                     </div>
@@ -1119,11 +1119,11 @@ class VideoSystemView {
     }
 
     bindNewCategoryForm(handler) {
-        relateNewCategoryValidation(handler);
+        NewCategoryValidation(handler);
     }
 
     bindRemoveCategoryForm(handler) {
-        relateRemoveCategoryValidation(handler);
+        RemoveCategoryValidation(handler);
     }
 
     bindCreatePersonForm(handler) {

@@ -536,6 +536,8 @@ let VideoSystem = (function () {
 
                 let position = this.#getCategoryPosition(category);
 
+                let existProd = [];
+
                 if (position === -1) {
                     this.addCategory(category); // Add the category if it does not exist
                     position = this.#categories.length - 1;
@@ -559,9 +561,15 @@ let VideoSystem = (function () {
 
                         this.#categories[position].productions.push(title); // Assign the production
                     } catch (error) {
-                        console.log(error.message);
+                        // console.log(error.message);
+                        existProd.push(production.title)
                     }
                 }
+
+                if (existProd.length > 0) {
+                    throw new ProductionExistsVideoSystemException();
+                }
+                
                 return this.#categories[position].productions.length;
             }
 
@@ -622,7 +630,10 @@ let VideoSystem = (function () {
                         this.#directors[position].productions.push(title); // Assign the production
                     } catch (error) {
                         console.log(error.message);
+                        // Añado el nombre a un array
                     }
+
+                    // Si el array de nombre contiene datos, lanzo la excepción fuera
                 }
                 return this.#directors[position].productions.length;
             }

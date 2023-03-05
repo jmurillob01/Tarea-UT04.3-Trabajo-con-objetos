@@ -183,7 +183,7 @@ function relateProductionValidation(handler) {
     });
 }
 
-function relateNewCategoryValidation(handler) {
+function NewCategoryValidation(handler) {
     let form = document.forms.fnewCategory;
 
     $(form).submit(function (event) {
@@ -217,7 +217,7 @@ function relateNewCategoryValidation(handler) {
     });
 }
 
-function relateRemoveCategoryValidation(handler) {
+function RemoveCategoryValidation(handler) {
     let form = document.forms.fremoveCategory;
 
     $(form).submit(function (event) {
@@ -397,6 +397,6 @@ function selectedPersonList(idSelected) {
     }
     return selectedList;
 }
-export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, relateNewCategoryValidation, relateRemoveCategoryValidation,
+export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, NewCategoryValidation, RemoveCategoryValidation,
     createPersonValidation, removePersonValidation
 };

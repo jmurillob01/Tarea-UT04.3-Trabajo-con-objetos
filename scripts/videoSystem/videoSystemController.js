@@ -362,7 +362,7 @@ class VideoSystemController {
             feedback.innerHTML = (``);
         } catch (error) {
             let feedback = document.getElementById("createProductionFeed");
-            feedback.innerHTML = (`${error.message}`);
+            feedback.innerHTML = (`Esta pelicula ya existe en la categoría indicada`);
         }
     }
 
