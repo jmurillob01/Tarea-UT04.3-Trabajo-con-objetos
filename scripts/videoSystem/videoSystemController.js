@@ -319,6 +319,8 @@ class VideoSystemController {
 
     handleShowLoginForm = () =>{
         this.#videoSystemView.showLoginMain();
+
+        this.#videoSystemView.bindLoginForm(this.handleLoginUser);
     }
 
     handleNewProductionForm = () => {
@@ -499,6 +501,10 @@ class VideoSystemController {
                 feedback.innerHTML = (`Esta persona ya se ha borrado, reinicia el Formulario para actualizar`);
             }
         }
+    }
+
+    handleLoginUser = () => {
+        console.log("Handler Validation");
     }
 
     handleReloadCloseForm = () => {
