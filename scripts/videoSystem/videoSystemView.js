@@ -439,6 +439,45 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
+    showLoginMain(){
+        this.emptyMainElements();
+
+        let container = document.createElement("div");
+        container.className = ("container d-flex flex-column");
+
+        let title = document.createElement("h1");
+        title.className = ("mx-auto mt-3 mb-4");
+        title.innerHTML = ("Inicio de Sesión");
+
+        let containerForm = document.createElement("div");
+        containerForm.className = ("d-flex justify-content-center");
+        containerForm.innerHTML = (`            
+            <form name="fLoginUser" class="row g-3 needs-validation" novalidate role="form">
+                <div class="col-md-4 d-flex justify-content-center flex-column w-100">
+                    <label for="userName" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="userName" pattern="^[a-zA-Z0-9]{1,20}$" required>
+                    <div class="invalid-tooltip">
+                        Nombre no válido
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-center flex-column w-100">
+                    <label for="passUser" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="passUser" pattern="^[a-zA-Z0-9]{1,20}$" required>
+                    <div class="invalid-tooltip">
+                        Contraseña no válida
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center w-100">
+                    <button class="btn btn-primary w-50 mt-3" type="submit">Acceder</button>
+                </div>
+            </form>
+            `);
+
+        container.appendChild(title);
+        container.appendChild(containerForm);
+        this.main.appendChild(container);
+    }
+
     // Method to create a list of forms in the navigation
     showFormsInMenu() {
         // Method to delete the list of forms
@@ -472,6 +511,22 @@ class VideoSystemView {
         <li><a id="deletePersonLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fdeletePerson" data-form="fdeletePerson">Eliminar Persona</a></li>
         `);
         li.appendChild(ulFormsList);
+        ul.appendChild(li);
+    }
+
+    showLoginInMenu() {
+        // Method to delete the list of forms
+        this.deleteLoginNav();
+
+        let ul = document.getElementById("navBar-menu");
+        let li = document.createElement("li");
+
+        li.className = "nav-item";
+        li.id = "login-nav";
+        li.innerHTML = (`
+            <a id="nav-login-a" class="nav-link" href="#" role="button">
+                Iniciar Sesión
+            </a>`);
         ul.appendChild(li);
     }
 
@@ -1053,6 +1108,13 @@ class VideoSystemView {
         }
     }
 
+    bindLoginNav(handler){
+        let loginMenu = document.getElementById("nav-login-a");
+        loginMenu.addEventListener("click", (event) => {
+            handler();
+        });
+    }
+
     bindCloseWindows(handler) {
         let closeButton = document.getElementById("nav-closeWindows");
         closeButton.addEventListener("click", (event) => {
@@ -1187,7 +1249,6 @@ class VideoSystemView {
         } catch (error) {
             // console.error(error.message);
         }
-
     }
 
     deleteFormsNav() {
@@ -1198,8 +1259,18 @@ class VideoSystemView {
         } catch (error) {
             // console.error(error.message);
         }
-
     }
+
+    deleteLoginNav() {
+        try {
+            let navMenu = document.getElementById("login-nav");
+            let parent = navMenu.parentNode;
+            parent.removeChild(navMenu);
+        } catch (error) {
+            // console.error(error.message);
+        }
+    }
+
     reloadPageCLose(handler) {
         let modalsClose = document.getElementsByClassName("close-modal");
 

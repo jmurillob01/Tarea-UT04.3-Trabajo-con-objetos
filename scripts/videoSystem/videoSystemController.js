@@ -133,8 +133,26 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionsCategoryList(
             this.handleProductionsCategoryList
         );
-        this.onListForms();
+
+        // Check cookie
+        if (this.checkCookie()) {
+            this.onListForms();
+        } else {
+            this.onLogin();
+        }
+
         this.onListCategories(); // ES-es Hay que eliminar las categorías si existe
+    }
+
+    // Method to check if we have the cookie
+    checkCookie() {
+        let cookie = document.cookie.replace(/(?:(?:^|.*;\s*)User\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+        if (cookie != "") { // If the cookie exists, we allow access to the administrator area
+            return true;
+        } else { // We enable login
+            return false;
+        }
     }
 
     // Show categories in the nav
@@ -203,6 +221,14 @@ class VideoSystemController {
 
         this.#videoSystemView.bindProductionInformation(
             this.handleProductionInformation
+        );
+    }
+
+    onLogin = () => {
+        this.#videoSystemView.showLoginInMenu();
+
+        this.#videoSystemView.bindLoginNav(
+            this.handleShowLoginForm
         );
     }
 
@@ -289,6 +315,10 @@ class VideoSystemController {
             windowElement.close();
             this.#videoSystemView.windows.delete(windowElement.id);
         });
+    }
+
+    handleShowLoginForm = () =>{
+        this.#videoSystemView.showLoginMain();
     }
 
     handleNewProductionForm = () => {
