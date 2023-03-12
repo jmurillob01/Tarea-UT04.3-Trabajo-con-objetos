@@ -452,22 +452,22 @@ class VideoSystemView {
         let containerForm = document.createElement("div");
         containerForm.className = ("d-flex justify-content-center");
         containerForm.innerHTML = (`            
-            <form name="fLoginUser" class="row g-3 needs-validation" novalidate role="form">
-                <div class="col-md-4 d-flex justify-content-center flex-column w-100 position-relative">
+            <form name="fLoginUser" class="row needs-validation w-50" novalidate role="form">
+                <div class="col-md-12 d-flex justify-content-center flex-column position-relative">
                     <label for="userName" class="form-label">Username</label>
                     <input type="text" class="form-control" id="userName" pattern="^[a-zA-Z0-9]{1,20}$" required>
                     <div class="invalid-tooltip">
                         Nombre no válido
                     </div>
                 </div>
-                <div class="col-md-4 d-flex justify-content-center flex-column w-100 mt-4 position-relative">
+                <div class="col-md-12 d-flex justify-content-center flex-column mt-4 position-relative">
                     <label for="passUser" class="form-label">Password</label>
                     <input type="password" class="form-control" id="passUser" pattern="^[a-zA-Z0-9]{1,20}$" required>
                     <div class="invalid-tooltip">
                         Contraseña no válida
                     </div>
                 </div>
-                <div class="col-md-12 position-relative customFeed" id="loginFeed">
+                <div class="position-relative customFeed" id="loginFeed">
                 </div>
                 <div class="d-flex justify-content-center w-100">
                     <button class="btn btn-primary w-50 mt-3" type="submit">Acceder</button>
