@@ -146,10 +146,12 @@ class VideoSystemController {
 
         if (cookie != "") { // If the cookie exists, we allow access to the administrator area
             this.onListForms();
-            this.#videoSystemView.showGreet(cookie);
+            this.#videoSystemView.cookieContent(cookie);
+            this.#videoSystemView.bindCloseSession(this.handlerCloseSession);
         } else { // We enable login
             this.onLogin();
-            this.#videoSystemView.deleteAdminGreet();
+            this.#videoSystemView.deleteGreet();
+            this.#videoSystemView.deleteCloseSession();
         }
     }
 
@@ -349,6 +351,12 @@ class VideoSystemController {
         this.#videoSystemView.bindRemovePersonForm(this.handleRemovePerson);
     }
 
+    handlerCloseSession = () => {
+        this.#videoSystemView.deleteFormsNav();
+        this.setCookie("User", "", 0);
+        this.handleInit();
+    }
+
     hProductionPersons = (title) => { // ES-es Funciona para recibir el título al seleccionar, podemos obtener el casting
         let prod = this.#videoSystem.getProductionObject(title);
 
@@ -513,6 +521,8 @@ class VideoSystemController {
         }
 
         if (existUser) { // ES-es Si existe vamos a la pantalla de inicio y creamos la cookie
+            // replaceState
+            history.replaceState({ action: 'init' }, null, "#inicio");
             this.#videoSystemView.deleteLoginNav();
             document.cookie = `User = ${userName}`
             this.handleReloadCloseForm();
@@ -524,6 +534,13 @@ class VideoSystemController {
 
     handleReloadCloseForm = () => {
         this.handleInit();
+    }
+
+    setCookie = (cname, cvalue, exdays) => {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";";
     }
 }
 

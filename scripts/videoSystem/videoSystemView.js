@@ -526,29 +526,45 @@ class VideoSystemView {
         li.className = "nav-item";
         li.id = "login-nav";
         li.innerHTML = (`
-            <a id="nav-login-a" class="nav-link" href="#" role="button">
+            <a id="nav-login-a" class="nav-link" href="#LoginNav" role="button">
                 Iniciar Sesión
             </a>`);
         ul.appendChild(li);
     }
 
-    showGreet(cookie){
-        this.deleteAdminGreet();
+    cookieContent(cookie){ // Call necessary cookie methods
+        this.deleteGreet();
+        this.deleteCloseSession();
 
+        this.showGreet(cookie);
+        this.showCloseSession();
+    }
+
+    showGreet(cookie){
         let ul = document.getElementById("navBar-menu");
-        let container = document.createElement("div");
         let liGreet = document.createElement("li");
 
-        container.className = ("d-flex w-50 justify-content-end");
-        container.id = "greet-container";
+        liGreet.id = "greet-li";
         liGreet.className = "nav-item nav-link";
         liGreet.innerHTML = (`
             Hola ${cookie}
         `);
-
-        container.appendChild(liGreet);
-        ul.appendChild(container);
+        ul.appendChild(liGreet);
     }
+
+    showCloseSession(){
+        let ul = document.getElementById("navBar-menu");
+        let liCloseSession = document.createElement("li");
+
+        liCloseSession.id = "closeSession-li";
+        liCloseSession.className = "nav-item";
+        liCloseSession.innerHTML = (`
+            <a id="closeSession-link" class="nav-link" href="#">Cerrar Sesión</a>
+        `);
+
+        ul.appendChild(liCloseSession);
+    }
+    
 
     showFormsModals(directors, actors, categories, productions, hProductionActors) {
         this.deleteFormModals();
@@ -1131,7 +1147,8 @@ class VideoSystemView {
     bindLoginNav(handler){
         let loginMenu = document.getElementById("nav-login-a");
         loginMenu.addEventListener("click", (event) => {
-            handler();
+            this.#executeHandler(handler, [], 'body', {action: 'LoginNav'}, '#LoginNav', event);
+            // handler();
         });
     }
 
@@ -1139,6 +1156,13 @@ class VideoSystemView {
         let closeButton = document.getElementById("nav-closeWindows");
         closeButton.addEventListener("click", (event) => {
             handler(this.productionWindow)
+        });
+    }
+
+    bindCloseSession(handler){
+        let closeSessionButton = document.getElementById("closeSession-link");
+        closeSessionButton.addEventListener("click", (event) => {
+            handler();
         });
     }
 
@@ -1295,9 +1319,19 @@ class VideoSystemView {
         }
     }
 
-    deleteAdminGreet(){
+    deleteGreet(){
         try {
-            let navMenu = document.getElementById("greet-container");
+            let navMenu = document.getElementById("greet-li");
+            let parent = navMenu.parentNode;
+            parent.removeChild(navMenu);
+        } catch (error) {
+            // console.error(error.message);
+        }
+    }
+
+    deleteCloseSession(){
+        try {
+            let navMenu = document.getElementById("closeSession-li");
             let parent = navMenu.parentNode;
             parent.removeChild(navMenu);
         } catch (error) {
