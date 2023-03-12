@@ -1,2 +1,4 @@
 En esta práctica he usado Factory.
 Además he tenido que crear un DNI para el objeto persona para poder añadir diferentes personas con el mismo nombre.
+
+AL usar modales el historial se rompe

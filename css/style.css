@@ -47,6 +47,10 @@ table{
     height: 300px;
 } */
 
+.customFeed{
+    color: red;
+}
+
 /* footer */
 footer {
     margin-top: 40vh;

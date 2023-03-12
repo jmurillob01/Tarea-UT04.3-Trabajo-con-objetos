@@ -186,6 +186,13 @@ class ProductionAssignExistsVideoSystemException extends BaseException {
 		this.name = "ProductionAssignExistsVideoSystemException";
 	}
 }
+
+class PersonAssignExistsVideoSystemException extends BaseException {
+	constructor(param, fileName, lineNumber) {
+		super("Error: The person " + param + " already exist in the assignments.", fileName, lineNumber);
+		this.name = "PersonAssignExistsVideoSystemException";
+	}
+}
 class ProductionNonExistsVideoSystemException extends BaseException {
 	constructor(fileName, lineNumber) {
 		super("Error: The production doesn't exists in the video system.", fileName, lineNumber);
@@ -222,5 +229,6 @@ export {
     CategoryExistsVideoSystemException,CategoryNonExistsVideoSystemException, DefaultCategoryVideoSystemException,
     UserVideoSystemException,UserExistsVideoSystemException,UserNonExistsVideoSystemException,
     ProductionVideoSystemException,ProductionExistsVideoSystemException,ProductionNonExistsVideoSystemException,
-    PersonVideoSystemException,PersonExistsVideoSystemException,PersonNonExistsVideoSystemException,ProductionAssignExistsVideoSystemException
+    PersonVideoSystemException,PersonExistsVideoSystemException,PersonNonExistsVideoSystemException,ProductionAssignExistsVideoSystemException,
+    PersonAssignExistsVideoSystemException
 }
