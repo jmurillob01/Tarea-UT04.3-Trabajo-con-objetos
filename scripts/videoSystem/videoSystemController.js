@@ -124,7 +124,6 @@ class VideoSystemController {
         // this.onListCategories();
         this.onListPersons();
         this.onCloseMenu();
-        this.onListItemFormMenu(); // by adding the eventListener only on page load, we avoid errors
     }
 
     onInit = () => {
@@ -147,7 +146,8 @@ class VideoSystemController {
 
     }
 
-    onListForms = () => {
+    onListForms = () => { // Now the forms work correctly
+        this.#videoSystemView.showFormsInMenu(); // Show forms in menu
         let directors = this.#videoSystem.directors;
         let actors = this.#videoSystem.actors;
         let categories = this.#videoSystem.categories;
@@ -158,6 +158,8 @@ class VideoSystemController {
         this.#videoSystemView.reloadPageCLose( // ES-es Para que al cerrar el modal se recargue la página de forma controlada
             this.handleReloadCloseForm
         );
+
+        this.onListItemFormMenu(); // by adding the eventListener only on page load, we avoid errors
     }
 
     onListItemFormMenu = () => {

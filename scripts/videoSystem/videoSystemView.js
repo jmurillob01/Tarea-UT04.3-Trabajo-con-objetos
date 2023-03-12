@@ -439,6 +439,42 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
+    // Method to create a list of forms in the navigation
+    showFormsInMenu() {
+        // Method to delete the list of forms
+        this.deleteFormsNav();
+
+        let ul = document.getElementById("navBar-menu");
+        let li = document.createElement("li");
+
+        li.className = "nav-item dropdown";
+        li.id = "forms-dropdown";
+        li.innerHTML = (`
+            <a class="nav-link dropdown-toggle" href="#category-list" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Formularios
+            </a>`);
+
+        let ulFormsList = document.createElement("ul");
+        ulFormsList.className = ("dropdown-menu");
+        ulFormsList.innerHTML = (`
+        <li><a id="newProductionLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#newProduction" data-form="newProduction">Nueva producción</a></li>
+        <li><a id="deleteProductionLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#deleteProduction" data-form="deleteProduction">Eliminar producción</a></li>
+        <li><a id="relationsProductionLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#relationsProduction" data-form="relationsProduction">Asignar / Desasignar producciones</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a id="createCategoryLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fcreateCategory" data-form="fcreateCategory">Crear Categoría</a></li>
+        <li><a id="deleteCategoryLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fdeleteCategory" data-form="fdeleteCategory">Eliminar Categoría</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a id="createPersonLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fcreatePerson" data-form="fcreatePerson">Crear Persona</a></li>
+        <li><a id="deletePersonLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fdeletePerson" data-form="fdeletePerson">Eliminar Persona</a></li>
+        `);
+        li.appendChild(ulFormsList);
+        ul.appendChild(li);
+    }
+
     showFormsModals(directors, actors, categories, productions, hProductionActors) {
         this.deleteFormModals();
         this.newProductionModal(directors, actors, categories);
@@ -697,27 +733,8 @@ class VideoSystemView {
             document.getElementById("relationAssign").value = "";
 
             this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
-        }); 
+        });
 
-        // let radioButtons = document.getElementsByClassName("form-relate-radio");
-
-        // for (let radio of radioButtons) {
-        //     radio.addEventListener("click", (event) => {
-        //         let production = document.getElementById("selectProductionRelate");
-        //         if (production.value != "") {
-        //             if (radio.value == "assign") {
-        //                 // Función añadir actores y directores que no contiene la producción
-        //                 this.assignPersons(production.value, actors, directors, hProductionActors);
-        //             } else {
-        //                 // Función para eliminar actores y directores que contiene la producción
-        //                 this.desAssignPersons(production.value, actors, directors, hProductionActors);
-        //             }
-        //         } else {
-        //             radio.checked = false;
-        //             this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
-        //         }
-        //     });
-        // }
         let selectAssign = document.getElementById("relationAssign");
         selectAssign.addEventListener("change", (event) => {
             let production = document.getElementById("selectProductionRelate");
@@ -1172,6 +1189,17 @@ class VideoSystemView {
         }
 
     }
+
+    deleteFormsNav() {
+        try {
+            let navMenu = document.getElementById("forms-dropdown");
+            let parent = navMenu.parentNode;
+            parent.removeChild(navMenu);
+        } catch (error) {
+            // console.error(error.message);
+        }
+
+    }
     reloadPageCLose(handler) {
         let modalsClose = document.getElementsByClassName("close-modal");
 
@@ -1218,7 +1246,7 @@ class VideoSystemView {
         this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
 
         for (let actor of systemActors) {
-            if (personData["castingNif"].includes(actor.dni)) { 
+            if (personData["castingNif"].includes(actor.dni)) {
                 let option = document.createElement("option");
                 option.value = actor.dni;
                 option.append(actor.name + " " + actor.lastname1);
