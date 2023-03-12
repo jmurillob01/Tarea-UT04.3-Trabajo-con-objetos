@@ -121,9 +121,10 @@ class VideoSystemController {
 
     onLoad = () => {
         this.#loadVideoSystemObjects();
-        this.onListCategories();
+        // this.onListCategories();
         this.onListPersons();
         this.onCloseMenu();
+        this.onListItemFormMenu(); // by adding the eventListener only on page load, we avoid errors
     }
 
     onInit = () => {
@@ -133,6 +134,8 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionsCategoryList(
             this.handleProductionsCategoryList
         );
+        this.onListForms();
+        this.onListCategories(); // ES-es Hay que eliminar las categorías si existe
     }
 
     // Show categories in the nav
@@ -141,7 +144,32 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionsCategoryListInMenu(
             this.handleProductionsCategoryList
         );
-        
+
+    }
+
+    onListForms = () => {
+        let directors = this.#videoSystem.directors;
+        let actors = this.#videoSystem.actors;
+        let categories = this.#videoSystem.categories;
+        let productions = this.#videoSystem.productions;
+
+        this.#videoSystemView.showFormsModals(directors, actors, categories, productions, this.hProductionPersons);
+
+        this.#videoSystemView.reloadPageCLose( // ES-es Para que al cerrar el modal se recargue la página de forma controlada
+            this.handleReloadCloseForm
+        );
+    }
+
+    onListItemFormMenu = () => {
+        this.#videoSystemView.bindFormMenu(
+            this.handleNewProductionForm,
+            this.handleDeleteProductionForm,
+            this.handleRelateProductionForm,
+            this.handleNewCategoryForm,
+            this.handleReomoveCategoryForm,
+            this.handleCreatePersonForm,
+            this.handleRemovePersonForm
+        );
     }
 
     onListPersons = () => {
@@ -150,7 +178,7 @@ class VideoSystemController {
         );
     }
 
-    onCloseMenu = () =>{
+    onCloseMenu = () => {
         this.#videoSystemView.bindCloseWindows(
             this.handleCloseWindows
         );
@@ -252,13 +280,197 @@ class VideoSystemController {
         }
     }
 
-    handleCloseWindows = () =>{
+    handleCloseWindows = () => {
         let windows = this.#videoSystemView.windows;
 
-        windows.forEach(windowElement=> {
+        windows.forEach(windowElement => {
             windowElement.close();
             this.#videoSystemView.windows.delete(windowElement.id);
         });
+    }
+
+    handleNewProductionForm = () => {
+        this.#videoSystemView.bindNewProductionForm(this.handleCreateProduction);
+    }
+
+    handleDeleteProductionForm = () => {
+        this.#videoSystemView.bindDeleteProductionForm(this.handleDeleteProduction);
+    }
+
+    handleRelateProductionForm = () => {
+        this.#videoSystemView.bindRelateProductionForm(this.handleRelateProduction);
+    }
+
+    handleNewCategoryForm = () => {
+        this.#videoSystemView.bindNewCategoryForm(this.handleCreateCategory);
+    }
+
+    handleReomoveCategoryForm = () => {
+        this.#videoSystemView.bindRemoveCategoryForm(this.handleRemoveCategory);
+    }
+
+    handleCreatePersonForm = () => {
+        this.#videoSystemView.bindCreatePersonForm(this.handleCreatePerson);
+    }
+
+    handleRemovePersonForm = () => {
+        this.#videoSystemView.bindRemovePersonForm(this.handleRemovePerson);
+    }
+
+    hProductionPersons = (title) => { // ES-es Funciona para recibir el título al seleccionar, podemos obtener el casting
+        let prod = this.#videoSystem.getProductionObject(title);
+
+        let casting = this.#videoSystem.getCast(prod);
+        let castingNif = [];
+
+        for (let actor of casting) {
+            castingNif.push(actor.actor.dni);
+        }
+
+        let directors = this.#videoSystem.getDirectorsDepartment(prod);
+        let directorsNif = [];
+        for (let director of directors) {
+            directorsNif.push(director.director.dni);
+        }
+
+        return { castingNif, directorsNif };
+    }
+
+    handleCreateProduction = (productionType, categories, actors, director, title, nationality, date, synopsis, imagePath) => {
+        let prod;
+        try {
+            if (productionType = "movie") {
+                prod = this.#videoSystem.getMovie(title, nationality, date, synopsis, imagePath);
+            } else {
+                prod = this.#videoSystem.getSerie(title, nationality, date, synopsis, imagePath);
+            }
+            for (let category of categories) {
+                this.#videoSystem.assignCategory(this.#videoSystem.getCategory(category), prod);
+            }
+
+            for (let actor of actors) {
+                let person = this.#videoSystem.getActorByDNI(actor);
+                this.#videoSystem.assignActor(person.actor, prod);
+            }
+
+            if (director != "") {
+                let person = this.#videoSystem.getDirectorByDNI(director);
+                this.#videoSystem.assignDirector(person.director, prod);
+            }
+
+            let feedback = document.getElementById("createProductionFeed");
+            feedback.innerHTML = (``);
+        } catch (error) {
+            let feedback = document.getElementById("createProductionFeed");
+            feedback.innerHTML = (`Esta pelicula ya existe en la categoría indicada`);
+        }
+    }
+
+    handleDeleteProduction = (title) => {
+        let prod = this.#videoSystem.getProductionObject(title);
+
+        try {
+            this.#videoSystem.removeProduction(prod);
+            let feedback = document.getElementById("deleteProductionFeed");
+            feedback.innerHTML = (``);
+        } catch (error) {
+            let feedback = document.getElementById("deleteProductionFeed");
+            feedback.innerHTML = (`Esta producción ya se ha eliminado, cierra el formulario para ver actualización`);
+        }
+    }
+
+    handleRelateProduction = (title, relation, actors, directors) => {
+
+        let prod = this.#videoSystem.getProductionObject(title);
+        if (relation == "assign") {
+            for (let actor of actors) {
+                let person = this.#videoSystem.getActorByDNI(actor);
+                this.#videoSystem.assignActor(person.actor, prod);
+            }
+
+            for (let director of directors) {
+                let person = this.#videoSystem.getDirectorByDNI(director);
+                this.#videoSystem.assignDirector(person.director, prod);
+            }
+        } else {
+            for (let actor of actors) {
+                let person = this.#videoSystem.getActorByDNI(actor);
+                this.#videoSystem.deassignActor(person.actor, prod);
+            }
+
+            for (let director of directors) {
+                let person = this.#videoSystem.getDirectorByDNI(director);
+                this.#videoSystem.deassignDirector(person.director, prod);
+            }
+        }
+    }
+
+    handleCreateCategory = (title, desc) => {
+        let cat = this.#videoSystem.getCategory(title);
+        cat.description = desc;
+
+        try {
+            this.#videoSystem.addCategory(cat);
+            let feedback = document.getElementById("createCategoryFeed");
+            feedback.innerHTML = (``);
+        } catch (error) {
+            let feedback = document.getElementById("createCategoryFeed");
+            feedback.innerHTML = (`La categoría ya existe en el sistema`);
+        }
+    }
+
+    handleRemoveCategory = (title) => {
+        let cat = this.#videoSystem.getCategory(title);
+
+        try {
+            this.#videoSystem.removeCategory(cat);
+            let feedback = document.getElementById("deleteCategoryFeed");
+            feedback.innerHTML = (``);
+        } catch (error) {
+            let feedback = document.getElementById("deleteCategoryFeed");
+            feedback.innerHTML = (`La categoría ya se ha borrado, reinicia el Formulario para actualizar`);
+        }
+    }
+
+    handleCreatePerson = (personName, personLastname1, personLastname2, personDNI, date, imagePath, personRol) => {
+        let person = this.#videoSystem.getActor(personName, personLastname1, personLastname2, personDNI, date, imagePath, personRol); // ES-es Da igual el factory que usamos, ya que ambos son personas y necesitan el rol
+        try {
+            if (personRol == "actor") {
+                this.#videoSystem.addActor(person);
+            } else if (personRol == "director") {
+                this.#videoSystem.addDirector(person);
+            }
+            let feedback = document.getElementById("createPersonFeed");
+            feedback.innerHTML = (``);
+        } catch (error) {
+            let feedback = document.getElementById("createPersonFeed");
+            feedback.innerHTML = (`Esta persona ya existe en el sistema`);
+        }
+    }
+
+    handleRemovePerson = (persons) => {
+        for (let person of persons) {
+            try {
+                let deletePerson;
+                let data = person.split("/");
+                if (data[1] == "actor") {
+                    deletePerson = this.#videoSystem.getActorByDNI(data[0]);
+                    this.#videoSystem.removeActor(deletePerson.actor);
+                } else {
+                    deletePerson = this.#videoSystem.getDirectorByDNI(data[0]);
+                    this.#videoSystem.removeDirector(deletePerson.director);
+                }
+                let feedback = document.getElementById("deletePersonFeed");
+                feedback.innerHTML = (``);
+            } catch (error) {
+                let feedback = document.getElementById("deletePersonFeed");
+                feedback.innerHTML = (`Esta persona ya se ha borrado, reinicia el Formulario para actualizar`);
+            }
+        }
+    }
+
+    handleReloadCloseForm = () => {
+        this.handleInit();
     }
 }
 
