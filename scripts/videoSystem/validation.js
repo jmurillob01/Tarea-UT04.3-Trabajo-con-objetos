@@ -372,7 +372,7 @@ function loginUserValidation(handler){
         if (!isValid) {
             firstInvalidElement.focus();
         } else {
-            handler();
+            handler(userName.value, passUser.value);
         }
 
         event.preventDefault();

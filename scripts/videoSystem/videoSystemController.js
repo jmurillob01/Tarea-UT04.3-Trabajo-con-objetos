@@ -103,7 +103,7 @@ class VideoSystemController {
         this.#videoSystem.assignActor(actor21, serie6);
 
         // User
-        let adminUser = this.#videoSystem.getUser("Javier", "javiermb@gmail.com", "Abcd1234");
+        let adminUser = this.#videoSystem.getUser("admin", "javiermb@gmail.com", "admin");
         this.#videoSystem.addUser(adminUser);
     }
 
@@ -134,14 +134,10 @@ class VideoSystemController {
             this.handleProductionsCategoryList
         );
 
-        // Check cookie
-        if (this.checkCookie()) {
-            this.onListForms();
-        } else {
-            this.onLogin();
-        }
-
         this.onListCategories(); // ES-es Hay que eliminar las categorías si existe
+
+        // Check cookie
+        this.checkCookie();
     }
 
     // Method to check if we have the cookie
@@ -149,9 +145,11 @@ class VideoSystemController {
         let cookie = document.cookie.replace(/(?:(?:^|.*;\s*)User\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
         if (cookie != "") { // If the cookie exists, we allow access to the administrator area
-            return true;
+            this.onListForms();
+            this.#videoSystemView.showGreet(cookie);
         } else { // We enable login
-            return false;
+            this.onLogin();
+            this.#videoSystemView.deleteAdminGreet();
         }
     }
 
@@ -317,7 +315,7 @@ class VideoSystemController {
         });
     }
 
-    handleShowLoginForm = () =>{
+    handleShowLoginForm = () => {
         this.#videoSystemView.showLoginMain();
 
         this.#videoSystemView.bindLoginForm(this.handleLoginUser);
@@ -503,8 +501,25 @@ class VideoSystemController {
         }
     }
 
-    handleLoginUser = () => {
-        console.log("Handler Validation");
+    handleLoginUser = (userName, passWord) => {
+        let existUser = false;
+
+        // ES-es Comprobamos que el usuario está en el sistema
+        for (let user of this.#videoSystem.users) {
+            if (user.username == userName && user.password == passWord) {
+                existUser = true;
+                break;
+            }
+        }
+
+        if (existUser) { // ES-es Si existe vamos a la pantalla de inicio y creamos la cookie
+            this.#videoSystemView.deleteLoginNav();
+            document.cookie = `User = ${userName}`
+            this.handleReloadCloseForm();
+        } else { // ES-es Mostramos feedback
+            let feedback = document.getElementById("loginFeed");
+            feedback.innerHTML = (`Este usuario no existe`);
+        }
     }
 
     handleReloadCloseForm = () => {

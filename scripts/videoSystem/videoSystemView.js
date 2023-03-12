@@ -467,6 +467,8 @@ class VideoSystemView {
                         Contraseña no válida
                     </div>
                 </div>
+                <div class="col-md-12 position-relative customFeed" id="loginFeed">
+                </div>
                 <div class="d-flex justify-content-center w-100">
                     <button class="btn btn-primary w-50 mt-3" type="submit">Acceder</button>
                 </div>
@@ -528,6 +530,24 @@ class VideoSystemView {
                 Iniciar Sesión
             </a>`);
         ul.appendChild(li);
+    }
+
+    showGreet(cookie){
+        this.deleteAdminGreet();
+
+        let ul = document.getElementById("navBar-menu");
+        let container = document.createElement("div");
+        let liGreet = document.createElement("li");
+
+        container.className = ("d-flex w-50 justify-content-end");
+        container.id = "greet-container";
+        liGreet.className = "nav-item nav-link";
+        liGreet.innerHTML = (`
+            Hola ${cookie}
+        `);
+
+        container.appendChild(liGreet);
+        ul.appendChild(container);
     }
 
     showFormsModals(directors, actors, categories, productions, hProductionActors) {
@@ -1268,6 +1288,16 @@ class VideoSystemView {
     deleteLoginNav() {
         try {
             let navMenu = document.getElementById("login-nav");
+            let parent = navMenu.parentNode;
+            parent.removeChild(navMenu);
+        } catch (error) {
+            // console.error(error.message);
+        }
+    }
+
+    deleteAdminGreet(){
+        try {
+            let navMenu = document.getElementById("greet-container");
             let parent = navMenu.parentNode;
             parent.removeChild(navMenu);
         } catch (error) {
