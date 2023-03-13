@@ -14,7 +14,7 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary" id="navbar">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary w-100" id="navbar">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#" id="logo">UT5 Práctica DOM</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -23,7 +23,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav" id="navBar-menu">
+                    <ul class="navbar-nav w-100" id="navBar-menu">
                         <li class="nav-item">
                             <a id="nav-actors" class="nav-link nav-person" data-rol="actor" href="#">Actores</a>
                         </li>
@@ -33,27 +33,6 @@
                         </li>
                         <li class="nav-item">
                             <a id="nav-closeWindows" class="nav-link" data-rol="director" href="#">Cerrar Ventanas</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Formularios
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a id="newProductionLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#newProduction" data-form="newProduction">Nueva producción</a></li>
-                                <li><a id="deleteProductionLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#deleteProduction" data-form="deleteProduction">Eliminar producción</a></li>
-                                <li><a id="relationsProductionLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#relationsProduction" data-form="relationsProduction">Asignar / Desasignar producciones</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a id="createCategoryLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fcreateCategory" data-form="fcreateCategory">Crear Categoría</a></li>
-                                <li><a id="deleteCategoryLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fdeleteCategory" data-form="fdeleteCategory">Eliminar Categoría</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a id="createPersonLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fcreatePerson" data-form="fcreatePerson">Crear Persona</a></li>
-                                <li><a id="deletePersonLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fdeletePerson" data-form="fdeletePerson">Eliminar Persona</a></li>
-                            </ul>
                         </li>
                     </ul>
                 </div>

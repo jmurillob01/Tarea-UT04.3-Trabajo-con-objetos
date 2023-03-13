@@ -19,7 +19,8 @@ let VideoSystemApp;
         ProductionsCategoryListMenu: (event) => VideoSystemApp.handleProductionsCategoryList(event.state.categoryName),
         ProductionInformation: (event) =>VideoSystemApp.handleProductionInformation(event.state.productionTitle),
         PersonInformation: (event) =>VideoSystemApp.handleProductionPerson(event.state.personDNI, event.state.personRol),
-        PersonNav: (event) => VideoSystemApp.handlePersonsNav(event.state.personRol)
+        PersonNav: (event) => VideoSystemApp.handlePersonsNav(event.state.personRol),
+        LoginNav: () => VideoSystemApp.handleShowLoginForm()
 	}
 
 	window.addEventListener('popstate', function(event) {

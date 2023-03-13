@@ -103,7 +103,7 @@ class VideoSystemController {
         this.#videoSystem.assignActor(actor21, serie6);
 
         // User
-        let adminUser = this.#videoSystem.getUser("Javier", "javiermb@gmail.com", "Abcd1234");
+        let adminUser = this.#videoSystem.getUser("admin", "javiermb@gmail.com", "admin");
         this.#videoSystem.addUser(adminUser);
     }
 
@@ -124,7 +124,6 @@ class VideoSystemController {
         // this.onListCategories();
         this.onListPersons();
         this.onCloseMenu();
-        this.onListItemFormMenu(); // by adding the eventListener only on page load, we avoid errors
     }
 
     onInit = () => {
@@ -134,8 +133,26 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionsCategoryList(
             this.handleProductionsCategoryList
         );
-        this.onListForms();
+
         this.onListCategories(); // ES-es Hay que eliminar las categorías si existe
+
+        // Check cookie
+        this.checkCookie();
+    }
+
+    // Method to check if we have the cookie
+    checkCookie() {
+        let cookie = document.cookie.replace(/(?:(?:^|.*;\s*)User\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+        if (cookie != "") { // If the cookie exists, we allow access to the administrator area
+            this.onListForms();
+            this.#videoSystemView.cookieContent(cookie);
+            this.#videoSystemView.bindCloseSession(this.handlerCloseSession);
+        } else { // We enable login
+            this.onLogin();
+            this.#videoSystemView.deleteGreet();
+            this.#videoSystemView.deleteCloseSession();
+        }
     }
 
     // Show categories in the nav
@@ -147,7 +164,8 @@ class VideoSystemController {
 
     }
 
-    onListForms = () => {
+    onListForms = () => { // Now the forms work correctly
+        this.#videoSystemView.showFormsInMenu(); // Show forms in menu
         let directors = this.#videoSystem.directors;
         let actors = this.#videoSystem.actors;
         let categories = this.#videoSystem.categories;
@@ -158,6 +176,8 @@ class VideoSystemController {
         this.#videoSystemView.reloadPageCLose( // ES-es Para que al cerrar el modal se recargue la página de forma controlada
             this.handleReloadCloseForm
         );
+
+        this.onListItemFormMenu(); // by adding the eventListener only on page load, we avoid errors
     }
 
     onListItemFormMenu = () => {
@@ -201,6 +221,14 @@ class VideoSystemController {
 
         this.#videoSystemView.bindProductionInformation(
             this.handleProductionInformation
+        );
+    }
+
+    onLogin = () => {
+        this.#videoSystemView.showLoginInMenu();
+
+        this.#videoSystemView.bindLoginNav(
+            this.handleShowLoginForm
         );
     }
 
@@ -289,6 +317,12 @@ class VideoSystemController {
         });
     }
 
+    handleShowLoginForm = () => {
+        this.#videoSystemView.showLoginMain();
+
+        this.#videoSystemView.bindLoginForm(this.handleLoginUser);
+    }
+
     handleNewProductionForm = () => {
         this.#videoSystemView.bindNewProductionForm(this.handleCreateProduction);
     }
@@ -315,6 +349,12 @@ class VideoSystemController {
 
     handleRemovePersonForm = () => {
         this.#videoSystemView.bindRemovePersonForm(this.handleRemovePerson);
+    }
+
+    handlerCloseSession = () => {
+        this.#videoSystemView.deleteFormsNav();
+        this.setCookie("User", "", 0);
+        this.handleInit();
     }
 
     hProductionPersons = (title) => { // ES-es Funciona para recibir el título al seleccionar, podemos obtener el casting
@@ -469,8 +509,38 @@ class VideoSystemController {
         }
     }
 
+    handleLoginUser = (userName, passWord) => {
+        let existUser = false;
+
+        // ES-es Comprobamos que el usuario está en el sistema
+        for (let user of this.#videoSystem.users) {
+            if (user.username == userName && user.password == passWord) {
+                existUser = true;
+                break;
+            }
+        }
+
+        if (existUser) { // ES-es Si existe vamos a la pantalla de inicio y creamos la cookie
+            // replaceState
+            history.replaceState({ action: 'init' }, null, "#inicio");
+            this.#videoSystemView.deleteLoginNav();
+            document.cookie = `User = ${userName}`
+            this.handleReloadCloseForm();
+        } else { // ES-es Mostramos feedback
+            let feedback = document.getElementById("loginFeed");
+            feedback.innerHTML = (`Este usuario no existe`);
+        }
+    }
+
     handleReloadCloseForm = () => {
         this.handleInit();
+    }
+
+    setCookie = (cname, cvalue, exdays) => {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";";
     }
 }
 
