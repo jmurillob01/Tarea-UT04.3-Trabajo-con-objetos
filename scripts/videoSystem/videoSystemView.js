@@ -538,6 +538,7 @@ class VideoSystemView {
 
         this.showGreet(cookie);
         this.showCloseSession();
+        this.showSaveData();
     }
 
     showGreet(cookie){
@@ -563,6 +564,19 @@ class VideoSystemView {
         `);
 
         ul.appendChild(liCloseSession);
+    }
+
+    showSaveData(){
+        let ul = document.getElementById("navBar-menu");
+        let liSaveData = document.createElement("li");
+
+        liSaveData.id = "saveData-li";
+        liSaveData.className = "nav-item";
+        liSaveData.innerHTML = (`
+            <a id="saveData-link" class="nav-link" href="#">Grabar Datos</a>
+        `);
+
+        ul.appendChild(liSaveData);
     }
     
 
@@ -1166,6 +1180,13 @@ class VideoSystemView {
         });
     }
 
+    bindSaveData(handler){
+        let saveDataButton = document.getElementById("saveData-link");
+        saveDataButton.addEventListener("click", (event) => {
+            handler();
+        });
+    }
+
     bindShowProductInNewWindow(handler) {
         let button = document.getElementById("b-open");
         button.addEventListener("click", (event) => {
@@ -1332,6 +1353,16 @@ class VideoSystemView {
     deleteCloseSession(){
         try {
             let navMenu = document.getElementById("closeSession-li");
+            let parent = navMenu.parentNode;
+            parent.removeChild(navMenu);
+        } catch (error) {
+            // console.error(error.message);
+        }
+    }
+
+    deleteSaveData(){
+        try {
+            let navMenu = document.getElementById("saveData-li");
             let parent = navMenu.parentNode;
             parent.removeChild(navMenu);
         } catch (error) {

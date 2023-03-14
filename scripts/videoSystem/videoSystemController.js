@@ -240,10 +240,12 @@ class VideoSystemController {
             this.onListForms();
             this.#videoSystemView.cookieContent(cookie);
             this.#videoSystemView.bindCloseSession(this.handlerCloseSession);
+            this.#videoSystemView.bindSaveData(this.handlerSaveData);
         } else { // We enable login
             this.onLogin();
             this.#videoSystemView.deleteGreet();
             this.#videoSystemView.deleteCloseSession();
+            this.#videoSystemView.deleteSaveData();
         }
     }
 
@@ -447,6 +449,10 @@ class VideoSystemController {
         this.#videoSystemView.deleteFormsNav();
         this.setCookie("User", "", 0);
         this.handleInit();
+    }
+
+    handlerSaveData = () => {
+        console.log("SAVE DATAAAAAAAAAAAAAAAAA");
     }
 
     hProductionPersons = (title) => { // ES-es Funciona para recibir el título al seleccionar, podemos obtener el casting
