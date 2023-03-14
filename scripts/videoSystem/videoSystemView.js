@@ -535,6 +535,7 @@ class VideoSystemView {
     cookieContent(cookie){ // Call necessary cookie methods
         this.deleteGreet();
         this.deleteCloseSession();
+        this.deleteSaveData();
 
         this.showGreet(cookie);
         this.showCloseSession();

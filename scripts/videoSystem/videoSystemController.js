@@ -200,9 +200,10 @@ class VideoSystemController {
         let persons = this.#serializePersons();
         let productions = this.#serializeProductions();
         let users = this.#serializeUsers();
-        
-        let fullString = `{ ${categories}, ${persons}, ${productions}, ${users} }`
-        console.log(fullString);
+        let bin = [...this.#videoSystem.bin];
+
+        return `{ ${categories}, ${persons}, ${productions}, ${users}, "Bin" : ${JSON.stringify(bin)}}`
+        // console.log(fullString);
     }
 
     #serializeCategories() {
@@ -269,7 +270,7 @@ class VideoSystemController {
         return `"Productions" : ${JSON.stringify(productionsArray)}`;
     }
 
-    #serializeUsers(){
+    #serializeUsers() {
         let usersArray = [];
 
         for (let user of this.#videoSystem.users) {
@@ -283,6 +284,20 @@ class VideoSystemController {
         }
 
         return `"Users" : ${JSON.stringify(usersArray)}`;
+    }
+
+    #saveDataPHP(fullString) { // ES-es Recibimos la String con todos los datos
+        let formData = new FormData();
+        formData.append('backup', fullString);
+
+        fetch('http://localhost/JS/Tarea-UT04.3-Trabajo-con-objetos/php/saveData.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(console.log("bien"))
+        .catch((error) => {
+            console.error("There has been a problem with your fetch operation:", error);
+        })
     }
 
     constructor(model, view) {
@@ -542,7 +557,8 @@ class VideoSystemController {
     }
 
     handlerSaveData = () => {
-        this.#serializeObjects();
+        let fullString = this.#serializeObjects();
+        this.#saveDataPHP(fullString);
     }
 
     hProductionPersons = (title) => { // ES-es Funciona para recibir el título al seleccionar, podemos obtener el casting
@@ -649,7 +665,6 @@ class VideoSystemController {
 
     handleRemoveCategory = (title) => {
         let cat = this.#videoSystem.getCategory(title);
-
         try {
             this.#videoSystem.removeCategory(cat);
             let feedback = document.getElementById("deleteCategoryFeed");
