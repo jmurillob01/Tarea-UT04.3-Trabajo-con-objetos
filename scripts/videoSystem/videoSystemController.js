@@ -195,6 +195,96 @@ class VideoSystemController {
 
     }
 
+    #serializeObjects() {// ES-es método para serializar todos los objetos
+        let categories = this.#serializeCategories();
+        let persons = this.#serializePersons();
+        let productions = this.#serializeProductions();
+        let users = this.#serializeUsers();
+        
+        let fullString = `{ ${categories}, ${persons}, ${productions}, ${users} }`
+        console.log(fullString);
+    }
+
+    #serializeCategories() {
+        let categoriesArray = [];
+        for (let category of this.#videoSystem.categories) {
+            let literalCategory = {
+                name: category.name,
+                description: category.description
+            }
+            categoriesArray.push(literalCategory);
+        }
+        return `"categories" : ${JSON.stringify(categoriesArray)}`;
+    }
+
+    #serializePersons() {
+        let personsArray = [];
+
+        for (let actor of this.#videoSystem.actors) {
+            let literalPerson = {
+                name: actor.name,
+                lastname1: actor.lastname1,
+                lastname2: actor.lastname2,
+                dni: actor.dni,
+                born: actor.born,
+                picture: actor.picture,
+                rol: actor.rol
+            }
+
+            personsArray.push(literalPerson);
+        }
+
+        for (let director of this.#videoSystem.directors) {
+            let literalPerson = {
+                name: director.name,
+                lastname1: director.lastname1,
+                lastname2: director.lastname2,
+                dni: director.dni,
+                born: director.born,
+                picture: director.picture,
+                rol: director.rol
+            }
+
+            personsArray.push(literalPerson);
+        }
+
+        return `"Persons" : ${JSON.stringify(personsArray)}`;
+    }
+
+    #serializeProductions() {
+        let productionsArray = [];
+
+        for (let production of this.#videoSystem.productions) {
+            let literalProduction = {
+                title: production.title,
+                nacionality: production.nacionality,
+                publication: production.publication,
+                synopsis: production.synopsis,
+                image: production.image,
+            }
+
+            productionsArray.push(literalProduction);
+        }
+
+        return `"Productions" : ${JSON.stringify(productionsArray)}`;
+    }
+
+    #serializeUsers(){
+        let usersArray = [];
+
+        for (let user of this.#videoSystem.users) {
+            let literalUser = {
+                username: user.username,
+                email: user.email,
+                password: user.password,
+            }
+
+            usersArray.push(literalUser);
+        }
+
+        return `"Users" : ${JSON.stringify(usersArray)}`;
+    }
+
     constructor(model, view) {
         console.log('Manager controller');
         this.#videoSystem = model;
@@ -452,7 +542,7 @@ class VideoSystemController {
     }
 
     handlerSaveData = () => {
-        console.log("SAVE DATAAAAAAAAAAAAAAAAA");
+        this.#serializeObjects();
     }
 
     hProductionPersons = (title) => { // ES-es Funciona para recibir el título al seleccionar, podemos obtener el casting
