@@ -107,21 +107,113 @@ class VideoSystemController {
         this.#videoSystem.addUser(adminUser);
     }
 
+    #fetchMethod() {
+        fetch("../scripts/json/categories.json")
+            .then((response) => {
+                if (!response.ok) { // Check error
+                    throw new Error("Network response was not OK");
+                }
+                return response.json()
+            })
+            .then((data) => this.#getData(data))
+            .then(this.onInit)
+            .catch((error) => {
+                console.error("There has been a problem with your fetch operation:", error);
+            });
+    }
+
+    #getData(data) {
+        for (let key in data) {
+            switch (key) { // ES-es Según la clave de objeto hacemos un tipo de factory
+                case "categories":
+                    this.#factoryCategories(data[key])
+                    break;
+                case "actors":
+                    this.#factoryActors(data[key]);
+                    break
+                case "directors":
+                    this.#factoryDirectors(data[key]);
+                    break
+                case "users":
+                    this.#factoryUsers(data[key]);
+                    break
+                default:
+                    break;
+            }
+        }
+
+        // console.log(this.#videoSystem);
+    }
+
+    #factoryCategories(data) {
+        for (let category of data) {
+            // ES-es Obtenemos la categoría con el factory y la añadimos al sistema
+            let cat = this.#videoSystem.getCategory(category.name);
+            this.#videoSystem.addCategory(cat);
+
+            for (let production of category.productions) {
+                let getProduction;
+
+                // ES-es Añadimos la producción al sistema y asignamos su categoría
+                if (production.type == "serie") { // ES-es La producción es una serie
+                    getProduction = this.#videoSystem.getSerie(production.title, production.nacionality, production.publication, production.synopsis, production.image);
+                } else { // ES-es Película
+                    getProduction = this.#videoSystem.getMovie(production.title, production.nacionality, production.publication, production.synopsis, production.image);
+                }
+
+                // ES-es Al asignar la categoría si no existe la producción la añade automáticamente
+                this.#videoSystem.assignCategory(cat, getProduction);
+            }
+        }
+    }
+
+    #factoryActors(data) {
+        for (let object of data) {
+            let person = this.#videoSystem.getActor(object.actor.name, object.actor.lastname1, object.actor.lastname2, object.actor.dni, object.actor.born, object.actor.picture, object.actor.rol);
+            for (let production of object.productions) {
+                let productionObject = this.#videoSystem.getProductionObject(production);
+                this.#videoSystem.assignActor(person, productionObject);
+            }
+        }
+    }
+
+    #factoryDirectors(data) {
+        for (let object of data) {
+            let person = this.#videoSystem.getDirector(object.director.name, object.director.lastname1, object.director.lastname2, object.director.dni, object.director.born, object.director.picture, object.director.rol);
+            for (let production of object.productions) {
+                let productionObject = this.#videoSystem.getProductionObject(production);
+                this.#videoSystem.assignDirector(person, productionObject);
+            }
+        }
+    }
+
+    #factoryUsers(data) {
+        for (let user of data) {
+            let userObject = this.#videoSystem.getUser(user.username, user.email, user.password);
+            this.#videoSystem.addUser(userObject);
+        }
+
+    }
+
     constructor(model, view) {
         console.log('Manager controller');
         this.#videoSystem = model;
         this.#videoSystemView = view;
 
         this.onLoad();
-        this.onInit();
+        // this.onInit();
 
         // We bind handlers with the view
         this.#videoSystemView.bindInit(this.handleInit);
     }
 
     onLoad = () => {
-        this.#loadVideoSystemObjects();
-        // this.onListCategories();
+        this.#fetchMethod();
+
+        // this.#loadVideoSystemObjects();
+        // console.log(JSON.stringify([...this.#videoSystem.actors]));
+
+        this.onListCategories();
         this.onListPersons();
         this.onCloseMenu();
     }
