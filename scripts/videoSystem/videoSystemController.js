@@ -201,6 +201,7 @@ class VideoSystemController {
         let productions = this.#serializeProductions();
         let users = this.#serializeUsers();
         let bin = [...this.#videoSystem.bin];
+        // console.log(bin);
 
         return `{ ${categories}, ${persons}, ${productions}, ${users}, "Bin" : ${JSON.stringify(bin)}}`
         // console.log(fullString);
