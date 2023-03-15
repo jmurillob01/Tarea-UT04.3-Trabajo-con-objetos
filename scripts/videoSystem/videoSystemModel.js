@@ -29,6 +29,7 @@ let VideoSystem = (function () {
             #categories = []; // Categories from the system
             #actors = []; // Actors from the system
             #directors = []; // Directors from the system
+            #bin = []; // Objects bin
 
             /**
                 Structure to store objects
@@ -179,6 +180,17 @@ let VideoSystem = (function () {
                 }
             }
 
+            get bin() { // Iterator from bin
+                let array = this.#bin;
+                return {
+                    *[Symbol.iterator]() {
+                        for (let i = 0; i < array.length; i++) {
+                            yield array[i];
+                        }
+                    }
+                }
+            }
+
             getProductionNumber() { // Method to obtain the number of productions
                 let productions = this.productions;
                 let count = 0;
@@ -257,6 +269,10 @@ let VideoSystem = (function () {
                         for (let production of this.#categories[position].productions) {
                             this.#categories[0].productions.push(production);
                         }
+                        // Adding the category to the bin
+                        let binCategory = this.getCategory(category.name);
+                        this.addCategoryBin(binCategory);
+
                         // Remove the category
                         this.#categories.splice(position, 1);
                     } else {
@@ -266,6 +282,14 @@ let VideoSystem = (function () {
                     throw new CategoryNonExistsVideoSystemException();
                 }
                 return this.#categories.length - 1; // We don't count the first
+            }
+
+            addCategoryBin(binCategory) {
+                let category = {
+                    name: binCategory.name,
+                    description: binCategory.description
+                }
+                this.#bin.push(category);
             }
 
             // Factory for users
@@ -381,6 +405,9 @@ let VideoSystem = (function () {
                 let position = this.#getProductionPosition(production);
 
                 if (position != -1) {
+                    // Adding production to the bin
+                    this.addProductionBin(production);
+
                     this.#productions.splice(position, 1); // Remove the production
 
                     // delete production from categories
@@ -416,6 +443,17 @@ let VideoSystem = (function () {
                     throw new ProductionNonExistsVideoSystemException();
                 }
                 return this.#productions.length;
+            }
+
+            addProductionBin(productionBin) {
+                let production = {
+                    title: productionBin.title,
+                    nacionality: productionBin.nacionality,
+                    publication: productionBin.publication,
+                    synopsis: productionBin.synopsis,
+                    image: productionBin.image
+                }
+                this.#bin.push(production);
             }
 
             // Factory for Actor
@@ -475,11 +513,26 @@ let VideoSystem = (function () {
                 let position = this.#getActorPosition(person);
 
                 if (position != -1) {
+                    // Adding actor to the bin
+                    this.addActorBin(person);
                     this.#actors.splice(position, 1); // Remove the production
                 } else {
                     throw new PersonNonExistsVideoSystemException();
                 }
                 return this.#actors.length;
+            }
+
+            addActorBin(actorBin) {
+                let person = {
+                    name: actorBin.name,
+                    lastname1: actorBin.lastname1,
+                    lastname2: actorBin.lastname2,
+                    dni: actorBin.dni,
+                    born: actorBin.born,
+                    picture: actorBin.picture,
+                    rol: actorBin.rol
+                }
+                this.#bin.push(person);
             }
 
             // Factory for Director
@@ -523,11 +576,26 @@ let VideoSystem = (function () {
                 let position = this.#getDirectorPosition(person);
 
                 if (position != -1) {
+                    // adding director to the bin
+                    this.addDirectorBin(person);
                     this.#directors.splice(position, 1); // Remove the production
                 } else {
                     throw new PersonNonExistsVideoSystemException();
                 }
                 return this.#directors.length;
+            }
+
+            addDirectorBin(directorBin) {
+                let person = {
+                    name: directorBin.name,
+                    lastname1: directorBin.lastname1,
+                    lastname2: directorBin.lastname2,
+                    dni: directorBin.dni,
+                    born: directorBin.born,
+                    picture: directorBin.picture,
+                    rol: directorBin.rol
+                }
+                this.#bin.push(person);
             }
 
             // Assign productions to categories
@@ -569,7 +637,7 @@ let VideoSystem = (function () {
                 if (existProd.length > 0) {
                     throw new ProductionExistsVideoSystemException();
                 }
-                
+
                 return this.#categories[position].productions.length;
             }
 

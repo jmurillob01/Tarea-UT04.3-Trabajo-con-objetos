@@ -535,9 +535,11 @@ class VideoSystemView {
     cookieContent(cookie){ // Call necessary cookie methods
         this.deleteGreet();
         this.deleteCloseSession();
+        this.deleteSaveData();
 
         this.showGreet(cookie);
         this.showCloseSession();
+        this.showSaveData();
     }
 
     showGreet(cookie){
@@ -563,6 +565,19 @@ class VideoSystemView {
         `);
 
         ul.appendChild(liCloseSession);
+    }
+
+    showSaveData(){
+        let ul = document.getElementById("navBar-menu");
+        let liSaveData = document.createElement("li");
+
+        liSaveData.id = "saveData-li";
+        liSaveData.className = "nav-item";
+        liSaveData.innerHTML = (`
+            <a id="saveData-link" class="nav-link" href="#">Grabar Datos</a>
+        `);
+
+        ul.appendChild(liSaveData);
     }
     
 
@@ -594,7 +609,7 @@ class VideoSystemView {
             <form name="fNewProduction" class="row g-3 needs-validation" role="form" novalidate enctype="multipart/form-data">
                 <div class="col-md-6 position-relative">
                     <label for="validationTooltip01" class="form-label">Título</label>
-                    <input type="text" class="form-control" id="productionTitle" pattern="^[a-zA-Z0-9]{1,20}$" required>
+                    <input type="text" class="form-control" id="productionTitle" pattern="^[a-zA-Z0-9 ]{1,20}$" required>
                     <div class="invalid-tooltip">
                         Nombre no válido
                     </div>
@@ -615,7 +630,7 @@ class VideoSystemView {
                 </div>
                 <div class="col-md-8 position-relative">
                     <label for="validationTooltip01" class="form-label">Imagen</label>
-                    <input type="file" class="form-control" id="image" pattern=".*(png|jpg|jpeg|gif)$" required>
+                    <input type="file" class="form-control" id="image" accept="image/png, image/jpeg" required>
                     <div class="invalid-tooltip">
                         Imagen no válida
                     </div>
@@ -959,7 +974,7 @@ class VideoSystemView {
             <form name="fcreatePerson" class="row g-3 needs-validation" novalidate role="form" enctype="multipart/form-data">
                 <div class="col-md-4 position-relative">
                     <label for="personName" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="personName" pattern="^[a-zA-Z]{1,20}$" required>
+                    <input type="text" class="form-control" id="personName" pattern="^[a-zA-Z ]{1,20}$" required>
                     <div class="invalid-tooltip">
                         Nombre no válido
                     </div>
@@ -994,7 +1009,7 @@ class VideoSystemView {
                 </div>
                 <div class="col-md-8 position-relative">
                     <label for="personPicture" class="form-label">Imagen</label>
-                    <input type="file" class="form-control" id="personPicture" required pattern=".*(png|jpg|jpeg|gif)$">
+                    <input type="file" class="form-control" id="personPicture" required accept="image/png, image/jpeg">
                     <div class="invalid-tooltip">
                         Imagen no válida
                     </div>
@@ -1166,6 +1181,13 @@ class VideoSystemView {
         });
     }
 
+    bindSaveData(handler){
+        let saveDataButton = document.getElementById("saveData-link");
+        saveDataButton.addEventListener("click", (event) => {
+            handler();
+        });
+    }
+
     bindShowProductInNewWindow(handler) {
         let button = document.getElementById("b-open");
         button.addEventListener("click", (event) => {
@@ -1332,6 +1354,16 @@ class VideoSystemView {
     deleteCloseSession(){
         try {
             let navMenu = document.getElementById("closeSession-li");
+            let parent = navMenu.parentNode;
+            parent.removeChild(navMenu);
+        } catch (error) {
+            // console.error(error.message);
+        }
+    }
+
+    deleteSaveData(){
+        try {
+            let navMenu = document.getElementById("saveData-li");
             let parent = navMenu.parentNode;
             parent.removeChild(navMenu);
         } catch (error) {

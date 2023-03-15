@@ -1,0 +1,403 @@
+{
+    "categories": [
+        {
+            "name": "Fantasía",
+            "description": ""
+        },
+        {
+            "name": "Horror",
+            "description": ""
+        }
+    ],
+    "Persons": [
+        {
+            "name": "Dwayne",
+            "lastname1": "Johnson",
+            "lastname2": "",
+            "dni": "00001001A",
+            "born": "02/05/1972",
+            "picture": "/persons/Dwayne_Johnson.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Aldis",
+            "lastname1": "Hodge",
+            "lastname2": "",
+            "dni": "00001002A",
+            "born": "20/09/1986",
+            "picture": "/persons/Aldis_Hodge.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Ryan",
+            "lastname1": "Reynolds",
+            "lastname2": "",
+            "dni": "00001003A",
+            "born": "23/10/1976",
+            "picture": "/persons/Ryan_Reynolds.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Stan",
+            "lastname1": "Lee",
+            "lastname2": "",
+            "dni": "00001004A",
+            "born": "28/12/1922",
+            "picture": "/persons/Stan_Lee.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Thomas",
+            "lastname1": "Doherty",
+            "lastname2": "",
+            "dni": "00001005A",
+            "born": "21/04/1995",
+            "picture": "/persons/Thomas_Doherty.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Nathalie",
+            "lastname1": "Joanne",
+            "lastname2": "",
+            "dni": "00001007A",
+            "born": "02/03/1989",
+            "picture": "/persons/Nathalie_Emmanuel.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Daniel",
+            "lastname1": "Kaluuya",
+            "lastname2": "",
+            "dni": "00001008A",
+            "born": "24/02/1989",
+            "picture": "/persons/Daniel_Kaluuya.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Keke",
+            "lastname1": "Palmer",
+            "lastname2": "",
+            "dni": "00001009A",
+            "born": "26/08/1992",
+            "picture": "/persons/Keke_Palmer.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Morten",
+            "lastname1": "Svartveit",
+            "lastname2": "",
+            "dni": "00001010A",
+            "born": "26/06/1978",
+            "picture": "/persons/Morten_Svartveit.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Marius",
+            "lastname1": "Kolbenstvedt",
+            "lastname2": "",
+            "dni": "00001011A",
+            "born": "01/01/1969",
+            "picture": "/persons/Marius_Kolbenstvedt.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Grant",
+            "lastname1": "Gustin",
+            "lastname2": "",
+            "dni": "00001012A",
+            "born": "14/01/1990",
+            "picture": "/persons/Grant_Gustin.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Carlos",
+            "lastname1": "Valdes",
+            "lastname2": "",
+            "dni": "00001013A",
+            "born": "20/04/1989",
+            "picture": "/persons/Carlos_Valdes.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Stephen",
+            "lastname1": "Adam",
+            "lastname2": "Amell",
+            "dni": "00001014A",
+            "born": "08/05/1981",
+            "picture": "/persons/Stephen_Adam.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Jenna",
+            "lastname1": "Marie",
+            "lastname2": "Ortega ",
+            "dni": "00001015A",
+            "born": "27/09/2002",
+            "picture": "/persons/Jenna_Ortega.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Emma",
+            "lastname1": "Myers",
+            "lastname2": "",
+            "dni": "00001016A",
+            "born": "02/04/2002",
+            "picture": "/persons/Emma_Myers.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Willard",
+            "lastname1": "Carroll",
+            "lastname2": "Smith",
+            "dni": "00001017A",
+            "born": "25/09/1968",
+            "picture": "/persons/Will_Smith.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Alfonso",
+            "lastname1": "Lincoln",
+            "lastname2": "Ribeiro",
+            "dni": "00001018A",
+            "born": "21/09/1971",
+            "picture": "/persons/Alfonso_Ribeiro.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Daniel",
+            "lastname1": "Jason",
+            "lastname2": "",
+            "dni": "00001019A",
+            "born": "18/09/1975",
+            "picture": "/persons/Daniel_Jason.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Brett",
+            "lastname1": "Goldstein",
+            "lastname2": "",
+            "dni": "00001020A",
+            "born": "17/07/1980",
+            "picture": "/persons/Brett_Goldstein.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Ahmed",
+            "lastname1": "Sayed",
+            "lastname2": "",
+            "dni": "00001021A",
+            "born": "11/06/1980",
+            "picture": "/persons/Ahmed_Sayed.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Aya",
+            "lastname1": "Samaha",
+            "lastname2": "",
+            "dni": "00001022A",
+            "born": "31/03/1992",
+            "picture": "/persons/Aya_Samaha.jpg",
+            "rol": "actor"
+        },
+        {
+            "name": "Jaume",
+            "lastname1": "Collet",
+            "lastname2": "Serra",
+            "dni": "00000001A",
+            "born": "23/03/1974",
+            "picture": "/persons/Jaume_Collet.jpg",
+            "rol": "director"
+        },
+        {
+            "name": "Tim",
+            "lastname1": "Miller",
+            "lastname2": "",
+            "dni": "00000002A",
+            "born": "10/09/1964",
+            "picture": "/persons/Tim_Miller.jpg",
+            "rol": "director"
+        },
+        {
+            "name": "Jessica M.",
+            "lastname1": "Thompson",
+            "lastname2": "",
+            "dni": "00000003A",
+            "born": "31/03/1985",
+            "picture": "/persons/Jessica_M.jpg",
+            "rol": "director"
+        },
+        {
+            "name": "Jordan",
+            "lastname1": "Peele",
+            "lastname2": "",
+            "dni": "00000004A",
+            "born": "21/02/1979",
+            "picture": "/persons/Jordan_Peele.jpg",
+            "rol": "director"
+        },
+        {
+            "name": "Eskil",
+            "lastname1": "Vogt",
+            "lastname2": "",
+            "dni": "00000005A",
+            "born": "31/10/1974",
+            "picture": "/persons/Eskil_Vogt.jpg",
+            "rol": "director"
+        },
+        {
+            "name": "Greg",
+            "lastname1": "Berlanti",
+            "lastname2": "",
+            "dni": "00000006A",
+            "born": "24/05/1972",
+            "picture": "/persons/Greg_Berlanti.jpg",
+            "rol": "director"
+        },
+        {
+            "name": "Miles",
+            "lastname1": "Millar",
+            "lastname2": "",
+            "dni": "00000007A",
+            "born": "01/01/1967",
+            "picture": "/persons/Miles_Millar.jpg",
+            "rol": "director"
+        },
+        {
+            "name": "Quincy",
+            "lastname1": "Delight",
+            "lastname2": "",
+            "dni": "00000008A",
+            "born": "14/03/1933",
+            "picture": "/persons/Quincy_Delight.jpg",
+            "rol": "director"
+        },
+        {
+            "name": "Brendan E.",
+            "lastname1": "Hunt",
+            "lastname2": "",
+            "dni": "00000009A",
+            "born": "01/01/1972",
+            "picture": "/persons/Brendan_Hunt.jpg",
+            "rol": "director"
+        },
+        {
+            "name": "Ahmed",
+            "lastname1": "Khaled",
+            "lastname2": "Tawfik",
+            "dni": "00000010A",
+            "born": "10/06/1962",
+            "picture": "/persons/Ahmed_Khaled.jpg",
+            "rol": "director"
+        }
+    ],
+    "Productions": [
+        {
+            "title": "Black Adam",
+            "nacionality": "Canada",
+            "publication": "30/10/2022",
+            "synopsis": "Unos arqueólogos liberan de su tumba a Black Adam, quien llevaba 5000 años preso tras haber recibido los poderes de los dioses. De nuevo entre los humanos, Black Adam se dispone a imponer su justicia, muy diferente a la del mundo en el que despertó.",
+            "image": "/productions/Black_Adam.jpg"
+        },
+        {
+            "title": "The Flash",
+            "nacionality": "United States",
+            "publication": "07/10/2014",
+            "synopsis": "Flash viaja a través del tiempo para evitar el asesinato de su madre, pero sin saberlo provoca cambios que resultan en la creación de un multiverso.",
+            "image": "/productions/The_Flash.jpg"
+        },
+        {
+            "title": "Wednesday",
+            "nacionality": "United States",
+            "publication": "23/11/2022",
+            "synopsis": "Mientras asiste a la Academia Nevermore, Miércoles Addams intenta dominar su incipiente habilidad psíquica, frustrar una ola de asesinatos y resolver el misterio que envolvió a sus padres 25 años atrás.",
+            "image": "/productions/Wednesday.jpg"
+        },
+        {
+            "title": "Arrow",
+            "nacionality": "United States",
+            "publication": "10/10/2012",
+            "synopsis": "Cuando Oliver Queen, un billonario mujeriego, que se presumía había fallecido, regresa a casa a la ciudad Starling, luego de cinco años de quedar atrapado en una isla remota en el Pacífico, él esconde los cambios creados por la experiencia en sí mismo, mientras busca la reconciliación con su ex Laurel; él secretamente lleva dos vidas paralelas, en el día actúa como el filántropo descomplicado que solía ser y en la noche saca a relucir su ego alterno como Arrow. Este personaje es una clase de super héroe que trata de corregir los errores de su familia y restaurar la gloria que tenía la ciudad previamente, su misión se complica por el padre de Laurel, quien es el detective Quentin Lance y está determinado a poner al vigilante en la cárcel.",
+            "image": "/productions/Arrow.jpg"
+        },
+        {
+            "title": "Free Guy",
+            "nacionality": "United States",
+            "publication": "13/08/2021",
+            "synopsis": "Un cajero de un banco descubre que en realidad es un personaje sin papel dentro de un brutal videojuego de mundo interactivo.",
+            "image": "/productions/Free_Guy.jpg"
+        },
+        {
+            "title": "Deadpool",
+            "nacionality": "Canada",
+            "publication": "12/02/2016",
+            "synopsis": "Wade Wilson, tras ser sometido a un cruel experimento científico, adquiere poderes especiales que le convierten en Deadpool. Armado con sus nuevas habilidades y un retorcido sentido del humor tratará de dar caza al hombre que casi destruye su vida.",
+            "image": "/productions/Deadpool.jpg"
+        },
+        {
+            "title": "El príncipe de Bel-Air",
+            "nacionality": "United States",
+            "publication": "10/11/1990",
+            "synopsis": "Will Smith actúa más o menos como él es en la vida real, en esta comedia satírica descomplicada de NBC. La madre ficticia de Will lo envía lejos del barrio agitado de Filadelfia donde vivía, a la casa de su tío Phil y su tía Vivan en Bel-Air",
+            "image": "/productions/El_Principe_Bell-Air.jpg"
+        },
+        {
+            "title": "Ted Lasso",
+            "nacionality": "United States",
+            "publication": "19/08/2020",
+            "synopsis": "Ted Lasso, un entrenador de fútbol de poca monta, es contratado para entrenar a un equipo de fútbol profesional en Inglaterra, a pesar de no tener experiencia como entrenador.",
+            "image": "/productions/Ted_Lasso.jpg"
+        },
+        {
+            "title": "The Invitation",
+            "nacionality": "United States",
+            "publication": "26/08/2022",
+            "synopsis": "Tras morir su hermana, Evie queda sin familiares, pero un análisis de ADN le revela la existencia de un primo distante. La nueva familia la invita a una boda en Inglaterra, y lo que empieza como un cuento de hadas se transforma en una pesadilla.",
+            "image": "/productions/The_Invitation.jpg"
+        },
+        {
+            "title": "Nop",
+            "nacionality": "United States",
+            "publication": "22/07/2022",
+            "synopsis": "Los cuidadores de un rancho de caballos de California se cruzan con una fuerza misteriosa que afecta el comportamiento humano y animal.",
+            "image": "/productions/Nop.jpg"
+        },
+        {
+            "title": "The Innocents",
+            "nacionality": "Norway",
+            "publication": "27/08/2021",
+            "synopsis": "Durante el resplandeciente verano nórdico, un grupo de niños revela sus oscuros y misteriosos poderes mientras los adultos no miran.",
+            "image": "/productions/The_Innocents.jpg"
+        },
+        {
+            "title": "Paranormal",
+            "nacionality": "Egypt",
+            "publication": "05/11/2020",
+            "synopsis": "En la década de 1960, el hematólogo Dr. Refaat Ismail se convierte en un sujeto a quien acudir para las investigaciones paranormales.",
+            "image": "/productions/The_Innocents.jpg"
+        },
+        {
+            "title": "Aventuras",
+            "nacionality": "",
+            "publication": "15/03/2023",
+            "synopsis": "",
+            "image": "/productions/Black_Adam.jpg"
+        }
+    ],
+    "Users": [
+        {
+            "username": "admin",
+            "email": "javiermb@gmail.com",
+            "password": "admin"
+        }
+    ],
+    "Bin": [
+        {
+            "name": "Test",
+            "description": ""
+        },
+        {
+            "name": "Comedia",
+            "description": ""
+        }
+    ]
+}
