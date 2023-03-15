@@ -14,7 +14,7 @@ $currentDate =  $day. "-" . $month . "-" . $date['year'];
 $nombre = "../backup/backup - " . $currentDate . " .json"; 
 
 // Fichero
-$fh = fopen($nombre, 'w') or die("Se produjo un error al crear el archivo");
+$fh = fopen($nombre, 'w+') or die("Se produjo un error al crear el archivo");
 
 fwrite($fh, $datos) or die("No se pudo escribir en el archivo");
 

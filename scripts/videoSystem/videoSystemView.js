@@ -609,7 +609,7 @@ class VideoSystemView {
             <form name="fNewProduction" class="row g-3 needs-validation" role="form" novalidate enctype="multipart/form-data">
                 <div class="col-md-6 position-relative">
                     <label for="validationTooltip01" class="form-label">Título</label>
-                    <input type="text" class="form-control" id="productionTitle" pattern="^[a-zA-Z0-9]{1,20}$" required>
+                    <input type="text" class="form-control" id="productionTitle" pattern="^[a-zA-Z0-9 ]{1,20}$" required>
                     <div class="invalid-tooltip">
                         Nombre no válido
                     </div>
@@ -630,7 +630,7 @@ class VideoSystemView {
                 </div>
                 <div class="col-md-8 position-relative">
                     <label for="validationTooltip01" class="form-label">Imagen</label>
-                    <input type="file" class="form-control" id="image" pattern=".*(png|jpg|jpeg|gif)$" required>
+                    <input type="file" class="form-control" id="image" accept="image/png, image/jpeg" required>
                     <div class="invalid-tooltip">
                         Imagen no válida
                     </div>
@@ -974,7 +974,7 @@ class VideoSystemView {
             <form name="fcreatePerson" class="row g-3 needs-validation" novalidate role="form" enctype="multipart/form-data">
                 <div class="col-md-4 position-relative">
                     <label for="personName" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="personName" pattern="^[a-zA-Z]{1,20}$" required>
+                    <input type="text" class="form-control" id="personName" pattern="^[a-zA-Z ]{1,20}$" required>
                     <div class="invalid-tooltip">
                         Nombre no válido
                     </div>
@@ -1009,7 +1009,7 @@ class VideoSystemView {
                 </div>
                 <div class="col-md-8 position-relative">
                     <label for="personPicture" class="form-label">Imagen</label>
-                    <input type="file" class="form-control" id="personPicture" required pattern=".*(png|jpg|jpeg|gif)$">
+                    <input type="file" class="form-control" id="personPicture" required accept="image/png, image/jpeg">
                     <div class="invalid-tooltip">
                         Imagen no válida
                     </div>
