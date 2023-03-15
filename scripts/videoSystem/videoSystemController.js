@@ -103,8 +103,201 @@ class VideoSystemController {
         this.#videoSystem.assignActor(actor21, serie6);
 
         // User
-        let adminUser = this.#videoSystem.getUser("Javier", "javiermb@gmail.com", "Abcd1234");
+        let adminUser = this.#videoSystem.getUser("admin", "javiermb@gmail.com", "admin");
         this.#videoSystem.addUser(adminUser);
+    }
+
+    #fetchMethod() {
+        fetch("../scripts/json/categories.json")
+            .then((response) => {
+                if (!response.ok) { // Check error
+                    throw new Error("Network response was not OK");
+                }
+                return response.json()
+            })
+            .then((data) => this.#getData(data))
+            .then(this.onInit)
+            .catch((error) => {
+                console.error("There has been a problem with your fetch operation:", error);
+            });
+    }
+
+    #getData(data) {
+        for (let key in data) {
+            switch (key) { // ES-es Según la clave de objeto hacemos un tipo de factory
+                case "categories":
+                    this.#factoryCategories(data[key])
+                    break;
+                case "actors":
+                    this.#factoryActors(data[key]);
+                    break
+                case "directors":
+                    this.#factoryDirectors(data[key]);
+                    break
+                case "users":
+                    this.#factoryUsers(data[key]);
+                    break
+                default:
+                    break;
+            }
+        }
+
+        // console.log(this.#videoSystem);
+    }
+
+    #factoryCategories(data) {
+        for (let category of data) {
+            // ES-es Obtenemos la categoría con el factory y la añadimos al sistema
+            let cat = this.#videoSystem.getCategory(category.name);
+            this.#videoSystem.addCategory(cat);
+
+            for (let production of category.productions) {
+                let getProduction;
+
+                // ES-es Añadimos la producción al sistema y asignamos su categoría
+                if (production.type == "serie") { // ES-es La producción es una serie
+                    getProduction = this.#videoSystem.getSerie(production.title, production.nacionality, production.publication, production.synopsis, production.image);
+                } else { // ES-es Película
+                    getProduction = this.#videoSystem.getMovie(production.title, production.nacionality, production.publication, production.synopsis, production.image);
+                }
+
+                // ES-es Al asignar la categoría si no existe la producción la añade automáticamente
+                this.#videoSystem.assignCategory(cat, getProduction);
+            }
+        }
+    }
+
+    #factoryActors(data) {
+        for (let object of data) {
+            let person = this.#videoSystem.getActor(object.actor.name, object.actor.lastname1, object.actor.lastname2, object.actor.dni, object.actor.born, object.actor.picture, object.actor.rol);
+            for (let production of object.productions) {
+                let productionObject = this.#videoSystem.getProductionObject(production);
+                this.#videoSystem.assignActor(person, productionObject);
+            }
+        }
+    }
+
+    #factoryDirectors(data) {
+        for (let object of data) {
+            let person = this.#videoSystem.getDirector(object.director.name, object.director.lastname1, object.director.lastname2, object.director.dni, object.director.born, object.director.picture, object.director.rol);
+            for (let production of object.productions) {
+                let productionObject = this.#videoSystem.getProductionObject(production);
+                this.#videoSystem.assignDirector(person, productionObject);
+            }
+        }
+    }
+
+    #factoryUsers(data) {
+        for (let user of data) {
+            let userObject = this.#videoSystem.getUser(user.username, user.email, user.password);
+            this.#videoSystem.addUser(userObject);
+        }
+
+    }
+
+    #serializeObjects() {// ES-es método para serializar todos los objetos
+        let categories = this.#serializeCategories();
+        let persons = this.#serializePersons();
+        let productions = this.#serializeProductions();
+        let users = this.#serializeUsers();
+        let bin = [...this.#videoSystem.bin];
+
+        return `{ ${categories}, ${persons}, ${productions}, ${users}, "Bin" : ${JSON.stringify(bin)}}`
+        // console.log(fullString);
+    }
+
+    #serializeCategories() {
+        let categoriesArray = [];
+        for (let category of this.#videoSystem.categories) {
+            let literalCategory = {
+                name: category.name,
+                description: category.description
+            }
+            categoriesArray.push(literalCategory);
+        }
+        return `"categories" : ${JSON.stringify(categoriesArray)}`;
+    }
+
+    #serializePersons() {
+        let personsArray = [];
+
+        for (let actor of this.#videoSystem.actors) {
+            let literalPerson = {
+                name: actor.name,
+                lastname1: actor.lastname1,
+                lastname2: actor.lastname2,
+                dni: actor.dni,
+                born: actor.born,
+                picture: actor.picture,
+                rol: actor.rol
+            }
+
+            personsArray.push(literalPerson);
+        }
+
+        for (let director of this.#videoSystem.directors) {
+            let literalPerson = {
+                name: director.name,
+                lastname1: director.lastname1,
+                lastname2: director.lastname2,
+                dni: director.dni,
+                born: director.born,
+                picture: director.picture,
+                rol: director.rol
+            }
+
+            personsArray.push(literalPerson);
+        }
+
+        return `"Persons" : ${JSON.stringify(personsArray)}`;
+    }
+
+    #serializeProductions() {
+        let productionsArray = [];
+
+        for (let production of this.#videoSystem.productions) {
+            let literalProduction = {
+                title: production.title,
+                nacionality: production.nacionality,
+                publication: production.publication,
+                synopsis: production.synopsis,
+                image: production.image,
+            }
+
+            productionsArray.push(literalProduction);
+        }
+
+        return `"Productions" : ${JSON.stringify(productionsArray)}`;
+    }
+
+    #serializeUsers() {
+        let usersArray = [];
+
+        for (let user of this.#videoSystem.users) {
+            let literalUser = {
+                username: user.username,
+                email: user.email,
+                password: user.password,
+            }
+
+            usersArray.push(literalUser);
+        }
+
+        return `"Users" : ${JSON.stringify(usersArray)}`;
+    }
+
+    #saveDataPHP(fullString) { // ES-es Recibimos la String con todos los datos
+        let formData = new FormData();
+        formData.append('backup', fullString);
+
+        fetch('http://localhost/JS/Tarea-UT04.3-Trabajo-con-objetos/php/saveData.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(console.log("bien"))
+        .catch((error) => {
+            console.error("There has been a problem with your fetch operation:", error);
+        })
     }
 
     constructor(model, view) {
@@ -113,18 +306,21 @@ class VideoSystemController {
         this.#videoSystemView = view;
 
         this.onLoad();
-        this.onInit();
+        // this.onInit();
 
         // We bind handlers with the view
         this.#videoSystemView.bindInit(this.handleInit);
     }
 
     onLoad = () => {
-        this.#loadVideoSystemObjects();
-        // this.onListCategories();
+        this.#fetchMethod();
+
+        // this.#loadVideoSystemObjects();
+        // console.log(JSON.stringify([...this.#videoSystem.actors]));
+
+        this.onListCategories();
         this.onListPersons();
         this.onCloseMenu();
-        this.onListItemFormMenu(); // by adding the eventListener only on page load, we avoid errors
     }
 
     onInit = () => {
@@ -134,8 +330,28 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionsCategoryList(
             this.handleProductionsCategoryList
         );
-        this.onListForms();
+
         this.onListCategories(); // ES-es Hay que eliminar las categorías si existe
+
+        // Check cookie
+        this.checkCookie();
+    }
+
+    // Method to check if we have the cookie
+    checkCookie() {
+        let cookie = document.cookie.replace(/(?:(?:^|.*;\s*)User\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+        if (cookie != "") { // If the cookie exists, we allow access to the administrator area
+            this.onListForms();
+            this.#videoSystemView.cookieContent(cookie);
+            this.#videoSystemView.bindCloseSession(this.handlerCloseSession);
+            this.#videoSystemView.bindSaveData(this.handlerSaveData);
+        } else { // We enable login
+            this.onLogin();
+            this.#videoSystemView.deleteGreet();
+            this.#videoSystemView.deleteCloseSession();
+            this.#videoSystemView.deleteSaveData();
+        }
     }
 
     // Show categories in the nav
@@ -147,7 +363,8 @@ class VideoSystemController {
 
     }
 
-    onListForms = () => {
+    onListForms = () => { // Now the forms work correctly
+        this.#videoSystemView.showFormsInMenu(); // Show forms in menu
         let directors = this.#videoSystem.directors;
         let actors = this.#videoSystem.actors;
         let categories = this.#videoSystem.categories;
@@ -158,6 +375,8 @@ class VideoSystemController {
         this.#videoSystemView.reloadPageCLose( // ES-es Para que al cerrar el modal se recargue la página de forma controlada
             this.handleReloadCloseForm
         );
+
+        this.onListItemFormMenu(); // by adding the eventListener only on page load, we avoid errors
     }
 
     onListItemFormMenu = () => {
@@ -201,6 +420,14 @@ class VideoSystemController {
 
         this.#videoSystemView.bindProductionInformation(
             this.handleProductionInformation
+        );
+    }
+
+    onLogin = () => {
+        this.#videoSystemView.showLoginInMenu();
+
+        this.#videoSystemView.bindLoginNav(
+            this.handleShowLoginForm
         );
     }
 
@@ -289,6 +516,12 @@ class VideoSystemController {
         });
     }
 
+    handleShowLoginForm = () => {
+        this.#videoSystemView.showLoginMain();
+
+        this.#videoSystemView.bindLoginForm(this.handleLoginUser);
+    }
+
     handleNewProductionForm = () => {
         this.#videoSystemView.bindNewProductionForm(this.handleCreateProduction);
     }
@@ -315,6 +548,17 @@ class VideoSystemController {
 
     handleRemovePersonForm = () => {
         this.#videoSystemView.bindRemovePersonForm(this.handleRemovePerson);
+    }
+
+    handlerCloseSession = () => {
+        this.#videoSystemView.deleteFormsNav();
+        this.setCookie("User", "", 0);
+        this.handleInit();
+    }
+
+    handlerSaveData = () => {
+        let fullString = this.#serializeObjects();
+        this.#saveDataPHP(fullString);
     }
 
     hProductionPersons = (title) => { // ES-es Funciona para recibir el título al seleccionar, podemos obtener el casting
@@ -361,6 +605,7 @@ class VideoSystemController {
             let feedback = document.getElementById("createProductionFeed");
             feedback.innerHTML = (``);
         } catch (error) {
+            // console.log(error);
             let feedback = document.getElementById("createProductionFeed");
             feedback.innerHTML = (`Esta pelicula ya existe en la categoría indicada`);
         }
@@ -421,7 +666,6 @@ class VideoSystemController {
 
     handleRemoveCategory = (title) => {
         let cat = this.#videoSystem.getCategory(title);
-
         try {
             this.#videoSystem.removeCategory(cat);
             let feedback = document.getElementById("deleteCategoryFeed");
@@ -469,8 +713,38 @@ class VideoSystemController {
         }
     }
 
+    handleLoginUser = (userName, passWord) => {
+        let existUser = false;
+
+        // ES-es Comprobamos que el usuario está en el sistema
+        for (let user of this.#videoSystem.users) {
+            if (user.username == userName && user.password == passWord) {
+                existUser = true;
+                break;
+            }
+        }
+
+        if (existUser) { // ES-es Si existe vamos a la pantalla de inicio y creamos la cookie
+            // replaceState
+            history.replaceState({ action: 'init' }, null, "#inicio");
+            this.#videoSystemView.deleteLoginNav();
+            document.cookie = `User = ${userName}`
+            this.handleReloadCloseForm();
+        } else { // ES-es Mostramos feedback
+            let feedback = document.getElementById("loginFeed");
+            feedback.innerHTML = (`Este usuario no existe`);
+        }
+    }
+
     handleReloadCloseForm = () => {
         this.handleInit();
+    }
+
+    setCookie = (cname, cvalue, exdays) => {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";";
     }
 }
 

@@ -346,6 +346,41 @@ function removePersonValidation(handler){
     });
 }
 
+function loginUserValidation(handler){
+    let form = document.forms.fLoginUser;
+
+    $(form).submit(function (event) {
+        let isValid = true;
+        let firstInvalidElement = null;
+
+        if (!this.userName.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.userName), false);
+            firstInvalidElement = this.userName;
+        } else {
+            showFeedBack($(this.userName), true);
+        }
+
+        if (!this.passUser.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.passUser), false);
+            firstInvalidElement = this.passUser;
+        } else {
+            showFeedBack($(this.passUser), true);
+        }
+
+        if (!isValid) {
+            firstInvalidElement.focus();
+        } else {
+            handler(userName.value, passUser.value);
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+    });
+}
+
+
 function adjustDate(date) { // Method to create a correct date
     date = date.split("-");
     date = date.reverse();
@@ -398,5 +433,5 @@ function selectedPersonList(idSelected) {
     return selectedList;
 }
 export { showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, NewCategoryValidation, RemoveCategoryValidation,
-    createPersonValidation, removePersonValidation
+    createPersonValidation, removePersonValidation,loginUserValidation
 };

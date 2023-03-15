@@ -2,7 +2,7 @@
 
 import {
     showFeedBack, defaultCheckElement, newProductionValidation, deleteProductionValidation, relateProductionValidation, NewCategoryValidation, RemoveCategoryValidation,
-    createPersonValidation, removePersonValidation
+    createPersonValidation, removePersonValidation, loginUserValidation
 } from "./validation.js";
 
 class VideoSystemView {
@@ -439,6 +439,148 @@ class VideoSystemView {
         this.main.appendChild(container);
     }
 
+    showLoginMain(){
+        this.emptyMainElements();
+
+        let container = document.createElement("div");
+        container.className = ("container d-flex flex-column");
+
+        let title = document.createElement("h1");
+        title.className = ("mx-auto mt-3 mb-4");
+        title.innerHTML = ("Inicio de Sesión");
+
+        let containerForm = document.createElement("div");
+        containerForm.className = ("d-flex justify-content-center");
+        containerForm.innerHTML = (`            
+            <form name="fLoginUser" class="row needs-validation w-50" novalidate role="form">
+                <div class="col-md-12 d-flex justify-content-center flex-column position-relative">
+                    <label for="userName" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="userName" pattern="^[a-zA-Z0-9]{1,20}$" required>
+                    <div class="invalid-tooltip">
+                        Nombre no válido
+                    </div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-center flex-column mt-4 position-relative">
+                    <label for="passUser" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="passUser" pattern="^[a-zA-Z0-9]{1,20}$" required>
+                    <div class="invalid-tooltip">
+                        Contraseña no válida
+                    </div>
+                </div>
+                <div class="position-relative customFeed" id="loginFeed">
+                </div>
+                <div class="d-flex justify-content-center w-100">
+                    <button class="btn btn-primary w-50 mt-3" type="submit">Acceder</button>
+                </div>
+            </form>
+            `);
+
+        container.appendChild(title);
+        container.appendChild(containerForm);
+        this.main.appendChild(container);
+    }
+
+    // Method to create a list of forms in the navigation
+    showFormsInMenu() {
+        // Method to delete the list of forms
+        this.deleteFormsNav();
+
+        let ul = document.getElementById("navBar-menu");
+        let li = document.createElement("li");
+
+        li.className = "nav-item dropdown";
+        li.id = "forms-dropdown";
+        li.innerHTML = (`
+            <a class="nav-link dropdown-toggle" href="#category-list" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Formularios
+            </a>`);
+
+        let ulFormsList = document.createElement("ul");
+        ulFormsList.className = ("dropdown-menu");
+        ulFormsList.innerHTML = (`
+        <li><a id="newProductionLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#newProduction" data-form="newProduction">Nueva producción</a></li>
+        <li><a id="deleteProductionLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#deleteProduction" data-form="deleteProduction">Eliminar producción</a></li>
+        <li><a id="relationsProductionLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#relationsProduction" data-form="relationsProduction">Asignar / Desasignar producciones</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a id="createCategoryLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fcreateCategory" data-form="fcreateCategory">Crear Categoría</a></li>
+        <li><a id="deleteCategoryLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fdeleteCategory" data-form="fdeleteCategory">Eliminar Categoría</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a id="createPersonLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fcreatePerson" data-form="fcreatePerson">Crear Persona</a></li>
+        <li><a id="deletePersonLink" class="dropdown-item form-dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#fdeletePerson" data-form="fdeletePerson">Eliminar Persona</a></li>
+        `);
+        li.appendChild(ulFormsList);
+        ul.appendChild(li);
+    }
+
+    showLoginInMenu() {
+        // Method to delete the list of forms
+        this.deleteLoginNav();
+
+        let ul = document.getElementById("navBar-menu");
+        let li = document.createElement("li");
+
+        li.className = "nav-item";
+        li.id = "login-nav";
+        li.innerHTML = (`
+            <a id="nav-login-a" class="nav-link" href="#LoginNav" role="button">
+                Iniciar Sesión
+            </a>`);
+        ul.appendChild(li);
+    }
+
+    cookieContent(cookie){ // Call necessary cookie methods
+        this.deleteGreet();
+        this.deleteCloseSession();
+        this.deleteSaveData();
+
+        this.showGreet(cookie);
+        this.showCloseSession();
+        this.showSaveData();
+    }
+
+    showGreet(cookie){
+        let ul = document.getElementById("navBar-menu");
+        let liGreet = document.createElement("li");
+
+        liGreet.id = "greet-li";
+        liGreet.className = "nav-item nav-link";
+        liGreet.innerHTML = (`
+            Hola ${cookie}
+        `);
+        ul.appendChild(liGreet);
+    }
+
+    showCloseSession(){
+        let ul = document.getElementById("navBar-menu");
+        let liCloseSession = document.createElement("li");
+
+        liCloseSession.id = "closeSession-li";
+        liCloseSession.className = "nav-item";
+        liCloseSession.innerHTML = (`
+            <a id="closeSession-link" class="nav-link" href="#">Cerrar Sesión</a>
+        `);
+
+        ul.appendChild(liCloseSession);
+    }
+
+    showSaveData(){
+        let ul = document.getElementById("navBar-menu");
+        let liSaveData = document.createElement("li");
+
+        liSaveData.id = "saveData-li";
+        liSaveData.className = "nav-item";
+        liSaveData.innerHTML = (`
+            <a id="saveData-link" class="nav-link" href="#">Grabar Datos</a>
+        `);
+
+        ul.appendChild(liSaveData);
+    }
+    
+
     showFormsModals(directors, actors, categories, productions, hProductionActors) {
         this.deleteFormModals();
         this.newProductionModal(directors, actors, categories);
@@ -467,7 +609,7 @@ class VideoSystemView {
             <form name="fNewProduction" class="row g-3 needs-validation" role="form" novalidate enctype="multipart/form-data">
                 <div class="col-md-6 position-relative">
                     <label for="validationTooltip01" class="form-label">Título</label>
-                    <input type="text" class="form-control" id="productionTitle" pattern="^[a-zA-Z0-9]{1,20}$" required>
+                    <input type="text" class="form-control" id="productionTitle" pattern="^[a-zA-Z0-9 ]{1,20}$" required>
                     <div class="invalid-tooltip">
                         Nombre no válido
                     </div>
@@ -488,7 +630,7 @@ class VideoSystemView {
                 </div>
                 <div class="col-md-8 position-relative">
                     <label for="validationTooltip01" class="form-label">Imagen</label>
-                    <input type="file" class="form-control" id="image" pattern=".*(png|jpg|jpeg|gif)$" required>
+                    <input type="file" class="form-control" id="image" accept="image/png, image/jpeg" required>
                     <div class="invalid-tooltip">
                         Imagen no válida
                     </div>
@@ -697,27 +839,8 @@ class VideoSystemView {
             document.getElementById("relationAssign").value = "";
 
             this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
-        }); 
+        });
 
-        // let radioButtons = document.getElementsByClassName("form-relate-radio");
-
-        // for (let radio of radioButtons) {
-        //     radio.addEventListener("click", (event) => {
-        //         let production = document.getElementById("selectProductionRelate");
-        //         if (production.value != "") {
-        //             if (radio.value == "assign") {
-        //                 // Función añadir actores y directores que no contiene la producción
-        //                 this.assignPersons(production.value, actors, directors, hProductionActors);
-        //             } else {
-        //                 // Función para eliminar actores y directores que contiene la producción
-        //                 this.desAssignPersons(production.value, actors, directors, hProductionActors);
-        //             }
-        //         } else {
-        //             radio.checked = false;
-        //             this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
-        //         }
-        //     });
-        // }
         let selectAssign = document.getElementById("relationAssign");
         selectAssign.addEventListener("change", (event) => {
             let production = document.getElementById("selectProductionRelate");
@@ -851,7 +974,7 @@ class VideoSystemView {
             <form name="fcreatePerson" class="row g-3 needs-validation" novalidate role="form" enctype="multipart/form-data">
                 <div class="col-md-4 position-relative">
                     <label for="personName" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="personName" pattern="^[a-zA-Z]{1,20}$" required>
+                    <input type="text" class="form-control" id="personName" pattern="^[a-zA-Z ]{1,20}$" required>
                     <div class="invalid-tooltip">
                         Nombre no válido
                     </div>
@@ -886,7 +1009,7 @@ class VideoSystemView {
                 </div>
                 <div class="col-md-8 position-relative">
                     <label for="personPicture" class="form-label">Imagen</label>
-                    <input type="file" class="form-control" id="personPicture" required pattern=".*(png|jpg|jpeg|gif)$">
+                    <input type="file" class="form-control" id="personPicture" required accept="image/png, image/jpeg">
                     <div class="invalid-tooltip">
                         Imagen no válida
                     </div>
@@ -1036,10 +1159,32 @@ class VideoSystemView {
         }
     }
 
+    bindLoginNav(handler){
+        let loginMenu = document.getElementById("nav-login-a");
+        loginMenu.addEventListener("click", (event) => {
+            this.#executeHandler(handler, [], 'body', {action: 'LoginNav'}, '#LoginNav', event);
+            // handler();
+        });
+    }
+
     bindCloseWindows(handler) {
         let closeButton = document.getElementById("nav-closeWindows");
         closeButton.addEventListener("click", (event) => {
             handler(this.productionWindow)
+        });
+    }
+
+    bindCloseSession(handler){
+        let closeSessionButton = document.getElementById("closeSession-link");
+        closeSessionButton.addEventListener("click", (event) => {
+            handler();
+        });
+    }
+
+    bindSaveData(handler){
+        let saveDataButton = document.getElementById("saveData-link");
+        saveDataButton.addEventListener("click", (event) => {
+            handler();
         });
     }
 
@@ -1134,6 +1279,10 @@ class VideoSystemView {
         removePersonValidation(handler);
     }
 
+    bindLoginForm(handler){
+        loginUserValidation(handler);
+    }
+
     // Empty the main
     emptyMainElements() {
         let main = document.getElementById("main");
@@ -1170,8 +1319,58 @@ class VideoSystemView {
         } catch (error) {
             // console.error(error.message);
         }
-
     }
+
+    deleteFormsNav() {
+        try {
+            let navMenu = document.getElementById("forms-dropdown");
+            let parent = navMenu.parentNode;
+            parent.removeChild(navMenu);
+        } catch (error) {
+            // console.error(error.message);
+        }
+    }
+
+    deleteLoginNav() {
+        try {
+            let navMenu = document.getElementById("login-nav");
+            let parent = navMenu.parentNode;
+            parent.removeChild(navMenu);
+        } catch (error) {
+            // console.error(error.message);
+        }
+    }
+
+    deleteGreet(){
+        try {
+            let navMenu = document.getElementById("greet-li");
+            let parent = navMenu.parentNode;
+            parent.removeChild(navMenu);
+        } catch (error) {
+            // console.error(error.message);
+        }
+    }
+
+    deleteCloseSession(){
+        try {
+            let navMenu = document.getElementById("closeSession-li");
+            let parent = navMenu.parentNode;
+            parent.removeChild(navMenu);
+        } catch (error) {
+            // console.error(error.message);
+        }
+    }
+
+    deleteSaveData(){
+        try {
+            let navMenu = document.getElementById("saveData-li");
+            let parent = navMenu.parentNode;
+            parent.removeChild(navMenu);
+        } catch (error) {
+            // console.error(error.message);
+        }
+    }
+
     reloadPageCLose(handler) {
         let modalsClose = document.getElementsByClassName("close-modal");
 
@@ -1218,7 +1417,7 @@ class VideoSystemView {
         this.emptyChildsSelect(["selectActorsRelate", "selectDirectorsRelate"]);
 
         for (let actor of systemActors) {
-            if (personData["castingNif"].includes(actor.dni)) { 
+            if (personData["castingNif"].includes(actor.dni)) {
                 let option = document.createElement("option");
                 option.value = actor.dni;
                 option.append(actor.name + " " + actor.lastname1);
